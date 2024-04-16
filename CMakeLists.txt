@@ -8,4 +8,5 @@ add_executable(Destiny2_Weapon_DPS
         src/Arsenal.h
         src/Weapon.h
         src/Arsenal.cpp
-        src/Weapon.cpp)
+        src/Weapon.cpp
+        src/Sort.cpp)

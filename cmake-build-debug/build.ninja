@@ -67,6 +67,12 @@ build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj: CXX_COMPILER__Desti
   OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
   OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
 
+build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Sort.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\Sort.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
+  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Destiny2_Weapon_DPS
@@ -75,7 +81,7 @@ build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj: CXX_COMPILER__Desti
 #############################################
 # Link the executable Destiny2_Weapon_DPS.exe
 
-build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj
+build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
