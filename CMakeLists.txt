@@ -3,6 +3,8 @@ project(Destiny2_Weapon_DPS)
 
 set(CMAKE_CXX_STANDARD 14)
 
+
+
 add_executable(Destiny2_Weapon_DPS
         src/main.cpp
         src/Arsenal.h
@@ -10,4 +12,8 @@ add_executable(Destiny2_Weapon_DPS
         src/Arsenal.cpp
         src/Weapon.cpp
         src/Sort.cpp
-        "src/Data Generator.cpp")
+        )
+
+add_executable(Data_Generator
+        "src/Data Generator.cpp"
+        )

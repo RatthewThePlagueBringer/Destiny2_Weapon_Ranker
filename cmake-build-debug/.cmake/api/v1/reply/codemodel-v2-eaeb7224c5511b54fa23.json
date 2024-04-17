@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "Destiny2_Weapon_DPS",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -38,8 +40,15 @@
 			[
 				{
 					"directoryIndex" : 0,
+					"id" : "Data_Generator::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Data_Generator-Debug-b662eb2b2e7ed3b13866.json",
+					"name" : "Data_Generator",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
 					"id" : "Destiny2_Weapon_DPS::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-Destiny2_Weapon_DPS-Debug-8f15cf9552e46bb2d829.json",
+					"jsonFile" : "target-Destiny2_Weapon_DPS-Debug-1409fe0e23742900b115.json",
 					"name" : "Destiny2_Weapon_DPS",
 					"projectIndex" : 0
 				}
@@ -49,8 +58,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug",
-		"source" : "C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS"
+		"build" : "C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker/cmake-build-debug",
+		"source" : "C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker"
 	},
 	"version" : 
 	{

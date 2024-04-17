@@ -128,6 +128,19 @@ Destiny2_Weapon_DPS/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/build
 .PHONY : Destiny2_Weapon_DPS/fast
 
+#=============================================================================
+# Target rules for targets named Data_Generator
+
+# Build rule for target.
+Data_Generator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Data_Generator
+.PHONY : Data_Generator
+
+# fast build rule for target.
+Data_Generator/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Data_Generator.dir\build.make CMakeFiles/Data_Generator.dir/build
+.PHONY : Data_Generator/fast
+
 src/Arsenal.obj: src/Arsenal.cpp.obj
 .PHONY : src/Arsenal.obj
 
@@ -151,6 +164,30 @@ src/Arsenal.s: src/Arsenal.cpp.s
 src/Arsenal.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.s
 .PHONY : src/Arsenal.cpp.s
+
+src/Data_Generator.obj: src/Data_Generator.cpp.obj
+.PHONY : src/Data_Generator.obj
+
+# target to build an object file
+src/Data_Generator.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Data_Generator.dir\build.make CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj
+.PHONY : src/Data_Generator.cpp.obj
+
+src/Data_Generator.i: src/Data_Generator.cpp.i
+.PHONY : src/Data_Generator.i
+
+# target to preprocess a source file
+src/Data_Generator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Data_Generator.dir\build.make CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.i
+.PHONY : src/Data_Generator.cpp.i
+
+src/Data_Generator.s: src/Data_Generator.cpp.s
+.PHONY : src/Data_Generator.s
+
+# target to generate assembly for a file
+src/Data_Generator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Data_Generator.dir\build.make CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.s
+.PHONY : src/Data_Generator.cpp.s
 
 src/Sort.obj: src/Sort.cpp.obj
 .PHONY : src/Sort.obj
@@ -232,10 +269,14 @@ help:
 	@echo ... depend
 	@echo ... edit_cache
 	@echo ... rebuild_cache
+	@echo ... Data_Generator
 	@echo ... Destiny2_Weapon_DPS
 	@echo ... src/Arsenal.obj
 	@echo ... src/Arsenal.i
 	@echo ... src/Arsenal.s
+	@echo ... src/Data_Generator.obj
+	@echo ... src/Data_Generator.i
+	@echo ... src/Data_Generator.s
 	@echo ... src/Sort.obj
 	@echo ... src/Sort.i
 	@echo ... src/Sort.s
