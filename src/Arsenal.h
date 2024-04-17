@@ -9,6 +9,9 @@ using namespace std;
 
 class Arsenal {
 private:
+    int size;
+
+public:
     // Weapon Families
     vector<vector<Weapon>> priWeapons;
     vector<vector<Weapon>> secWeapons;
@@ -37,6 +40,12 @@ private:
     vector<Weapon> swords;
     vector<Weapon> heavyMachineGuns;
     vector<Weapon> pow_Uniques;
+
+public:
+    // Constructor
+    Arsenal();
+    // Methods
+
 };
 
 

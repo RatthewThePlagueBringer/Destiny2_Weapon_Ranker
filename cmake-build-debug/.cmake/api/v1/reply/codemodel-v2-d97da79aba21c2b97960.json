@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug",
-		"source" : "C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS"
+		"build" : "C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker/cmake-build-debug",
+		"source" : "C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker"
 	},
 	"version" : 
 	{
