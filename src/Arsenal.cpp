@@ -5,5 +5,5 @@ Arsenal::Arsenal() {
     size = 0;
 
     fstream file;
-    file.open("weapons.csv", ios::in);
+    file.open("weapons(real).csv", ios::in);
 }

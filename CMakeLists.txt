@@ -9,4 +9,5 @@ add_executable(Destiny2_Weapon_DPS
         src/Weapon.h
         src/Arsenal.cpp
         src/Weapon.cpp
-        src/Sort.cpp)
+        src/Sort.cpp
+        "src/Data Generator.cpp")

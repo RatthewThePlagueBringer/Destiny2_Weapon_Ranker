@@ -6,25 +6,25 @@ Ammo,Weap. Tag,Lucent Blades Count,Frame/Weapon,"1-Mag Burst or ""True"" DPS",Su
 P,AuRi,N/A,High-Impact,5436,4823,inf,40770,45,inf,360,1.12,inf,567,906
 P,AuRi,N/A,Precision,5730,4921,inf,34380,45,inf,450,1.12,inf,490,764
 P,AuRi,N/A,Centrifuse,5730,5343,inf,29032,38,inf,450,0.5,inf,490,764
-P,AuRi,N/A,Suros Regime,5982,5121,inf,33898,34,inf,360,1.12,inf,624,997
+P,AuRi,N/A,Suros Regime (dual speed),5982,5121,inf,33898,34,inf,360,1.12,inf,624,997
 P,AuRi,N/A,Hard Light,6030,4991,inf,29547,49,inf,600,1.12,inf,387,603
 P,AuRi,N/A,Adaptive,6030,5115,inf,34371,57,inf,600,1.12,inf,387,603
 P,AuRi,N/A,Rapid-Fire,6216,5456,inf,36260,70,inf,720,0.9,inf,346,518
 P,AuRi,N/A,Monte Carlo,6630,5382,inf,29172,44,inf,600,1.12,inf,426,663
 P,AuRi,N/A,Necrochasm,6840,5435,inf,28500,50,inf,720,1.16,inf,380,570
-P,AuRi,N/A,Suros Regime,7223,5306,inf,20706,34,inf,712,1.12,inf,404,609
+P,AuRi,N/A,Suros Regime (ramping up),7223,5306,inf,20706,34,inf,712,1.12,inf,404,609
 P,AuRi,N/A,Cerberus+1,7968,6727,inf,41168,31,inf,360,1.12,inf,1328,2117
 P,AuRi,N/A,Quicksilver Storm (strand),8804,7104,inf,37416,51,inf,720,1.1,inf,346,518
 P,AuRi,N/A,Quicksilver Storm (kinetic),9086,7332,inf,38615,51,inf,720,1.1,inf,380,570
 P,AuRi,N/A,Cerberus+1 (w/ reverse falloff),9156,8508,inf,94612,31,inf,180,1.12,inf,3052,3676
 P,AuRi,N/A,Cerberus+1 (cata alt-fire),9552,8064,inf,49352,31,inf,360,1.12,inf,1592,2552
-P,AuRi,N/A,Quicksilver Storm (w/ grenades, strand),10040,10040,inf,N/A,51,inf,720,1.1,inf,346,518
-P,AuRi,N/A,Quicksilver Storm (w/ grenades, kinetic),10266,10266,inf,N/A,51,inf,720,1.1,inf,380,570
+P,AuRi,N/A,Quicksilver Storm (w/ grenades; strand),10040,10040,inf,N/A,51,inf,720,1.1,inf,346,518
+P,AuRi,N/A,Quicksilver Storm (w/ grenades; kinetic),10266,10266,inf,N/A,51,inf,720,1.1,inf,380,570
 P,AuRi,N/A,Sweet Business,11022,9313,inf,115879,150,inf,856,2,inf,491,689
-P,AuRi,N/A,Cerberus+1 (cata alt-fire, all precision),11028,10248,inf,113956,31,inf,180,1.12,inf,3052,3676
+P,AuRi,N/A,Cerberus+1 (cata alt-fire; all precision),11028,10248,inf,113956,31,inf,180,1.12,inf,3052,3676
 P,AuRi,N/A,Vex Mythoclast,11814,9614,inf,49225,25,inf,360,1.12,inf,1232,1969
 P,AuRi,N/A,Cerberus+1 (all precision),12702,10723,inf,65627,31,inf,360,1.12,inf,1328,2117
-P,AuRi,N/A,Cerberus+1 (all precision, w/ reverse falloff),15312,12927,inf,79112,31,inf,360,1.12,inf,1592,2552
+P,AuRi,N/A,Cerberus+1 (all precision; w/ reverse falloff),15312,12927,inf,79112,31,inf,360,1.12,inf,1592,2552
 P,AuRi,N/A,Tommy's Matchbook,18221,16561,inf,107968,100,inf,720,0.93,inf,686,1059
 P,AuRi,N/A,Tommy's Matchbook (ember of ashes),20238,18376,inf,114412,100,inf,720,0.93,inf,686,1059
 P,Bows,N/A,Hierarchy of Needs,3844,3844,inf,5213,1,inf,44,0.6,inf,3262,5213
@@ -70,7 +70,7 @@ S,Glai,N/A,Aggressive,10007,10007,inf,N/A,N/A,N/A,133,N/A,N/A,4503,N/A
 S,Glai,N/A,Edge of Concurrence (hunter),10007,10007,inf,N/A,N/A,N/A,133,N/A,N/A,4503,N/A
 S,Glai,N/A,Edge of Action (titan),10007,10007,inf,N/A,N/A,N/A,133,N/A,N/A,4503,N/A
 S,Glai,N/A,Edge of Intent (warlock),10007,10007,inf,N/A,N/A,N/A,133,N/A,N/A,4503,N/A
-S,Glai,N/A,Edge of Concurrence (hunter, alt-fire),11237,8650,261268,58996,7,31,80,1.57,29.5,8428,N/A
+S,Glai,N/A,Edge of Concurrence (hunter; alt-fire),11237,8650,261268,58996,7,31,80,1.57,29.5,8428,N/A
 S,Glai,N/A,Vexcalibur (melee only),12007,12007,inf,N/A,N/A,N/A,133,N/A,N/A,5403,N/A
 S,Glai,N/A,Vexcalibur,15327,12964,379335,68970,6,33,80,1.57,28.1,11495,N/A
 H,Glai,N/A,Winterbite (melee w/ ammo),16214,16214,inf,N/A,N/A,N/A,133,N/A,N/A,6754,N/A
@@ -86,8 +86,8 @@ S,GrLa,N/A,Witherhoard (w/ cata, assumes autoloading is used),9779,9779,986136,5
 S,GrLa,N/A,Double Fire,11631,11631,395682,18842,1,21,100,1.62,34,18842,N/A
 S,GrLa,N/A,Micro-Missle,12733,12733,474444,20628,1,23,72,1.62,37.3,20628,N/A
 S,GrLa,N/A,Ex Diris,14589,14589,481437,14589,1,33,60,N/A,33,14589,N/A
-S,GrLa,N/A,Witherhoard (reapply before prev expires, cycle between target and floor),15481,15481,1463920,55403,1,23,90,1.62,54,629,N/A
-S,GrLa,N/A,Witherhoard (spam, cycle between target and floor),16654,16654,1076166,55403,1,23,90,1.62,37.3,629,N/A
+S,GrLa,N/A,Witherhoard (reapply before prev expires; cycle between target and floor),15481,15481,1463920,55403,1,23,90,1.62,54,629,N/A
+S,GrLa,N/A,Witherhoard (spam; cycle between target and floor),16654,16654,1076166,55403,1,23,90,1.62,37.3,629,N/A
 S,GrLa,N/A,Lightweight (slideshot),18034,18034,331821,14427,1,23,75,0.33,18.4,14427,N/A
 S,GrLa,N/A,Ex Diris (w/ enrage),22997,22997,481437,14589,1,33,95,N/A,20.9,14589,N/A
 P,HaCa,N/A,Aggressive,4654,3992,inf,32578,14,inf,120,1.66,inf,1456,2327
@@ -111,8 +111,8 @@ S,HaCa,N/A,Eriana's Vow (w/ cata),17801,15272,474680,106803,9,40,90,1.66,30,7426
 P,HaCa,N/A,Sturm (w/ cata),18534,N/A,inf,83405,9,inf,120,1.66,inf,5799,9267
 P,HaCa,N/A,Malfeasance (w/ cata, lucky pants),23843,13323,inf,158951,20,inf,180,1.66,inf,1538,2307
 H,HeGL,N/A,Salvation's Grip (full charge),3922,3410,109816,31376,8,28,60,2.2,30.6,3922,N/A
-H,HeGL,N/A,Anarchy (single shot, wait until expiration),5330,5330,1492400,319800,6,28,150,2.08,280,380,N/A
-H,HeGL,N/A,Anarchy (double shot, wait until expiration),10630,10630,1493520,320040,6,28,150,2.08,140,380,N/A
+H,HeGL,N/A,Anarchy (single shot; wait until expiration),5330,5330,1492400,319800,6,28,150,2.08,280,380,N/A
+H,HeGL,N/A,Anarchy (double shot; wait until expiration),10630,10630,1493520,320040,6,28,150,2.08,140,380,N/A
 H,HeGL,N/A,Parasite,23862,23862,843744,49632,1,17,120,2.08,33.3,49632,N/A
 H,HeGL,N/A,Parasite (first shot 20x worms hunger),28080,28080,934497,49632,1,17,120,2.08,33.3,49632,N/A
 H,HeGL,N/A,Salvation's Grip (full charge > normal > repeat),28337,28337,793436,N/A,8,28,60,2.2,18.7,19982,N/A
@@ -159,9 +159,9 @@ P,PuRi,N/A,Vigilance Wing,6316,5330,inf,35750,50,inf,530,1.16,inf,490,715
 P,PuRi,N/A,Graviton Lance,7222,6378,inf,50580,30,inf,257,1.16,inf,2110,3372
 P,PuRi,N/A,Outbreak Perfected,7335,5427,inf,22780,34,inf,450,1.16,inf,420,670
 P,PuRi,N/A,Revision Zero (2-burst),8616,7152,inf,41106,26,inf,327,1.16,inf,990,1581
-P,PuRi,N/A,Revision Zero (4-burst, sniper mode),9843,9843,inf,33696,52,inf,450,1.16,inf,382,648
+P,PuRi,N/A,Revision Zero (4-burst; sniper mode),9843,9843,inf,33696,52,inf,450,1.16,inf,382,648
 P,PuRi,N/A,Bad Juju (curses x5),10050,N/A,inf,41540,31,inf,450,1.16,inf,840,1340
-P,PuRi,N/A,Revision Zero (2-burst, sniper mode),11360,11360,inf,79050,50,inf,327,1.16,inf,990,1581
+P,PuRi,N/A,Revision Zero (2-burst; sniper mode),11360,11360,inf,79050,50,inf,327,1.16,inf,990,1581
 P,PuRi,N/A,Outbreak Perfected,14873,11572,inf,56950,34,inf,450,1.16,inf,1050,1675
 P,PuRi,N/A,Outbreak Perfected (w/ cata),29948,23864,inf,125290,34,inf,450,1.16,inf,2310,3685
 H,RocL,N/A,Hakke Precision,16990,16990,462804,38567,1,12,15,2.27,25,38567,N/A
@@ -177,15 +177,15 @@ H,RocL,N/A,Dragon's Breath (fuel x5),19228,19228,1169784,97482,1,12,15,2.35,25.9
 H,RocL,N/A,Two-Tailed Fox,20536,20536,527780,52778,1,10,40,2.35,24.1,52778,N/A
 H,RocL,N/A,Two-Tailed Fox (w/ cata),21665,21665,604460,60446,1,10,40,2.35,24.1,60446,N/A
 H,RocL,N/A,Aggressive (bipod),22677,22677,541425,72190,2,15,72,2.35,22.3,36095,N/A
-H,RocL,N/A,Two-Tailed Fox (w/ cata, ignitions),23807,23807,611830,52778,1,10,40,2.35,24.1,52778,N/A
+H,RocL,N/A,Two-Tailed Fox (w/ cata; ignitions),23807,23807,611830,52778,1,10,40,2.35,24.1,52778,N/A
 H,RocL,N/A,Aggressive (wolfpack),24045,24045,565050,56505,1,10,25,2.35,21.2,56505,N/A
 H,RocL,N/A,Adaptive (wolfpack),24045,24045,508545,56505,1,9,20,2.35,18.8,56505,N/A
-H,RocL,N/A,Two-Tailed Fox (w/ cata, ignitions, jolt),24678,24678,688510,60446,1,10,40,2.35,24.1,60446,N/A
+H,RocL,N/A,Two-Tailed Fox (w/ cata; ignitions; jolt),24678,24678,688510,60446,1,10,40,2.35,24.1,60446,N/A
 H,RocL,N/A,Eyes of Tomorrow (adaptive ordinance),24989,24989,762150,76215,1,10,20,2.35,27.5,76215,N/A
 H,RocL,N/A,Deathbringe (direct impact)r,26305,26305,679987,61817,1,11,15,2.35,23.5,61817,N/A
 H,RocL,N/A,Gjallarhorn,29394,20412,440904,73484,2,12,48,2.35,19.3,36742,N/A
 H,RocL,N/A,Truth,29478,22793,405328,110544,3,11,48,2.35,15.8,36848,N/A
-H,RocL,N/A,Aggressive (bipod, wolfpack),30121,30121,719145,95886,2,15,72,2.35,22.3,47943,N/A
+H,RocL,N/A,Aggressive (bipod; wolfpack),30121,30121,719145,95886,2,15,72,2.35,22.3,47943,N/A
 H,RocL,N/A,Deathbringer (max fall),37425,37425,967428,87948,1,11,15,2.35,23.5,87948,N/A
 P,ScRi,N/A,Symmetry (revolution x5),4144,3929,inf,74980,20,inf,260,0.99,inf,2366,N/A
 P,ScRi,N/A,Aggressive Frame,4656,3449,inf,46560,20,inf,120,0.38,inf,1573,2328
@@ -204,7 +204,7 @@ P,ScRi,N/A,Wicked Implement,8471,6115,inf,34082,14,inf,180,1.24,inf,1107,1769
 P,ScRi,N/A,Polaris Lance (ember of ashes),9197,9197,inf,inf,14,inf,150,1.24,inf,1165,2045
 P,ScRi,N/A,Symmetry (revolution x10),9430,8909,inf,160160,20,inf,260,0.99,inf,6625,N/A
 P,ScRi,N/A,Wicked Implement (whisper of rending),10153,7322,inf,40810,14,inf,180,1.24,inf,1107,1769
-P,ScRi,N/A,SkyBurner's Oath (hip-fire, ember of ashes),10498,9408,inf,77900,20,inf,150,1.24,inf,1341,2214
+P,ScRi,N/A,SkyBurner's Oath (hip-fire; ember of ashes),10498,9408,inf,77900,20,inf,150,1.24,inf,1341,2214
 P,ScRi,N/A,Dead Man's Tale,10770,7270,inf,50260,14,inf,180,0.33,inf,2425,3590
 P,ScRi,N/A,Touch of Malice,14499,14499,inf,inf,11,inf,260,1.24,inf,1973,3346
 P,ScRi,N/A,Touch of Malice (w/ cata),16656,16656,inf,inf,11,inf,260,1.24,inf,2960,5019
@@ -286,40 +286,29 @@ P,SuMG,N/A,Osteo Striga (necrotic),14300,10666,inf,31872,32,inf,600,1.19,inf,711
 P,SuMG,N/A,The Manticore (airborne),18495,12708,inf,45621,37,inf,900,1.19,inf,745,1233
 P,SuMG,N/A,Huckleberry (ride the bull x2, rampage x3),20318,N/A,inf,41991,31,inf,900,N/A,inf,940,1355
 P,SuMG,N/A,Tarrabah (ravenous),22425,15700,inf,46345,31,inf,900,0.95,inf,1481,1495
-
 H,Swrd,0,Caster (Temptation's),18900,18900,426870,N/A,N/A,57,128,1.62,21,8054,28190
-
 H,Swrd,0,Vortex,20962,20962,437262,N/A,N/A,61,128,1.66,19.1,9254,34704
-
 H,Swrd,0,Caster (Sola's),21716,21716,541368,N/A,N/A,61,128,1.62,23,9254,32390
-
 H,Swrd,0,Aggressive,21801,21801,694000,N/A,N/A,50,91,2.32,29.2,13880,41640
 H,Swrd,0,Adaptive,22254,22254,545216,N/A,N/A,63,128,2.42,24,9254,31618
-
 H,Swrd,0,Lightweight,22991,22991,703286,N/A,N/A,76,136,2.27,30.2,9254,27760
-
 H,Swrd,0,Adaptive (Bequest),24483,24483,583920,N/A,N/A,62,128,1.57,22.4,10111,34547
-
 H,Swrd,0,Black Talon (w/ heavy recharge),27673,27673,468222,N/A,N/A,62,128,1.79,14.6,8671,52024
-
 H,Swrd,0,Black Talon (w/o heavy recharge),29797,29797,450882,N/A,N/A,62,128,1.79,14.6,8671,52024
 H,Swrd,0,Lament (revved light x2 > revved heavy x1 > normal light x3),30816,30816,783861,N/A,N/A,58,128,N/A,30.2,10111,34547
-
-H,Swrd,0,Heartshadow (cata, w/o heavy recharge),38277,38277,829435,N/A,N/A,56,128,1.94,21.2,12810,69921
-H,Swrd,0,Heartshadow (cata, w/ heavy recharge),39210,39210,848118,N/A,N/A,56,128,1.94,21.2,12810,69921
-
-S,TrRi,N/A,Ruinous Effigy,5898,N/A,50430,50430,30,30,240,N/A,7.8,561,561
+H,Swrd,0,Heartshadow (cata; w/o heavy recharge),38277,38277,829435,N/A,N/A,56,128,1.94,21.2,12810,69921
+H,Swrd,0,Heartshadow (cata; w/ heavy recharge),39210,39210,848118,N/A,N/A,56,128,1.94,21.2,12810,69921
 S,TrRi,N/A,Divinity,8828,7981,191196,114179,194,564,900,1.44,40.3,252,339
 S,TrRi,N/A,Prometheous Lens,8940,7413,357600,59600,100,600,900,1.44,46.8,444,596
 S,TrRi,N/A,The Navigator,10170,8389,394596,65766,97,582,900,1.44,45.6,505,678
 S,TrRi,N/A,Adaptive,10170,8489,397308,70512,104,586,900,1.44,45.9,505,678
-S,TrRi,N/A,Divinity,11388,10295,248160,147287,194,564,900,1.44,40.3,440,440
+S,TrRi,N/A,Divinity (w/ burst),11388,10295,248160,147287,194,564,900,1.44,40.3,440,440
 S,TrRi,N/A,Ager's Scepter,13215,10900,500408,85457,97,568,900,1.44,44.7,656,881
-S,TrRi,N/A,Wavesplitter,13585,11265,543400,90567,100,600,900,1.44,46.8,674,906
-S,TrRi,N/A,Ruinous Effigy,14250,11688,527250,89300,94,555,900,1.44,43.8,707,950
+S,TrRi,N/A,Wavesplitter (average power level),13585,11265,543400,90567,100,600,900,1.44,46.8,674,906
+S,TrRi,N/A,Ruinous Effigy (orb melee > dunk),14250,11688,527250,89300,94,555,900,1.44,43.8,707,950
 S,TrRi,N/A,Ruinous Effigy,14933,N/A,228480,228480,30,30,120,N/A,15,6720,5040
 S,TrRi,N/A,Coldheart,16638,13819,410868,112029,101,606,900,1.44,47.2,505,678
-S,TrRi,N/A,Coldheart,16959,14086,410868,114193,101,606,900,1.44,47.2,505,678
-S,TrRi,N/A,Wavesplitter,17145,14216,685800,114300,100,600,900,1.44,46.8,851,1143
-S,TrRi,N/A,Ruinous Effigy,18525,15195,685425,116090,94,555,900,1.44,43.8,919,1235
-S,TrRi,N/A,Ager's Scepter,27587,N/A,354947,354947,194,568,900,1.44,40.5,1180,1585
+S,TrRi,N/A,Coldheart (w/ ionic trace),16959,14086,410868,114193,101,606,900,1.44,47.2,505,678
+S,TrRi,N/A,Wavesplitter (100% full power uptime),17145,14216,685800,114300,100,600,900,1.44,46.8,851,1143
+S,TrRi,N/A,Ruinous Effigy (orb dunk > shoot, w/cata),18525,15195,685425,116090,94,555,900,1.44,43.8,919,1235
+S,TrRi,N/A,Ager's Scepter (cata alt-fire),27587,N/A,354947,354947,194,568,900,1.44,40.5,1180,1585
