@@ -17,7 +17,7 @@ int main() {
     // 18 weapon subfamilies, 5,555 randomly generated weapons per subfamily
     // Auto Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "AuRi," // Weapon type
              << "AutoRifle_" << i << "," // Weapon name
              << rand() % 4604 + 1436 << "," // Burst
@@ -35,7 +35,7 @@ int main() {
     }
     // Bows
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "Bows," // Weapon type
              << "Bow_" << i << "," // Weapon name
              << rand() % 3844 + 1195 << "," // Burst
@@ -53,7 +53,7 @@ int main() {
     }
     // Fusion Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "FuRi," // Weapon type
              << "FusionRifle_" << i << "," // Weapon name
              << rand() % 11331 + 3712 << "," // Burst
@@ -71,7 +71,7 @@ int main() {
     }
     // Glaives
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "Glai," // Weapon type
              << "Glaive_" << i << "," // Weapon name
              << rand() % 9907 + 200 << "," // Burst
@@ -89,7 +89,7 @@ int main() {
     }
     // Special Grenade Launchers
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "GrLa," // Weapon type
              << "SpecialGrenade_" << i << "," // Weapon name
              << rand() % 6741 + 2165 << "," // Burst
@@ -107,7 +107,7 @@ int main() {
     }
     // Hand Cannons
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "HaCa," // Weapon type
              << "HandCannon_" << i << "," // Weapon name
              << rand() % 4654 + 917 << "," // Burst
@@ -125,7 +125,7 @@ int main() {
     }
     // Heavy Grenade Launchers
     for (int i = 0; i < 5555; i++) {
-        file << "H" << ", " // Ammo type
+        file << "H" << "," // Ammo type
              << "HeGL," // Weapon type
              << "HeavyGrenade_" << i << "," // Weapon name
              << rand() % 39980 + 340 << "," // Burst
@@ -143,7 +143,7 @@ int main() {
     }
     // Heavy Machine Guns
     for (int i = 0; i < 5555; i++) {
-        file << "H" << ", " // Ammo type
+        file << "H" << "," // Ammo type
              << "HeMG," // Weapon type
              << "MachineGun_" << i << "," // Weapon name
              << rand() % 15060 + 3870 << "," // Burst
@@ -161,7 +161,7 @@ int main() {
     }
     // Linear Fusion Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "H" << ", " // Ammo type
+        file << "H" << "," // Ammo type
              << "LFRi," // Weapon type
              << "LinearFusionRifle_" << i << "," // Weapon name
              << rand() % 20453 + 1006 << "," // Burst
@@ -179,7 +179,7 @@ int main() {
     }
     // Pulse Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "PuRi," // Weapon type
              << "PulseRifle_" << i << "," // Weapon name
              << rand() % 4418 + 433 << "," // Burst
@@ -197,7 +197,7 @@ int main() {
     }
     // Rocket Launchers
     for (int i = 0; i < 5555; i++) {
-        file << "H" << ", " // Ammo type
+        file << "H" << "," // Ammo type
              << "RocL," // Weapon type
              << "RocketLauncher_" << i << "," // Weapon name
              << rand() % 39760 + 10987 << "," // Burst
@@ -215,7 +215,7 @@ int main() {
     }
     // Scout Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "ScRi," // Weapon type
              << "PulseRifle_" << i << "," // Weapon name
              << rand() % 4656 + 1337 << "," // Burst
@@ -233,7 +233,7 @@ int main() {
     }
     // Sidearms
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "Sdrm," // Weapon type
              << "Sidearm_" << i << "," // Weapon name
              << rand() % 7860 + 1224 << "," // Burst
@@ -251,7 +251,7 @@ int main() {
     }
     // Shotguns
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "Shgu," // Weapon type
              << "Shotgun_" << i << "," // Weapon name
              << rand() % 15708 + 3108 << "," // Burst
@@ -269,7 +269,7 @@ int main() {
     }
     // Sniper Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "SnRi," // Weapon type
              << "SniperRifle_" << i << "," // Weapon name
              << rand() % 19307 + 3933 << "," // Burst
@@ -287,7 +287,7 @@ int main() {
     }
     // Sub Machine Guns
     for (int i = 0; i < 5555; i++) {
-        file << "P" << ", " // Ammo type
+        file << "P" << "," // Ammo type
              << "SuMG," // Weapon type
              << "SubMachineGun_" << i << "," // Weapon name
              << rand() % 8180 + 1075 << "," // Burst
@@ -305,9 +305,9 @@ int main() {
     }
     // Swords
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
-             << "SnRi," // Weapon type
-             << "SniperRifle_" << i << "," // Weapon name
+        file << "H" << "," // Ammo type
+             << "Swrd," // Weapon type
+             << "Sword_" << i << "," // Weapon name
              << rand() % 20962 + 2029 << "," // Burst
              << rand() % 20962 + 2029 << "," // Sustained
              << rand() % 436262 + 266024 << "," // Total damage
@@ -323,7 +323,7 @@ int main() {
     }
     // Trace Rifles
     for (int i = 0; i < 5555; i++) {
-        file << "S" << ", " // Ammo type
+        file << "S" << "," // Ammo type
              << "TrRi," // Weapon type
              << "TraceRifle" << i << "," // Weapon name
              << rand() % 10170 + 933 << "," // Burst
@@ -346,4 +346,4 @@ int main() {
     return 0;
 }
 
- */
+*/

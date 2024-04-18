@@ -1,4 +1,6 @@
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 #include "Weapon.h"
 
@@ -32,6 +34,7 @@ public:
     vector<Weapon> sniperRifles;
     vector<Weapon> fusionRifles;
     vector<Weapon> glaives;
+    vector<Weapon> traceRifles;
     vector<Weapon> sec_grenades;
     vector<Weapon> sec_Uniques;
     // Power
@@ -39,11 +42,13 @@ public:
     vector<Weapon> rockets;
     vector<Weapon> swords;
     vector<Weapon> heavyMachineGuns;
+    vector<Weapon> linearFusions;
     vector<Weapon> pow_Uniques;
 
 public:
-    // Constructor
+    // Default constructor
     Arsenal();
+
     // Methods
 
 };
