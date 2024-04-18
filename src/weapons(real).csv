@@ -12,7 +12,7 @@ P,AuRi,Cerberus+1,7968,6727,inf,41168,31,inf,360,1.12,inf,1328,2117
 P,AuRi,Quicksilver Storm (strand),8804,7104,inf,37416,51,inf,720,1.1,inf,346,518
 P,AuRi,Quicksilver Storm (kinetic),9086,7332,inf,38615,51,inf,720,1.1,inf,380,570
 P,AuRi,Cerberus+1 (w/ reverse falloff),9156,8508,inf,94612,31,inf,180,1.12,inf,3052,3676
-P,AuRi,Cerberus+1 (cata alt-fire),9552,8064,inf,49352,31,inf,360,1.12,inf,1592,2552
+P,AuRi,Cerberus+1 (cata alt-fire),9a552,8064,inf,49352,31,inf,360,1.12,inf,1592,2552
 P,AuRi,Quicksilver Storm (w/ grenades; strand),10040,10040,inf,N/A,51,inf,720,1.1,inf,346,518
 P,AuRi,Quicksilver Storm (w/ grenades; kinetic),10266,10266,inf,N/A,51,inf,720,1.1,inf,380,570
 P,AuRi,Sweet Business,11022,9313,inf,115879,150,inf,856,2,inf,491,689
@@ -283,7 +283,6 @@ P,SuMG,Huckleberry (ride the bull x2; rampage x3),20318,N/A,inf,41991,31,inf,900
 P,SuMG,Tarrabah (ravenous),22425,15700,inf,46345,31,inf,900,0.95,inf,1481,1495
 H,Swrd,Caster (Temptation's),18900,18900,426870,N/A,N/A,57,128,1.62,21,8054,28190
 H,Swrd,Vortex,20962,20962,437262,N/A,N/A,61,128,1.66,19.1,9254,34704
-H,Swrd,Caster (Sola's),21716,21716,541368,N/A,N/A,61,128,1.62,23,9254,32390
 H,Swrd,Aggressive,21801,21801,694000,N/A,N/A,50,91,2.32,29.2,13880,41640
 H,Swrd,Adaptive,22254,22254,545216,N/A,N/A,63,128,2.42,24,9254,31618
 H,Swrd,Lightweight,22991,22991,703286,N/A,N/A,76,136,2.27,30.2,9254,27760

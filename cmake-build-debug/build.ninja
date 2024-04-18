@@ -81,14 +81,6 @@ build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny
   TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
   TARGET_PDB = Destiny2_Weapon_DPS.pdb
 
-build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Data_Generator.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Data$ Generator.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\Data_Generator.cpp.obj.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Destiny2_Weapon_DPS
@@ -97,7 +89,7 @@ build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Data_Generator.cpp.obj: CXX_COMPILE
 #############################################
 # Link the executable Destiny2_Weapon_DPS.exe
 
-build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Data_Generator.cpp.obj
+build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
@@ -107,6 +99,42 @@ build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug 
   TARGET_FILE = Destiny2_Weapon_DPS.exe
   TARGET_IMPLIB = libDestiny2_Weapon_DPS.dll.a
   TARGET_PDB = Destiny2_Weapon_DPS.pdb
+
+# =============================================================================
+# Object build statements for EXECUTABLE target Data_Generator
+
+
+#############################################
+# Order-only phony target for Data_Generator
+
+build cmake_object_order_depends_target_Data_Generator: phony || CMakeFiles/Data_Generator.dir
+
+build CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj: CXX_COMPILER__Data_Generator_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Data$ Generator.cpp || cmake_object_order_depends_target_Data_Generator
+  DEP_FILE = CMakeFiles\Data_Generator.dir\src\Data_Generator.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\Data_Generator.dir
+  OBJECT_FILE_DIR = CMakeFiles\Data_Generator.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\Data_Generator.dir\
+  TARGET_PDB = Data_Generator.pdb
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target Data_Generator
+
+
+#############################################
+# Link the executable Data_Generator.exe
+
+build Data_Generator.exe: CXX_EXECUTABLE_LINKER__Data_Generator_Debug CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\Data_Generator.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_COMPILE_PDB = CMakeFiles\Data_Generator.dir\
+  TARGET_FILE = Data_Generator.exe
+  TARGET_IMPLIB = libData_Generator.dll.a
+  TARGET_PDB = Data_Generator.pdb
 
 
 #############################################
@@ -134,6 +162,8 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+build Data_Generator: phony Data_Generator.exe
+
 build Destiny2_Weapon_DPS: phony Destiny2_Weapon_DPS.exe
 
 # =============================================================================
@@ -144,7 +174,7 @@ build Destiny2_Weapon_DPS: phony Destiny2_Weapon_DPS.exe
 #############################################
 # Folder: C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug
 
-build all: phony Destiny2_Weapon_DPS.exe
+build all: phony Destiny2_Weapon_DPS.exe Data_Generator.exe
 
 # =============================================================================
 # Built-in targets
