@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Destiny2_Weapon_DPS.exe"
+			"path" : "Destiny2_Weapon_Ranker.exe"
 		},
 		{
-			"path" : "Destiny2_Weapon_DPS.pdb"
+			"path" : "Destiny2_Weapon_Ranker.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -59,7 +59,7 @@
 			]
 		}
 	],
-	"id" : "Destiny2_Weapon_DPS::@6890427a1f51a3e7e1df",
+	"id" : "Destiny2_Weapon_Ranker::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -79,8 +79,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "Destiny2_Weapon_DPS",
-	"nameOnDisk" : "Destiny2_Weapon_DPS.exe",
+	"name" : "Destiny2_Weapon_Ranker",
+	"nameOnDisk" : "Destiny2_Weapon_Ranker.exe",
 	"paths" : 
 	{
 		"build" : ".",

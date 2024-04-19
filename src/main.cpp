@@ -8,5 +8,7 @@ int main() {
 
     Arsenal guns;
 
+
+
     return 0;
 }

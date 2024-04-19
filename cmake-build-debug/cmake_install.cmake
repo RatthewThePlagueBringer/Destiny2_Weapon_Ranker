@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS
+# Install script for directory: C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Destiny2_Weapon_DPS")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/Destiny2_Weapon_Ranker")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/matth/Desktop/GitHub Projects/Destiny2_Weapon_Ranker/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

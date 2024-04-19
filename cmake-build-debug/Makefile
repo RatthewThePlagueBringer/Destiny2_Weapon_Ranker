@@ -116,17 +116,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Destiny2_Weapon_DPS
+# Target rules for targets named Destiny2_Weapon_Ranker
 
 # Build rule for target.
-Destiny2_Weapon_DPS: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Destiny2_Weapon_DPS
-.PHONY : Destiny2_Weapon_DPS
+Destiny2_Weapon_Ranker: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 Destiny2_Weapon_Ranker
+.PHONY : Destiny2_Weapon_Ranker
 
 # fast build rule for target.
-Destiny2_Weapon_DPS/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/build
-.PHONY : Destiny2_Weapon_DPS/fast
+Destiny2_Weapon_Ranker/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/build
+.PHONY : Destiny2_Weapon_Ranker/fast
 
 #=============================================================================
 # Target rules for targets named Data_Generator
@@ -146,7 +146,7 @@ src/Arsenal.obj: src/Arsenal.cpp.obj
 
 # target to build an object file
 src/Arsenal.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj
 .PHONY : src/Arsenal.cpp.obj
 
 src/Arsenal.i: src/Arsenal.cpp.i
@@ -154,7 +154,7 @@ src/Arsenal.i: src/Arsenal.cpp.i
 
 # target to preprocess a source file
 src/Arsenal.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.i
 .PHONY : src/Arsenal.cpp.i
 
 src/Arsenal.s: src/Arsenal.cpp.s
@@ -162,7 +162,7 @@ src/Arsenal.s: src/Arsenal.cpp.s
 
 # target to generate assembly for a file
 src/Arsenal.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.s
 .PHONY : src/Arsenal.cpp.s
 
 src/Data_Generator.obj: src/Data_Generator.cpp.obj
@@ -194,7 +194,7 @@ src/Sort.obj: src/Sort.cpp.obj
 
 # target to build an object file
 src/Sort.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj
 .PHONY : src/Sort.cpp.obj
 
 src/Sort.i: src/Sort.cpp.i
@@ -202,7 +202,7 @@ src/Sort.i: src/Sort.cpp.i
 
 # target to preprocess a source file
 src/Sort.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.i
 .PHONY : src/Sort.cpp.i
 
 src/Sort.s: src/Sort.cpp.s
@@ -210,7 +210,7 @@ src/Sort.s: src/Sort.cpp.s
 
 # target to generate assembly for a file
 src/Sort.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.s
 .PHONY : src/Sort.cpp.s
 
 src/Weapon.obj: src/Weapon.cpp.obj
@@ -218,7 +218,7 @@ src/Weapon.obj: src/Weapon.cpp.obj
 
 # target to build an object file
 src/Weapon.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj
 .PHONY : src/Weapon.cpp.obj
 
 src/Weapon.i: src/Weapon.cpp.i
@@ -226,7 +226,7 @@ src/Weapon.i: src/Weapon.cpp.i
 
 # target to preprocess a source file
 src/Weapon.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.i
 .PHONY : src/Weapon.cpp.i
 
 src/Weapon.s: src/Weapon.cpp.s
@@ -234,7 +234,7 @@ src/Weapon.s: src/Weapon.cpp.s
 
 # target to generate assembly for a file
 src/Weapon.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.s
 .PHONY : src/Weapon.cpp.s
 
 src/main.obj: src/main.cpp.obj
@@ -242,7 +242,7 @@ src/main.obj: src/main.cpp.obj
 
 # target to build an object file
 src/main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj
 .PHONY : src/main.cpp.obj
 
 src/main.i: src/main.cpp.i
@@ -250,7 +250,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -258,7 +258,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_DPS.dir\build.make CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Destiny2_Weapon_Ranker.dir\build.make CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -270,7 +270,7 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... Data_Generator
-	@echo ... Destiny2_Weapon_DPS
+	@echo ... Destiny2_Weapon_Ranker
 	@echo ... src/Arsenal.obj
 	@echo ... src/Arsenal.i
 	@echo ... src/Arsenal.s

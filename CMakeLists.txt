@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.27)
-project(Destiny2_Weapon_DPS)
+project(Destiny2_Weapon_Ranker)
 
 set(CMAKE_CXX_STANDARD 14)
 
 
 
-add_executable(Destiny2_Weapon_DPS
+add_executable(Destiny2_Weapon_Ranker
         src/main.cpp
         src/Arsenal.h
         src/Weapon.h

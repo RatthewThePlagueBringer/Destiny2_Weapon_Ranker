@@ -43,16 +43,19 @@ Weapon::Weapon(string type, string name, string damage, string rpm, string reloa
 
     this->totDamage = this->damage * this->totSize;
 
-    this->burstDPS = 0;
+    // NEED TO DO THIS //////////////////////////////////////////////////////////////////////////////
+    burstDPS = 0;
 
     float timeToEmpty;
-    if (this->totSize != -1) {
-        timeToEmpty = this->totSize / (this->rpm * 0.02) + this->reloadTime * floor(this->totSize / this->magSize);
-        this->sustainedDPS = (this->damage * this->totSize) / timeToEmpty;
+    if (this->totSize == -1) {
+        // NEED TO DO THIS ///////////////////////////////////////////////////////////////////////
+        sustainedDPS = 0;
     }
     else {
-        this->sustainedDPS = 0;
+        timeToEmpty = this->totSize / (this->rpm * 0.02) + this->reloadTime * floor(this->totSize / this->magSize);
+        sustainedDPS = (this->damage * this->totSize) / timeToEmpty;
     }
+    activeDPS = sustainedDPS;
 
 }
 
@@ -68,3 +71,37 @@ int Weapon::getBurstDPS() {
 int Weapon::getTotDamage() {
     return totDamage;
 }
+
+int Weapon::getActive() {
+    return activeDPS;
+}
+
+// Setters
+void Weapon::updateMethod(int method) {
+    if (method == 0) {
+        activeDPS = totDamage;
+    }
+    else if (method == 1) {
+        activeDPS = burstDPS;
+    }
+    else {
+        activeDPS = sustainedDPS;
+    }
+}
+
+// Operator overloads
+bool Weapon::operator<(const Weapon &obj) const {
+    return activeDPS < obj.activeDPS;
+}
+
+bool Weapon::operator>(const Weapon &obj) const {
+    return activeDPS > obj.activeDPS;
+}
+
+bool Weapon::operator==(const Weapon &obj) const {
+    return activeDPS == obj.activeDPS;
+}
+
+
+
+

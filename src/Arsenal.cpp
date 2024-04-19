@@ -33,7 +33,15 @@ Arsenal::Arsenal() {
 
         row = split(line, ',');
 
-        Weapon gun(row[1], row[2], row[13], row[9], row[10], row[7], row[8]);
+
+        if (row[13] == "N/A") {
+            temp = row[12];
+        }
+        else {
+            temp = row[13];
+        }
+
+        Weapon gun(row[1], row[2], temp, row[9], row[10], row[7], row[8]);
 
         if (row[1] == "AuRi") {
             autoRifles.push_back(gun);
