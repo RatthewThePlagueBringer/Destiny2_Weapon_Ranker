@@ -1,4 +1,4 @@
-/*#include <iostream>
+#include <iostream>
 #include <vector>
 #include <algorithm>
 #include <math.h>
@@ -15,122 +15,73 @@ void swap(vector<tuple<string, string, pair<int, int>>>& v, int a, int b) {
 	v[b] = temp;
 }
 
-int partition(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, string DPS) {
+int partition(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, bool isSust, bool isFwd) {
 
-	if (DPS == "Sustained") {
+	int pivot = (isSust ? get<2>(vec[low]).first : get<2>(vec[low]).second);
+	int up = low, down = high;
 
-		int pivot = get<2>(vec[low]).first;
-		int up = low, down = high;
+	while (up < down) {
 
-		while (up < down) {
+		for (int j = up; j < high; j++) {
 
-			for (int j = up; j < high; j++) {
-
-				if (get<2>(vec[up]).first > pivot) {
-					break;
-				}
-
-				up++;
-			}
-			for (int j = high; j > low; j--) {
-
-				if (get<2>(vec[down]).first < pivot) {
-					break;
-				}
-
-				down--;
+			if ((isFwd && (isSust ? get<2>(vec[up]).first > pivot : get<2>(vec[up]).second > pivot)) ||
+				(!isFwd && (isSust ? get<2>(vec[up]).first < pivot : get<2>(vec[up]).second < pivot))) {
+				break;
 			}
 
-			if (up < down) {
-				swap(vec, up, down);
+			up++;
+		}
+		for (int j = down; j > low; j--) {
+
+			if ((isFwd && (isSust ? get<2>(vec[down]).first < pivot : get<2>(vec[down]).second < pivot)) ||
+				(!isFwd && (isSust ? get<2>(vec[down]).first > pivot : get<2>(vec[down]).second > pivot))) {
+				break;
 			}
+
+			down--;
 		}
 
-		swap(vec, low, down);
-		return down;
-	}
-	
-	else {
-
-		int pivot = get<2>(vec[low]).second;
-		int up = low, down = high;
-
-		while (up < down) {
-
-			for (int j = up; j < high; j++) {
-
-				if (get<2>(vec[up]).second > pivot) {
-					break;
-				}
-
-				up++;
-			}
-			for (int j = high; j > low; j--) {
-
-				if (get<2>(vec[down]).second < pivot) {
-					break;
-				}
-
-				down--;
-			}
-			if (up < down) {
-				swap(vec, up, down);
-			}
+		if (up < down) {
+			swap(vec, up, down);
 		}
-
-		swap(vec, low, down);
-		return down;
 	}
+
+	swap(vec, low, down);
+	return down;
 }
 
-void quickSort(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, string DPS) {
+void quickSort(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, bool isSust, bool isFwd) {
 
 	if (low < high) {
-		int pivot = partition(vec, low, high, DPS);
-		quickSort(vec, low, pivot - 1, DPS);
-		quickSort(vec, pivot + 1, high, DPS);
+		int pivot = partition(vec, low, high, isSust, isFwd);
+		quickSort(vec, low, pivot - 1, isSust, isFwd);
+		quickSort(vec, pivot + 1, high, isSust, isFwd);
 	}
 }
 
-void insertionSort(vector<tuple<string, string, pair<int, int>>>& vec, int gap, int n, string DPS) {
+void insertionSort(vector<tuple<string, string, pair<int, int>>>& vec, int gap, int n, bool isSust, bool isFwd) {
 
-	if (DPS == "Sustained") {
+	for (int i = gap; i < n; i++) {
 
-		for (int i = gap; i < n; i++) {
+		int key = (isSust ? get<2>(vec[i]).first : get<2>(vec[i]).first);
+		int j = i;
 
-			int key = get<2>(vec[i]).first;
-			int j = i;
-
-			while (j >= gap && key < get<2>(vec[j - gap]).first) {
-				swap(vec, j, j - gap);
-				j -= gap;
-			}
-		}
-	}
-
-	else {
-
-		for (int i = gap; i < n; i++) {
-
-			int key = get<2>(vec[i]).second;
-			int j = i;
-
-			while (j >= gap && key < get<2>(vec[j - gap]).second) {
-				swap(vec, j, j - gap);
-				j -= gap;
-			}
+		while (j >= gap && ((isFwd && isSust ? key < get<2>(vec[j - gap]).first : key < get<2>(vec[j - gap]).second) ||
+			(!isFwd && isSust ? key > get<2>(vec[j - gap]).first : key > get<2>(vec[j - gap]).second))) {
+			swap(vec, j, j - gap);
+			j -= gap;
 		}
 	}
 }
 
-void shellSort(vector<tuple<string, string, pair<int, int>>>& vec, string DPS) {
+void shellSort(vector<tuple<string, string, pair<int, int>>>& vec, bool isSust, bool isFwd) {
 
 	int n = vec.size();
 	int gap = n / 2;
 
 	while (gap > 0) {
 
-		insertionSort(vec, gap, n, DPS);
+		insertionSort(vec, gap, n, isSust, isFwd);
 
 		if (gap == 2) {
 			gap = 1;
@@ -205,22 +156,37 @@ int main() {
 	float buttonY = screenHeight / 18;
 	float buttonY0 = buttonY + buttonRad;
 
-	// Best weapon text box
+	// Best weapon/prompts text box
 	float bestWidth = screenWidth / 2;
 	float bestHeight = 128.f;
 	float bestX = screenWidth / 4;
 	float bestY = screenHeight / 3 + 128;
 
+	// Methods buttons dimensions & coordinates
+	float methodsRad = 75.f, mHighlightInc = 5.f;
+	float mHighlightRad = methodsRad + mHighlightInc;
+	float quickX0 = screenWidth / 5;
+	float shellX0 = 2 * (screenWidth / 5);
+	float fwdX0 = 3 * (screenWidth / 5);
+	float bwdX0 = 4 * (screenWidth / 5);
+	float quickX = quickX0 - methodsRad;
+	float shellX = shellX0 - methodsRad;
+	float fwdX = fwdX0 - methodsRad;
+	float bwdX = bwdX0 - methodsRad;
+	float methodsY = screenHeight / 2 + 75;
+	float methodsY0 = methodsY + methodsRad;
+
+
 	// List of top weapons text box
 	float listWidth = 4 * (screenWidth / 5);
-	float listHeight = screenHeight / 3;
+	float listHeight = screenHeight / 4;
 	float listX = screenWidth / 10;
 	float listY = screenHeight - listHeight - screenHeight / 18;
 
 	// Variables
 	string search;
-	bool showCursor = true, isValidSearch = true;
-	bool showBest = false, showList = false, isSust = false, isBurst = false;
+	bool showCursor = true, isValidSearch = true, isQuickSort = true, isFwd = true;
+	bool showBest = false, showMethods = false, showList = false, isSust = false, isBurst = false;
 
 	// Colors
 	sf::Color darkerGray(32, 40, 32);		// Window "border"
@@ -263,7 +229,7 @@ int main() {
 	sustText.setCharacterSize(48);
 	sustText.setFillColor(sf::Color::Black);
 	sustText.setStyle(sf::Text::Bold);
-	setText(sustText, sustX0, screenHeight / 16 + buttonRad);
+	setText(sustText, sustX0, buttonY0);
 
 	sf::CircleShape burstHighlight(highlightRad);
 	burstHighlight.setFillColor(lightYellow);
@@ -281,7 +247,7 @@ int main() {
 	burstText.setCharacterSize(48);
 	burstText.setFillColor(sf::Color::Black);
 	burstText.setStyle(sf::Text::Bold);
-	setText(burstText, burstX0, buttonY + buttonRad);
+	setText(burstText, burstX0, buttonY0);
 
 	// Search bar creation & formatting
 	sf::Sprite searchBar;
@@ -314,6 +280,63 @@ int main() {
 	bestText.setCharacterSize(20);
 	bestText.setFillColor(sf::Color::Black);
 	bestText.setStyle(sf::Text::Bold);
+
+	// Methods buttons creation & formatting
+	sf::CircleShape quickHighlight(mHighlightRad);
+	quickHighlight.setFillColor(lightYellow);
+	quickHighlight.setPosition(quickX0 - mHighlightRad, methodsY - mHighlightInc);
+
+	sf::CircleShape quickButton(methodsRad);
+	quickButton.setFillColor(lightGray);
+	quickButton.setPosition(quickX0 - methodsRad, methodsY);
+
+	sf::Text quickText("Quick Sort", font);
+	quickText.setCharacterSize(18);
+	quickText.setFillColor(sf::Color::Black);
+	quickText.setStyle(sf::Text::Bold);
+	setText(quickText, quickX0, methodsY0);
+
+	sf::CircleShape shellHighlight(mHighlightRad);
+	shellHighlight.setFillColor(lightYellow);
+	shellHighlight.setPosition(shellX0 - mHighlightRad, methodsY - mHighlightInc);
+
+	sf::CircleShape shellButton(methodsRad);
+	shellButton.setFillColor(lightGray);
+	shellButton.setPosition(shellX0 - methodsRad, methodsY);
+
+	sf::Text shellText("Shell Sort", font);
+	shellText.setCharacterSize(18);
+	shellText.setFillColor(sf::Color::Black);
+	shellText.setStyle(sf::Text::Bold);
+	setText(shellText, shellX0, methodsY0);
+
+	sf::CircleShape fwdHighlight(mHighlightRad);
+	fwdHighlight.setFillColor(lightYellow);
+	fwdHighlight.setPosition(fwdX0 - mHighlightRad, methodsY - mHighlightInc);
+
+	sf::CircleShape fwdButton(methodsRad);
+	fwdButton.setFillColor(lightGray);
+	fwdButton.setPosition(fwdX0 - methodsRad, methodsY);
+
+	sf::Text fwdText("Best-to-Worst", font);
+	fwdText.setCharacterSize(16);
+	fwdText.setFillColor(sf::Color::Black);
+	fwdText.setStyle(sf::Text::Bold);
+	setText(fwdText, fwdX0, methodsY0);
+
+	sf::CircleShape bwdHighlight(mHighlightRad);
+	bwdHighlight.setFillColor(lightYellow);
+	bwdHighlight.setPosition(bwdX0 - mHighlightRad, methodsY - mHighlightInc);
+
+	sf::CircleShape bwdButton(methodsRad);
+	bwdButton.setFillColor(lightGray);
+	bwdButton.setPosition(bwdX0 - methodsRad, methodsY);
+
+	sf::Text bwdText("Worst-to-Best", font);
+	bwdText.setCharacterSize(16);
+	bwdText.setFillColor(sf::Color::Black);
+	bwdText.setStyle(sf::Text::Bold);
+	setText(bwdText, bwdX0, methodsY0);
 	
 	// List creation & formatting
 	sf::RectangleShape listRect(sf::Vector2f(listWidth, listHeight));
@@ -368,6 +391,7 @@ int main() {
 
 					if (searchString.getSize() == 0) {
 						showBest = false;
+						showMethods = false;
 						showList = false;
 						isValidSearch = true;
 						searchString.clear();
@@ -386,6 +410,40 @@ int main() {
 					rtListString.clear();
 					rtListText.setString(rtListString);
 					showList = false;
+
+					if (searchString.getSize() == 0) {
+
+						isSust = true;
+						showBest = true;
+						showMethods = true;
+						showList = true;
+
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+						for (int j = 2; j < 12; j++) {
+							if (j < 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else if (j == 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+							else if (j > 6 && j < 11) {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+						}
+
+						ltListText.setString(ltListString);
+						rtListText.setString(rtListString);
+						ltListText.setPosition(listX + 40, listY + 40);
+						rtListText.setPosition(screenWidth / 2, listY + 40);
+					}
 
 					if (searchString.getSize() > 0) {
 
@@ -409,10 +467,43 @@ int main() {
 						}
 
 						else if (searchString.getSize() > 0) {
-							bestString = "Please select a DPS type above.";
-							bestText.setString(bestString);
-							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-							showBest = true;
+							if (!isSust && !isBurst) {
+								bestString = "Please select a DPS type above.";
+								bestText.setString(bestString);
+								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+								showBest = true;
+							}
+							else {
+								showBest = true;
+								showMethods = true;
+								showList = true;
+
+								int n = Arsenal[catIndex].size();
+								isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+								bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
+								bestText.setString(bestString);
+								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+								for (int j = 2; j < 12; j++) {
+									if (j < 6) {
+										ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+									}
+									else if (j == 6) {
+										ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+									}
+									else if (j > 6 && j < 11) {
+										rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+									}
+									else {
+										rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+									}
+								}
+
+								ltListText.setString(ltListString);
+								rtListText.setString(rtListString);
+								ltListText.setPosition(listX + 40, listY + 40);
+								rtListText.setPosition(screenWidth / 2, listY + 40);
+							}
 						}
 
 						string search = searchString.toAnsiString();	// Stores input as std::string for ease of use
@@ -430,6 +521,7 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 						showBest = false;
+						showMethods = false;
 						showList = false;
 						isSust = false;
 						isBurst = false;
@@ -469,7 +561,9 @@ int main() {
 				sf::Vector2i mousePos = sf::Mouse::getPosition(homeWindow);
 
 				// Checks if sustainable DPS button was pressed, calls sorting by sustainable DPS values and displays top 11 results
-				if (inCircle(buttonRad, sustX0, buttonY0, mousePos)) {
+				if (inCircle(borderRad, sustX0, buttonY0, mousePos)) {
+
+					showMethods = true;
 
 					bestString.clear();
 					bestText.setString(bestString);
@@ -486,14 +580,17 @@ int main() {
 
 					if (!isSust) {
 						showBest = false;
+						showMethods = false;
 						showList = false;
 					}
 
-					int n = Arsenal[catIndex].size();
-					quickSort(Arsenal[catIndex], 0, n - 1, "Sustained");
-					bestString = "Best sustainable DPS: " +get<1>(Arsenal[catIndex][0]);
-					bestText.setString(bestString);
-					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+					else {
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? "Best sustainable DPS: " : "Worst sustainable DPS: ") + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+					}
 
 					for (int j = 2; j < 12; j++) {
 						if (j < 6) {
@@ -512,12 +609,12 @@ int main() {
 
 					ltListText.setString(ltListString);
 					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 20, listY + 20);
-					rtListText.setPosition(screenWidth / 2, listY + 20);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 
 				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top 11 results
-				else if (inCircle(buttonRad, burstX0, buttonY0, mousePos)) {
+				else if (inCircle(borderRad, burstX0, buttonY0, mousePos)) {
 
 					bestString.clear();
 					bestText.setString(bestString);
@@ -534,12 +631,52 @@ int main() {
 
 					if (!isBurst) {
 						showBest = false;
+						showMethods = false;
 						showList = false;
 					}
 
+					else {
+						int n = Arsenal[catIndex].size();
+						isQuickSort = false;
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+					}
+
+					for (int j = 2; j < 12; j++) {
+						if (j < 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else if (j == 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+						else if (j > 6 && j < 11) {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+					}
+
+					ltListText.setString(ltListString);
+					rtListText.setString(rtListString);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
+				}
+				else if (inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
+					isQuickSort = true;
+
+					bestString.clear();
+					bestText.setString(bestString);
+					ltListString.clear();
+					ltListText.setString(ltListString);
+					rtListString.clear();
+					rtListText.setString(rtListString);
+
 					int n = Arsenal[catIndex].size();
-					quickSort(Arsenal[catIndex], 0, n - 1, "Burst");
-					bestString = "Best burst DPS: " +get<1>(Arsenal[catIndex][0]);
+					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
 					bestText.setString(bestString);
 					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -560,8 +697,117 @@ int main() {
 
 					ltListText.setString(ltListString);
 					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 20, listY + 20);
-					rtListText.setPosition(screenWidth / 2, listY + 20);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
+				}
+
+				else if (inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
+					isQuickSort = false;
+
+					bestString.clear();
+					bestText.setString(bestString);
+					ltListString.clear();
+					ltListText.setString(ltListString);
+					rtListString.clear();
+					rtListText.setString(rtListString);
+
+					int n = Arsenal[catIndex].size();
+					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+					bestText.setString(bestString);
+					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+					for (int j = 2; j < 12; j++) {
+						if (j < 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else if (j == 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+						else if (j > 6 && j < 11) {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+					}
+
+					ltListText.setString(ltListString);
+					rtListText.setString(rtListString);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
+				}
+				else if (inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
+					isFwd = true;
+
+					bestString.clear();
+					bestText.setString(bestString);
+					ltListString.clear();
+					ltListText.setString(ltListString);
+					rtListString.clear();
+					rtListText.setString(rtListString);
+
+					int n = Arsenal[catIndex].size();
+					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+					bestText.setString(bestString);
+					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+					for (int j = 2; j < 12; j++) {
+						if (j < 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else if (j == 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+						else if (j > 6 && j < 11) {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+					}
+
+					ltListText.setString(ltListString);
+					rtListText.setString(rtListString);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
+				}
+				else if (inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
+					isFwd = false;
+
+					bestString.clear();
+					bestText.setString(bestString);
+					ltListString.clear();
+					ltListText.setString(ltListString);
+					rtListString.clear();
+					rtListText.setString(rtListString);
+
+					int n = Arsenal[catIndex].size();
+					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+					bestText.setString(bestString);
+					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+					for (int j = 2; j < 12; j++) {
+						if (j < 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else if (j == 6) {
+							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+						else if (j > 6 && j < 11) {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						}
+						else {
+							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						}
+					}
+
+					ltListText.setString(ltListString);
+					rtListText.setString(rtListString);
+					ltListText.setPosition(listX + 40, listY + 40);
+					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 
 				if (isSust || isBurst) {
@@ -579,7 +825,32 @@ int main() {
 			homeWindow.draw(bestRect);
 			homeWindow.draw(bestText);
 		}
+		if (showMethods) {
+			if (isQuickSort) {
+				homeWindow.draw(quickHighlight);
+			}
 
+			else {
+				homeWindow.draw(shellHighlight);
+			}
+
+			if (isFwd) {
+				homeWindow.draw(fwdHighlight);
+			}
+
+			else {
+				homeWindow.draw(bwdHighlight);
+			}
+
+			homeWindow.draw(quickButton);
+			homeWindow.draw(shellButton);
+			homeWindow.draw(fwdButton);
+			homeWindow.draw(bwdButton);
+			homeWindow.draw(quickText);
+			homeWindow.draw(shellText);
+			homeWindow.draw(fwdText);
+			homeWindow.draw(bwdText);
+		}
 		if (showList) {
 			homeWindow.draw(listRect);
 			homeWindow.draw(ltListText);
@@ -616,4 +887,5 @@ int main() {
 	}
 
 	return 0;
-}*/
+}
+
