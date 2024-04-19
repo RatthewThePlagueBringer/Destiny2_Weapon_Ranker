@@ -90,7 +90,6 @@ Arsenal::Arsenal() {
             traceRifles.push_back(gun);
         }
 
-
     }
 
     cout << "Data loaded." << endl;

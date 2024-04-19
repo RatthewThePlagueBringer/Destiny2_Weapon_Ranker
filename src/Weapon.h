@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 
 #ifndef DESTINY2_WEAPON_DPS_WEAPON_H
 #define DESTINY2_WEAPON_DPS_WEAPON_H

@@ -41,9 +41,19 @@ Weapon::Weapon(string type, string name, string damage, string rpm, string reloa
         this->totSize = stoi(totSize);
     }
 
-    this->totDamage = 0;
+    this->totDamage = this->damage * this->totSize;
+
     this->burstDPS = 0;
-    this->sustainedDPS = 0;
+
+    float timeToEmpty;
+    if (this->totSize != -1) {
+        timeToEmpty = this->totSize / (this->rpm * 0.02) + this->reloadTime * floor(this->totSize / this->magSize);
+        this->sustainedDPS = (this->damage * this->totSize) / timeToEmpty;
+    }
+    else {
+        this->sustainedDPS = 0;
+    }
+
 }
 
 // Getters
