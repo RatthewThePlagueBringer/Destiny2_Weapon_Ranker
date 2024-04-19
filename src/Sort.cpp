@@ -26,17 +26,17 @@ int partition(vector<tuple<string, string, pair<int, int>>>& vec, int low, int h
 
 		for (int j = up; j < high; j++) {
 
-			if ((isFwd && (isSust ? get<2>(vec[up]).first > pivot : get<2>(vec[up]).second > pivot)) ||
-				(!isFwd && (isSust ? get<2>(vec[up]).first < pivot : get<2>(vec[up]).second < pivot))) {
+			if ((isFwd && (isSust ? get<2>(vec[up]).first < pivot : get<2>(vec[up]).second < pivot)) ||
+				(!isFwd && (isSust ? get<2>(vec[up]).first > pivot : get<2>(vec[up]).second > pivot))) {
 				break;
 			}
 
 			up++;
 		}
 		for (int j = down; j > low; j--) {
-
-			if ((isFwd && (isSust ? get<2>(vec[down]).first < pivot : get<2>(vec[down]).second < pivot)) ||
-				(!isFwd && (isSust ? get<2>(vec[down]).first > pivot : get<2>(vec[down]).second > pivot))) {
+			
+			if ((isFwd && (isSust ? get<2>(vec[down]).first > pivot : get<2>(vec[down]).second > pivot)) ||
+				(!isFwd && (isSust ? get<2>(vec[down]).first < pivot : get<2>(vec[down]).second < pivot))) {
 				break;
 			}
 
@@ -67,9 +67,9 @@ void insertionSort(vector<tuple<string, string, pair<int, int>>>& vec, int gap, 
 
 		int key = (isSust ? get<2>(vec[i]).first : get<2>(vec[i]).first);
 		int j = i;
-
-		while (j >= gap && ((isFwd && isSust ? key < get<2>(vec[j - gap]).first : key < get<2>(vec[j - gap]).second) ||
-			(!isFwd && isSust ? key > get<2>(vec[j - gap]).first : key > get<2>(vec[j - gap]).second))) {
+		
+		while (j >= gap && ((isFwd && (isSust ? key > get<2>(vec[j - gap]).first : key > get<2>(vec[j - gap]).second)) ||
+			(!isFwd && (isSust ? key < get<2>(vec[j - gap]).first : key < get<2>(vec[j - gap]).second)))) {
 			swap(vec, j, j - gap);
 			j -= gap;
 		}
@@ -145,26 +145,26 @@ int main() {
 
 	vector<vector<tuple<string, string, pair<int, int>>>> Arsenal = {
 		{{ "A", "Apple", { 156, 675 } },
-	{ "A", "Banana", { 674, 798 } },
-	{ "A", "Coconut", { 326, 492 } },
-	{ "A", "Dragonfruit", { 798, 425 } },
-	{ "A", "Eggplant", { 463, 586 } },
-	{ "A", "Fig", { 891, 239 } },
-	{ "A", "Grape", { 577, 658 } },
-	{ "A", "Honeydew", { 342, 821 } },
-	{ "A", "Kiwi", { 619, 134 } },
-	{ "A", "Lemon", { 749, 393 } },
-	{ "A", "Mango", { 184, 957 } }},
+		{ "A", "Banana", { 674, 798 } },
+		{ "A", "Coconut", { 326, 492 } },
+		{ "A", "Dragonfruit", { 798, 425 } },
+		{ "A", "Eggplant", { 463, 586 } },
+		{ "A", "Fig", { 891, 239 } },
+		{ "A", "Grape", { 577, 658 } },
+		{ "A", "Honeydew", { 342, 821 } },
+		{ "A", "Kiwi", { 619, 134 } },
+		{ "A", "Lemon", { 749, 393 } },
+		{ "A", "Mango", { 184, 957 } }},
 		{{ "B", "Apricot", { 743, 572 } },
-	{ "B", "Blueberry", { 865, 726 } },
-	{ "B", "Cherry", { 936, 438 } },
-	{ "B", "Date", { 672, 509 } },
-	{ "B", "Fig", { 578, 693 } },
-	{ "B", "Grapefruit", { 251, 839 } },
-	{ "B", "Honeydew", { 427, 315 } },
-	{ "B", "Kiwi", { 869, 143 } },
-	{ "B", "Lime", { 542, 781 } },
-	{ "B", "Mango", { 384, 627 } },
+		{ "B", "Blueberry", { 865, 726 } },
+		{ "B", "Cherry", { 936, 438 } },
+		{ "B", "Date", { 672, 509 } },
+		{ "B", "Fig", { 578, 693 } },
+		{ "B", "Grapefruit", { 251, 839 } },
+		{ "B", "Honeydew", { 427, 315 } },
+		{ "B", "Kiwi", { 869, 143 } },
+		{ "B", "Lime", { 542, 781 } },
+		{ "B", "Melon", { 384, 627 } },
 		{"B", "Nectarine", {974, 358}}} };
 	int catIndex = 0;
 
@@ -453,18 +453,23 @@ int main() {
 
 						int n = Arsenal[catIndex].size();
 						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
+						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS: ") + get<1>(Arsenal[catIndex][0]);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						for (int j = 2; j < 12; j++) {
-							if (j < 6) {
+						int listMax = 11;
+						cout << Arsenal[catIndex].size() << endl;
+						if (Arsenal[catIndex].size() < 11) {
+							listMax = Arsenal[catIndex].size();
+						}
+						for (int j = 2; j < listMax + 1; j++) {
+							if (j < (listMax + 1) / 2) {
 								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
 							}
-							else if (j == 6) {
+							else if (j == (listMax + 1) / 2) {
 								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
 							}
-							else if (j > 6 && j < 11) {
+							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
 							}
 							else {
@@ -485,6 +490,7 @@ int main() {
 
 							isValidSearch = true;
 							showBest = true;
+							showMethods = false;
 							showList = true;
 
 							bestString = get<1>(result);
@@ -492,7 +498,7 @@ int main() {
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
 							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-							rtListString = "Burst DPS : " + to_string(get<2>(result).second);
+							rtListString = "Burst DPS: " + to_string(get<2>(result).second);
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -514,13 +520,18 @@ int main() {
 				// Escape allows the user exit their selection and the program in its entirety
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 
+					if (searchString.getSize() == 0 && !isSust && !isBurst) {
+						homeWindow.close();
+						return 0;
+					}
+
 					if (!isValidSearch) {
 						isValidSearch = true;
 						searchString.clear();
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 					}
-					else if (isSust || isBurst) {
+					if (isSust || isBurst) {
 						bestString.clear();
 						bestText.setString(bestString);
 						ltListString.clear();
@@ -534,16 +545,14 @@ int main() {
 						isBurst = false;
 					}
 
-					else if (searchString.getSize() > 0) {
+					if (searchString.getSize() > 0) {
 						isValidSearch = true;
 						searchString.clear();
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
-					}
-
-					else {
-						homeWindow.close();
-						return 0;
+						showBest = false;
+						showMethods = false;
+						showList = false;
 					}
 				}
 			}
@@ -646,7 +655,6 @@ int main() {
 
 					else {
 						int n = Arsenal[catIndex].size();
-						isQuickSort = false;
 						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
 						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
 						bestText.setString(bestString);
@@ -901,6 +909,6 @@ int main() {
 		homeWindow.display();
 	}
 
-	return 0;
+	return
 }*/
 
