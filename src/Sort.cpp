@@ -65,7 +65,7 @@ void insertionSort(vector<tuple<string, string, pair<int, int>>>& vec, int gap, 
 
 	for (int i = gap; i < n; i++) {
 
-		int key = (isSust ? get<2>(vec[i]).first : get<2>(vec[i]).first);
+		int key = (isSust ? get<2>(vec[i]).first : get<2>(vec[i]).second);
 		int j = i;
 		
 		while (j >= gap && ((isFwd && (isSust ? key > get<2>(vec[j - gap]).first : key > get<2>(vec[j - gap]).second)) ||
@@ -447,6 +447,7 @@ int main() {
 					// If enter is pressed with no search input, returns default sort
 					if (searchString.getSize() == 0) {
 
+						isSust = true;
 						showBest = true;
 						showMethods = true;
 						showList = true;
@@ -588,10 +589,6 @@ int main() {
 					rtListString.clear();
 					rtListText.setString(rtListString);
 
-					if (isBurst) {
-						isBurst = false;
-					}
-
 					isSust = !isSust;
 
 					if (!isSust) {
@@ -601,6 +598,7 @@ int main() {
 					}
 
 					else {
+						isBurst = false;
 						int n = Arsenal[catIndex].size();
 						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
 						bestString = (isFwd ? "Best sustainable DPS: " : "Worst sustainable DPS: ") + get<1>(Arsenal[catIndex][0]);
@@ -641,10 +639,6 @@ int main() {
 					rtListString.clear();
 					rtListText.setString(rtListString);
 
-					if (isSust) {
-						isSust = false;
-					}
-
 					isBurst = !isBurst;
 
 					if (!isBurst) {
@@ -654,9 +648,10 @@ int main() {
 					}
 
 					else {
+						isSust = false;
 						int n = Arsenal[catIndex].size();
 						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
+						bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS: ") + get<1>(Arsenal[catIndex][0]);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
