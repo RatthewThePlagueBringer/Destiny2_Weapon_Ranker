@@ -1,5 +1,7 @@
-#include <iostream>
+// Used SFML 2.5.1
+/*#include <iostream>
 #include <vector>
+#include <string>
 #include <algorithm>
 #include <math.h>
 #include <SFML/Graphics.hpp>
@@ -91,6 +93,34 @@ void shellSort(vector<tuple<string, string, pair<int, int>>>& vec, bool isSust, 
 			gap /= 2;
 		}
 	}
+}
+
+tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, string, pair<int, int>>>>& vec, string name) {
+
+	tuple<string, string, pair<int, int>> ret = {"", "Item not found!", {-1, -1} };
+
+	for (int i = 0; i < vec.size(); i++) {
+
+		for (int j = 0; j < vec[i].size(); j++) {
+			int matchedChars = 0;
+
+			if (get<1>(vec[i][j]).size() == name.size()) {
+
+				for (int k = 0; k < name.size(); k++) {
+
+					if (toupper(get<1>(vec[i][j])[k]) == toupper(name[k])) {
+						matchedChars++;
+					}
+
+					if (matchedChars == get<1>(vec[i][j]).size()) {
+						ret = vec[i][j];
+					}
+				}
+			}
+		}
+	}
+
+	return ret;
 }
 
 // Used our COP3503 Minesweeper projects + https://www.sfml-dev.org/learn.php for SFML
@@ -253,7 +283,10 @@ int main() {
 	sf::Sprite searchBar;
 	sf::Texture searchBarT;
 	//source for search bar: https://www.vecteezy.com/png/11888174-shadow-rectangle-neumorphic-rectangle
-	searchBarT.loadFromFile("searchBar.png");
+	if (!searchBarT.loadFromFile("searchBar.png")) {
+		cout << "Invalid texture!" << endl;
+		return -1;
+	}
 	searchBar.setTexture(searchBarT);
 	searchBar.setPosition(screenWidth / 2 - searchBar.getGlobalBounds().width / 2, screenHeight / 3 - searchBar.getGlobalBounds().height / 4);
 
@@ -411,6 +444,7 @@ int main() {
 					rtListText.setString(rtListString);
 					showList = false;
 
+					// If enter is pressed with no search input, returns default sort
 					if (searchString.getSize() == 0) {
 
 						isSust = true;
@@ -445,68 +479,34 @@ int main() {
 						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 
-					if (searchString.getSize() > 0) {
+					else {
 
-						isValidSearch = false;
+						tuple<string, string, pair<int, int>> result = searchItem(Arsenal, searchString);
+						if (get<1>(result) != "Item not found!") {
 
-						for (int i = 0; i < Arsenal.size(); i++) {
+							showBest = true;
+							showList = true;
 
-							if (searchString == get<0>(Arsenal[i][0])) {
-								catIndex = i;
-								isValidSearch = true;
-								showBest = true;
-							}
+							bestString = get<1>(result);
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
+							rtListString = "Burst DPS : " + to_string(get<2>(result).second);
+
+							ltListText.setString(ltListString);
+							rtListText.setString(rtListString);
+							ltListText.setPosition(listX + 40, listY + 40);
+							rtListText.setPosition(screenWidth / 2, listY + 40);
 						}
 
-						if (!isValidSearch) {
+						else {
 							catIndex = 0;
 							bestString = "Invalid input!\nPress \'esc' to try again.";
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 							showBest = true;
 						}
-
-						else if (searchString.getSize() > 0) {
-							if (!isSust && !isBurst) {
-								bestString = "Please select a DPS type above.";
-								bestText.setString(bestString);
-								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-								showBest = true;
-							}
-							else {
-								showBest = true;
-								showMethods = true;
-								showList = true;
-
-								int n = Arsenal[catIndex].size();
-								isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-								bestString = (isFwd ? "Best burst DPS: " : "Worst burst DPS") + get<1>(Arsenal[catIndex][0]);
-								bestText.setString(bestString);
-								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-								for (int j = 2; j < 12; j++) {
-									if (j < 6) {
-										ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-									}
-									else if (j == 6) {
-										ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-									}
-									else if (j > 6 && j < 11) {
-										rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-									}
-									else {
-										rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-									}
-								}
-
-								ltListText.setString(ltListString);
-								rtListText.setString(rtListString);
-								ltListText.setPosition(listX + 40, listY + 40);
-								rtListText.setPosition(screenWidth / 2, listY + 40);
-							}
-						}
-
-						string search = searchString.toAnsiString();	// Stores input as std::string for ease of use
 					}
 				}
 
@@ -616,6 +616,8 @@ int main() {
 				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top 11 results
 				else if (inCircle(borderRad, burstX0, buttonY0, mousePos)) {
 
+					showMethods = true;
+
 					bestString.clear();
 					bestText.setString(bestString);
 					ltListString.clear();
@@ -664,7 +666,10 @@ int main() {
 					ltListText.setPosition(listX + 40, listY + 40);
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
+
+				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
 				else if (inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
+
 					isQuickSort = true;
 
 					bestString.clear();
@@ -702,6 +707,7 @@ int main() {
 				}
 
 				else if (inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
+
 					isQuickSort = false;
 
 					bestString.clear();
@@ -738,6 +744,7 @@ int main() {
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 				else if (inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
+
 					isFwd = true;
 
 					bestString.clear();
@@ -774,6 +781,7 @@ int main() {
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 				else if (inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
+
 					isFwd = false;
 
 					bestString.clear();
@@ -887,5 +895,5 @@ int main() {
 	}
 
 	return 0;
-}
+}*/
 
