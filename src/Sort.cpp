@@ -909,6 +909,6 @@ int main() {
 		homeWindow.display();
 	}
 
-	return
+	return 0;
 }*/
 
