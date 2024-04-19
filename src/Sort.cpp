@@ -447,7 +447,6 @@ int main() {
 					// If enter is pressed with no search input, returns default sort
 					if (searchString.getSize() == 0) {
 
-						isSust = true;
 						showBest = true;
 						showMethods = true;
 						showList = true;
@@ -484,6 +483,7 @@ int main() {
 						tuple<string, string, pair<int, int>> result = searchItem(Arsenal, searchString);
 						if (get<1>(result) != "Item not found!") {
 
+							isValidSearch = true;
 							showBest = true;
 							showList = true;
 
@@ -501,11 +501,12 @@ int main() {
 						}
 
 						else {
-							catIndex = 0;
+							isValidSearch = false;
 							bestString = "Invalid input!\nPress \'esc' to try again.";
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 							showBest = true;
+							showMethods = false;
 						}
 					}
 				}
@@ -513,7 +514,13 @@ int main() {
 				// Escape allows the user exit their selection and the program in its entirety
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 
-					if (isSust || isBurst) {
+					if (!isValidSearch) {
+						isValidSearch = true;
+						searchString.clear();
+						searchText.setString(searchString);
+						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
+					}
+					else if (isSust || isBurst) {
 						bestString.clear();
 						bestText.setString(bestString);
 						ltListString.clear();
@@ -668,7 +675,7 @@ int main() {
 				}
 
 				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
-				else if (inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
+				else if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
 
 					isQuickSort = true;
 
@@ -706,7 +713,7 @@ int main() {
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 
-				else if (inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
+				else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
 
 					isQuickSort = false;
 
@@ -743,7 +750,7 @@ int main() {
 					ltListText.setPosition(listX + 40, listY + 40);
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
-				else if (inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
+				else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
 
 					isFwd = true;
 
@@ -780,7 +787,7 @@ int main() {
 					ltListText.setPosition(listX + 40, listY + 40);
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
-				else if (inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
+				else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
 
 					isFwd = false;
 
