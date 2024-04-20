@@ -74,15 +74,8 @@ int Weapon::getActive() {
 }
 
 // Setters
-void Weapon::updateMethod(bool method) {
-    if (method) {
-        //cout << "updating active to burst" << endl;
-        activeDPS = burstDPS;
-    }
-    else {
-        //cout << "updating active to sustained" << endl;
-        activeDPS = sustainedDPS;
-    }
+void Weapon::setActive(int dps) {
+    activeDPS = dps;
 }
 
 // Operator overloads
@@ -97,6 +90,12 @@ bool Weapon::operator>(const Weapon &obj) const {
 bool Weapon::operator==(const Weapon &obj) const {
     return activeDPS == obj.activeDPS;
 }
+
+string Weapon::getName() {
+    return name;
+}
+
+
 
 
 

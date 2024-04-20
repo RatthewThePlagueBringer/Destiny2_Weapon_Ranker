@@ -8,12 +8,12 @@ int main() {
 
     Arsenal guns;
 
-    guns.updateMethods(true);
-
 
     cout << "" << endl;
     cout << "Burst: " << guns.fusionRifles[69].getBurstDPS() << endl;
     cout << "Sustained: " << guns.fusionRifles[69].getSusDPS() << endl;
+
+    guns.setDPS(true);
     cout << "Active: " << guns.fusionRifles[69].getActive() << endl;
 
     cout << "" << endl;

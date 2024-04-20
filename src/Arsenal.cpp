@@ -140,20 +140,45 @@ Arsenal::Arsenal() {
 
 }
 
-void Arsenal::updateMethods(bool method) {
-    for (const vector<Weapon>& i : priWeapons) {
-        for (Weapon j : i) {
-            j.updateMethod(method);
+void Arsenal::setDPS(bool burst) {
+    if (burst) {
+        for (vector<Weapon> i : priWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getBurstDPS());
+            }
+        }
+        for (vector<Weapon> i : secWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getBurstDPS());
+            }
+        }
+        for (vector<Weapon> i : powWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getBurstDPS());
+            }
         }
     }
-    for (const vector<Weapon>& i : secWeapons) {
-        for (Weapon j : i) {
-            j.updateMethod(method);
+    else {
+        for (vector<Weapon> i : priWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getSusDPS());
+            }
         }
-    }
-    for (const vector<Weapon>& i : powWeapons) {
-        for (Weapon j : i) {
-            j.updateMethod(method);
+        for (vector<Weapon> i : secWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getSusDPS());
+            }
+        }
+        for (vector<Weapon> i : powWeapons) {
+            for (Weapon j : i) {
+                cout << j.getName() << endl;
+                j.setActive(j.getSusDPS());
+            }
         }
     }
 }

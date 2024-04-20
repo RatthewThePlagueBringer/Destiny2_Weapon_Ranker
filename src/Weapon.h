@@ -16,7 +16,8 @@ private:
     // Stores weapon name
     string name;
 
-
+    // Stores the damage value of a single round (assumes precision when applicable)
+    int damage;
 
     // Stores the RPM (Rounds Per Minute)
     int rpm;
@@ -30,7 +31,6 @@ private:
     // Stores the total amount of rounds in magazine and reserves
     int totSize;
 
-
     // Stores the total damage of magazine and reserves
     int totDamage;
 
@@ -41,12 +41,11 @@ private:
     int sustainedDPS;
 
     // Stores the "active" value of which DPS method the user requests
-    int activeDPS;
+    int activeDPS = 0;
+
+
 
 public:
-    // Stores the damage value of a single round (assumes precision when applicable)
-    int damage;
-
     // Constructor
     Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize);
 
@@ -57,9 +56,10 @@ public:
     int getBurstDPS();
     int getTotDamage();
     int getActive();
+    string getName();
 
     // Setters
-    void updateMethod(bool method);
+    void setActive(int dps);
 
     // Operator Overloads
     bool operator<(Weapon const& obj) const;
