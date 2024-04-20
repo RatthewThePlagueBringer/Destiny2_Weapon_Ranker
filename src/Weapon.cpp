@@ -95,8 +95,6 @@ string Weapon::getName() {
     return name;
 }
 
-
-
-
-
-
+string Weapon::getType() {
+	return type;
+}
