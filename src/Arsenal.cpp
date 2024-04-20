@@ -24,24 +24,24 @@ Arsenal::Arsenal() {
     file.open("weapons.csv", ios::in);
 
     vector<string> row;
-    string line, word, temp;
+    string line;
 
     cout << "File stream opened, loading data onto stack" << endl;
-
 
     while (getline(file, line)) {
 
         row = split(line, ',');
 
+        string temp;
 
-        if (row[13] == "N/A") {
-            temp = row[12];
+        if (row[8] == "N/A") {
+            temp = row[7];
         }
         else {
-            temp = row[13];
+            temp = row[8];
         }
 
-        Weapon gun(row[1], row[2], temp, row[9], row[10], row[7], row[8]);
+        Weapon gun(row[1], row[2], temp, row[5], row[6], row[3], row[4]);
 
         if (row[1] == "AuRi") {
             autoRifles.push_back(gun);
@@ -138,6 +138,24 @@ Arsenal::Arsenal() {
         cout << i.size() << endl;
     }
 
+}
+
+void Arsenal::updateMethods(bool method) {
+    for (const vector<Weapon>& i : priWeapons) {
+        for (Weapon j : i) {
+            j.updateMethod(method);
+        }
+    }
+    for (const vector<Weapon>& i : secWeapons) {
+        for (Weapon j : i) {
+            j.updateMethod(method);
+        }
+    }
+    for (const vector<Weapon>& i : powWeapons) {
+        for (Weapon j : i) {
+            j.updateMethod(method);
+        }
+    }
 }
 
 

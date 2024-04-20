@@ -5,23 +5,17 @@ Weapon::Weapon(string type, string name, string damage, string rpm, string reloa
 
     this->type = type;
     this->name = name;
-
-    if (damage == "inf" || damage == "N/A") {
-        this->damage = -1;
-    }
-    else {
-        this->damage = stoi(damage);
-    }
+    this->damage = stoi(damage);
 
     if (rpm == "inf" || rpm == "N/A") {
-        this->rpm = -1;
+        this->rpm = 0;
     }
     else {
         this->rpm = stoi(rpm);
     }
 
     if (reloadTime == "inf" || reloadTime == "N/A") {
-        this->reloadTime = -1;
+        this->reloadTime = 0;
     }
     else {
         this->reloadTime = stof(reloadTime);
@@ -41,21 +35,24 @@ Weapon::Weapon(string type, string name, string damage, string rpm, string reloa
         this->totSize = stoi(totSize);
     }
 
+    // Calculating Total Damage
     this->totDamage = this->damage * this->totSize;
 
-    // NEED TO DO THIS //////////////////////////////////////////////////////////////////////////////
-    burstDPS = 0;
+    // Calculating Burst DPS
+    burstDPS = (this->damage * (this->rpm / 4) - this->damage * (this->rpm / 60) * this->reloadTime) / 15;
 
+
+    // Calculating Sustained DPS
     float timeToEmpty;
     if (this->totSize == -1) {
-        // NEED TO DO THIS ///////////////////////////////////////////////////////////////////////
-        sustainedDPS = 0;
+        // Over time, damage will converge to this value given infinite ammunition
+        sustainedDPS = (this->damage * this->rpm) / 60;
     }
     else {
+        // Exact sustained DPS can be more accurately calculated when total amount of ammunition is known
         timeToEmpty = this->totSize / (this->rpm * 0.02) + this->reloadTime * floor(this->totSize / this->magSize);
         sustainedDPS = (this->damage * this->totSize) / timeToEmpty;
     }
-    activeDPS = sustainedDPS;
 
 }
 
@@ -77,14 +74,13 @@ int Weapon::getActive() {
 }
 
 // Setters
-void Weapon::updateMethod(int method) {
-    if (method == 0) {
-        activeDPS = totDamage;
-    }
-    else if (method == 1) {
+void Weapon::updateMethod(bool method) {
+    if (method) {
+        //cout << "updating active to burst" << endl;
         activeDPS = burstDPS;
     }
     else {
+        //cout << "updating active to sustained" << endl;
         activeDPS = sustainedDPS;
     }
 }

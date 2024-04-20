@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: Destiny2_Weapon_DPS
+# Project: Destiny2_Weapon_Ranker
 # Configurations: Debug
 # =============================================================================
 
@@ -41,64 +41,64 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target Destiny2_Weapon_DPS
+# Object build statements for EXECUTABLE target Destiny2_Weapon_Ranker
 
 
 #############################################
-# Order-only phony target for Destiny2_Weapon_DPS
+# Order-only phony target for Destiny2_Weapon_Ranker
 
-build cmake_object_order_depends_target_Destiny2_Weapon_DPS: phony || CMakeFiles/Destiny2_Weapon_DPS.dir
+build cmake_object_order_depends_target_Destiny2_Weapon_Ranker: phony || CMakeFiles/Destiny2_Weapon_Ranker.dir
 
-build CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/main.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\main.cpp.obj.d
+build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/main.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\main.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
+  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_Ranker.dir\
+  TARGET_PDB = Destiny2_Weapon_Ranker.pdb
 
-build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Arsenal.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\Arsenal.cpp.obj.d
+build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Arsenal.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\Arsenal.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
+  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_Ranker.dir\
+  TARGET_PDB = Destiny2_Weapon_Ranker.pdb
 
-build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Weapon.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\Weapon.cpp.obj.d
+build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Weapon.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\Weapon.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
+  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_Ranker.dir\
+  TARGET_PDB = Destiny2_Weapon_Ranker.pdb
 
-build CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny2_Weapon_DPS_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Sort.cpp || cmake_object_order_depends_target_Destiny2_Weapon_DPS
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_DPS.dir\src\Sort.cpp.obj.d
+build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Sort.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\Sort.cpp.obj.d
   FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
+  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_Ranker.dir\
+  TARGET_PDB = Destiny2_Weapon_Ranker.pdb
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target Destiny2_Weapon_DPS
+# Link build statements for EXECUTABLE target Destiny2_Weapon_Ranker
 
 
 #############################################
-# Link the executable Destiny2_Weapon_DPS.exe
+# Link the executable Destiny2_Weapon_Ranker.exe
 
-build Destiny2_Weapon_DPS.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_DPS_Debug CMakeFiles/Destiny2_Weapon_DPS.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_DPS.dir/src/Sort.cpp.obj
+build Destiny2_Weapon_Ranker.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ranker_Debug CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_DPS.dir
+  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_DPS.dir\
-  TARGET_FILE = Destiny2_Weapon_DPS.exe
-  TARGET_IMPLIB = libDestiny2_Weapon_DPS.dll.a
-  TARGET_PDB = Destiny2_Weapon_DPS.pdb
+  TARGET_COMPILE_PDB = CMakeFiles\Destiny2_Weapon_Ranker.dir\
+  TARGET_FILE = Destiny2_Weapon_Ranker.exe
+  TARGET_IMPLIB = libDestiny2_Weapon_Ranker.dll.a
+  TARGET_PDB = Destiny2_Weapon_Ranker.pdb
 
 # =============================================================================
 # Object build statements for EXECUTABLE target Data_Generator
@@ -164,7 +164,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build Data_Generator: phony Data_Generator.exe
 
-build Destiny2_Weapon_DPS: phony Destiny2_Weapon_DPS.exe
+build Destiny2_Weapon_Ranker: phony Destiny2_Weapon_Ranker.exe
 
 # =============================================================================
 # Folder targets.
@@ -174,7 +174,7 @@ build Destiny2_Weapon_DPS: phony Destiny2_Weapon_DPS.exe
 #############################################
 # Folder: C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug
 
-build all: phony Destiny2_Weapon_DPS.exe Data_Generator.exe
+build all: phony Destiny2_Weapon_Ranker.exe Data_Generator.exe
 
 # =============================================================================
 # Built-in targets

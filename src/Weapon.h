@@ -59,7 +59,7 @@ public:
     int getActive();
 
     // Setters
-    void updateMethod(int method);
+    void updateMethod(bool method);
 
     // Operator Overloads
     bool operator<(Weapon const& obj) const;

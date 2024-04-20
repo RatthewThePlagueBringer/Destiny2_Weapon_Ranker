@@ -50,7 +50,7 @@ public:
     Arsenal();
 
     // Methods
-
+    void updateMethods(bool method);
 };
 
 
