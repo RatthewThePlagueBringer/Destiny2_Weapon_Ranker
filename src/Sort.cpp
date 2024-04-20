@@ -1,5 +1,5 @@
 // Used SFML 2.5.1
-/*#include <iostream>
+#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -8,139 +8,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 
+#include "Arsenal.h"
+
 using namespace std;
-
-// Used the COP3530 Module 8 Lecture & Discussion Slides
-void swap(vector<tuple<string, string, pair<int, int>>>& v, int a, int b) {
-	tuple<string, string, pair<int, int>> temp = v[a];
-	v[a] = v[b];
-	v[b] = temp;
-}
-
-int partition(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, bool isSust, bool isFwd) {
-
-	int pivot = (isSust ? get<2>(vec[low]).first : get<2>(vec[low]).second);
-	int up = low, down = high;
-
-	while (up < down) {
-
-		for (int j = up; j < high; j++) {
-
-			if ((isFwd && (isSust ? get<2>(vec[up]).first < pivot : get<2>(vec[up]).second < pivot)) ||
-				(!isFwd && (isSust ? get<2>(vec[up]).first > pivot : get<2>(vec[up]).second > pivot))) {
-				break;
-			}
-
-			up++;
-		}
-		for (int j = down; j > low; j--) {
-			
-			if ((isFwd && (isSust ? get<2>(vec[down]).first > pivot : get<2>(vec[down]).second > pivot)) ||
-				(!isFwd && (isSust ? get<2>(vec[down]).first < pivot : get<2>(vec[down]).second < pivot))) {
-				break;
-			}
-
-			down--;
-		}
-
-		if (up < down) {
-			swap(vec, up, down);
-		}
-	}
-
-	swap(vec, low, down);
-	return down;
-}
-
-void quickSort(vector<tuple<string, string, pair<int, int>>>& vec, int low, int high, bool isSust, bool isFwd) {
-
-	if (low < high) {
-		int pivot = partition(vec, low, high, isSust, isFwd);
-		quickSort(vec, low, pivot - 1, isSust, isFwd);
-		quickSort(vec, pivot + 1, high, isSust, isFwd);
-	}
-}
-
-void insertionSort(vector<tuple<string, string, pair<int, int>>>& vec, int gap, int n, bool isSust, bool isFwd) {
-
-	for (int i = gap; i < n; i++) {
-
-		int key = (isSust ? get<2>(vec[i]).first : get<2>(vec[i]).second);
-		int j = i;
-		
-		while (j >= gap && ((isFwd && (isSust ? key > get<2>(vec[j - gap]).first : key > get<2>(vec[j - gap]).second)) ||
-			(!isFwd && (isSust ? key < get<2>(vec[j - gap]).first : key < get<2>(vec[j - gap]).second)))) {
-			swap(vec, j, j - gap);
-			j -= gap;
-		}
-	}
-}
-
-void shellSort(vector<tuple<string, string, pair<int, int>>>& vec, bool isSust, bool isFwd) {
-
-	int n = vec.size();
-	int gap = n / 2;
-
-	while (gap > 0) {
-
-		insertionSort(vec, gap, n, isSust, isFwd);
-
-		if (gap == 2) {
-			gap = 1;
-		}
-
-		else {
-			gap /= 2;
-		}
-	}
-}
-
-tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, string, pair<int, int>>>> vec, string itemName) {
-
-	tuple<string, string, pair<int, int>> ret = {"", "Item not found!", {-1, -1} };
-
-	for (int i = 0; i < vec.size(); i++) {
-
-		for (int j = 0; j < vec[i].size(); j++) {
-			int matchedChars = 0;
-
-			if (get<1>(vec[i][j]).size() == itemName.size()) {
-
-				for (int k = 0; k < itemName.size(); k++) {
-
-					if (toupper(get<1>(vec[i][j])[k]) == toupper(itemName[k])) {
-						matchedChars++;
-					}
-
-					if (matchedChars == get<1>(vec[i][j]).size()) {
-						ret = vec[i][j];
-					}
-				}
-			}
-		}
-	}
-
-	return ret;
-}
-
-int getIndex(vector<vector<tuple<string, string, pair<int, int>>>> vec, tuple<string, string, pair<int, int>> item) {
-
-	int foundIndex = -1;
-
-	for (int i = 0; i < vec.size(); i++) {
-		foundIndex = 0;
-
-		for (int j = 0; j < vec[i].size(); j++) {
-			foundIndex += 1;
-
-			if (vec[i][j] == item) {
-				return foundIndex;
-			}
-		}
-	}
-
-	return -1;
-}
 
 // Used our COP3503 Minesweeper projects + https://www.sfml-dev.org/learn.php for SFML
 void setText(sf::Text& text, float x, float y) {
@@ -162,30 +32,9 @@ bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
 int main() {
 
-	vector<vector<tuple<string, string, pair<int, int>>>> Arsenal = {
-		{{ "A", "Apple", { 156, 675 } },
-		{ "A", "Banana", { 674, 798 } },
-		{ "A", "Coconut", { 326, 492 } },
-		{ "A", "Dragonfruit", { 798, 425 } },
-		{ "A", "Eggplant", { 463, 586 } },
-		{ "A", "Fig", { 891, 239 } },
-		{ "A", "Grape", { 577, 658 } },
-		{ "A", "Honeydew", { 342, 821 } },
-		{ "A", "Kiwi", { 619, 134 } },
-		{ "A", "Lemon", { 749, 393 } },
-		{ "A", "Mango", { 184, 957 } }},
-		{{ "B", "Apricot", { 743, 572 } },
-		{ "B", "Blueberry", { 865, 726 } },
-		{ "B", "Cherry", { 936, 438 } },
-		{ "B", "Date", { 672, 509 } },
-		{ "B", "Fennel", { 578, 693 } },
-		{ "B", "Grapefruit", { 251, 839 } },
-		{ "B", "Honeycrisp", { 427, 315 } },
-		{ "B", "Kumquat", { 869, 143 } },
-		{ "B", "Lime", { 542, 781 } },
-		{ "B", "Melon", { 384, 627 } },
-		{"B", "Nectarine", {974, 358}}} };
-	int catIndex = 0;
+	Arsenal arsenal;
+	vector<vector<Weapon>>& currFam = arsenal.priWeapons;
+	vector<Weapon>& currSub = arsenal.autoRifles;
 
 	// Screen dimensions
 	float screenWidth = 1000.f, screenHeight = 1250.f;
@@ -481,8 +330,6 @@ int main() {
 								searchText.setString(searchString);
 								setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 							}
-							cout << "Show List: " << showList << endl;
-							cout << "A. Left: " << ltListString.toAnsiString() << ". Right: " << rtListString.toAnsiString() << endl;
 						}
 					}
 
@@ -515,29 +362,29 @@ int main() {
 						showMethods = true;
 						showList = true;
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
 						int listMax = 11;
-						cout << Arsenal[catIndex].size() << endl;
-						if (Arsenal[catIndex].size() < 11) {
-							listMax = Arsenal[catIndex].size();
+						if (currSub.size() < 11) {
+							listMax = currSub.size();
 						}
+
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 						}
 
@@ -561,25 +408,27 @@ int main() {
 							tempBest = bestString;
 							tempLeft = ltListString;
 							tempRight = rtListString;
-							cout << "B. Left: " << ltListString.toAnsiString() << ". Right: " << rtListString.toAnsiString() << endl;
 
-							if (stoi(searchString.toAnsiString()) > 0 && stoi(searchString.toAnsiString()) <= Arsenal[catIndex].size()) {
+							if (stoi(searchString.toAnsiString()) > 0 && stoi(searchString.toAnsiString()) <= currSub.size()) {
 
 								int itemIndex = stoi(searchString.toAnsiString()) - 1;
 
-								tuple<string, string, pair<int, int>> result = Arsenal[catIndex][itemIndex];
+								Weapon result = arsenal.searchIndex(currSub, itemIndex);
 
 								showBest = true;
 								showItem = true;
 								showMethods = false;
 								showList = true;
 
-								bestString = get<1>(result);
+								bestString = result.getName();
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-								ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-								rtListString = "Burst DPS: " + to_string(get<2>(result).second) + "\nRank: " + to_string(getIndex(Arsenal, result));
+								ltListString = "Rank: " + to_string(itemIndex + 1) + 
+									"\nType: " + result.getType() + 
+									"\nSustainable DPS: " + to_string(result.getSusDPS());
+								rtListString = "Burst DPS: " + to_string(result.getBurstDPS()) + 
+									"\nRank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result));
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
@@ -625,8 +474,66 @@ int main() {
 							tempRight = rtListString;
 						}
 
-						tuple<string, string, pair<int, int>> result = searchItem(Arsenal, searchString);
-						if (get<1>(result) != "Item not found!") {
+						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, searchString);
+
+						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, searchString);
+
+						Weapon result = arsenal.searchItem(arsenal.allWeapons, searchString);
+						
+						if (!newFam.empty()) {
+
+							currFam = newFam;
+							isSorted = false;
+							showBest = false;
+							showMethods = false;
+							showList = false;
+						}
+
+						else if (!newSub.empty()) {
+							currSub = newSub;
+
+							if (isSorted) {
+								int n = currSub.size();
+								isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+								bestString = currSub[0].getName();
+								bestText.setString(bestString);
+								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+								int listMax = 11;
+								if (currSub.size() < 11) {
+									listMax = currSub.size();
+								}
+
+								for (int j = 2; j < listMax + 1; j++) {
+									if (j < (listMax + 1) / 2) {
+										ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									}
+									else if (j == (listMax + 1) / 2) {
+										ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+									}
+									else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+										rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									}
+									else {
+										rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+									}
+								}
+
+								ltListText.setString(ltListString);
+								rtListText.setString(rtListString);
+								ltListText.setPosition(listX + 40, listY + 40);
+								rtListText.setPosition(screenWidth / 2, listY + 40);
+							 }
+
+							else {
+								isSorted = false;
+								showBest = false;
+								showMethods = false;
+								showList = false;
+							}
+						}
+
+						else if (result.getName() != "DNE") {
 
 							isValidSearch = true;
 							showBest = true;
@@ -634,15 +541,18 @@ int main() {
 							showMethods = false;
 							showList = true;
 
-							bestString = get<1>(result);
+							bestString = result.getName();
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-							rtListString = "Burst DPS: " + to_string(get<2>(result).second);
 							if (isSorted) {
-								rtListString += "\nRank: " + to_string(getIndex(Arsenal, result));
+								ltListString = "Rank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result)) + '\n';
 							}
+							else {
+								ltListString = "";
+							}
+							ltListString += "Type: " + result.getType() + "\nTotal Damage: " + to_string(result.getTotDamage());
+							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) + "\nBurst DPS : " + to_string(result.getBurstDPS());
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -756,15 +666,18 @@ int main() {
 
 						showItem = !showItem;
 
-						tuple<string, string, pair<int, int>> result = searchItem(Arsenal, bestString);
+						Weapon result = arsenal.searchItem(arsenal.allWeapons, bestString);
 
 						if (showItem) {
 
 							showMethods = false;
 							showList = true;
 
-							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-							rtListString = "Burst DPS: " + to_string(get<2>(result).second) + "\nRank: " + to_string(getIndex(Arsenal, result));
+							ltListString = "Rank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result)) +
+								"\nType: " + result.getType() +
+								"\nSustainable DPS: " + to_string(result.getSusDPS());
+							rtListString = "Burst DPS: " + to_string(result.getBurstDPS()) +
+								"\nRank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result));
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -821,25 +734,30 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
 
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+					int listMax = 11;
+					if (currSub.size() < 11) {
+						listMax = currSub.size();
+					}
+
+					for (int j = 2; j < listMax + 1; j++) {
+						if (j < (listMax + 1) / 2) {
+							ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						else if (j == (listMax + 1) / 2) {
+							ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+							rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 						}
 						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 						}
 					}
 
@@ -883,25 +801,30 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
 
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+					int listMax = 11;
+					if (currSub.size() < 11) {
+						listMax = currSub.size();
+					}
+
+					for (int j = 2; j < listMax + 1; j++) {
+						if (j < (listMax + 1) / 2) {
+							ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+						else if (j == (listMax + 1) / 2) {
+							ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+							rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 						}
 						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 						}
 					}
 
@@ -926,24 +849,29 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						for (int j = 2; j < 12; j++) {
-							if (j < 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						int listMax = 11;
+						if (currSub.size() < 11) {
+							listMax = currSub.size();
+						}
+
+						for (int j = 2; j < listMax + 1; j++) {
+							if (j < (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
-							else if (j == 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							else if (j == (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
-							else if (j > 6 && j < 11) {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 						}
 
@@ -965,24 +893,29 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						for (int j = 2; j < 12; j++) {
-							if (j < 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						int listMax = 11;
+						if (currSub.size() < 11) {
+							listMax = currSub.size();
+						}
+
+						for (int j = 2; j < listMax + 1; j++) {
+							if (j < (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
-							else if (j == 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							else if (j == (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
-							else if (j > 6 && j < 11) {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 						}
 
@@ -1004,24 +937,29 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						for (int j = 2; j < 12; j++) {
-							if (j < 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						int listMax = 11;
+						if (currSub.size() < 11) {
+							listMax = currSub.size();
+						}
+
+						for (int j = 2; j < listMax + 1; j++) {
+							if (j < (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
-							else if (j == 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							else if (j == (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
-							else if (j > 6 && j < 11) {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 						}
 
@@ -1043,24 +981,29 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = Arsenal[catIndex].size();
-						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-						bestString = get<1>(Arsenal[catIndex][0]);
+						int n = currSub.size();
+						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						bestString = currSub[0].getName();
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						for (int j = 2; j < 12; j++) {
-							if (j < 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						int listMax = 11;
+						if (currSub.size() < 11) {
+							listMax = currSub.size();
+						}
+
+						for (int j = 2; j < listMax + 1; j++) {
+							if (j < (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
-							else if (j == 6) {
-								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							else if (j == (listMax + 1) / 2) {
+								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
-							else if (j > 6 && j < 11) {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
 							}
 						}
 
@@ -1150,4 +1093,4 @@ int main() {
 	}
 
 	return 0;
-}*/
+}
