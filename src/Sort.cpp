@@ -95,7 +95,7 @@ void shellSort(vector<tuple<string, string, pair<int, int>>>& vec, bool isSust, 
 	}
 }
 
-tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, string, pair<int, int>>>>& vec, string name) {
+tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, string, pair<int, int>>>> vec, string itemName) {
 
 	tuple<string, string, pair<int, int>> ret = {"", "Item not found!", {-1, -1} };
 
@@ -104,11 +104,11 @@ tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, str
 		for (int j = 0; j < vec[i].size(); j++) {
 			int matchedChars = 0;
 
-			if (get<1>(vec[i][j]).size() == name.size()) {
+			if (get<1>(vec[i][j]).size() == itemName.size()) {
 
-				for (int k = 0; k < name.size(); k++) {
+				for (int k = 0; k < itemName.size(); k++) {
 
-					if (toupper(get<1>(vec[i][j])[k]) == toupper(name[k])) {
+					if (toupper(get<1>(vec[i][j])[k]) == toupper(itemName[k])) {
 						matchedChars++;
 					}
 
@@ -121,6 +121,25 @@ tuple<string, string, pair<int, int>> searchItem(vector<vector<tuple<string, str
 	}
 
 	return ret;
+}
+
+int getIndex(vector<vector<tuple<string, string, pair<int, int>>>> vec, tuple<string, string, pair<int, int>> item) {
+
+	int foundIndex = -1;
+
+	for (int i = 0; i < vec.size(); i++) {
+		foundIndex = 0;
+
+		for (int j = 0; j < vec[i].size(); j++) {
+			foundIndex += 1;
+
+			if (vec[i][j] == item) {
+				return foundIndex;
+			}
+		}
+	}
+
+	return -1;
 }
 
 // Used our COP3503 Minesweeper projects + https://www.sfml-dev.org/learn.php for SFML
@@ -159,10 +178,10 @@ int main() {
 		{ "B", "Blueberry", { 865, 726 } },
 		{ "B", "Cherry", { 936, 438 } },
 		{ "B", "Date", { 672, 509 } },
-		{ "B", "Fig", { 578, 693 } },
+		{ "B", "Fennel", { 578, 693 } },
 		{ "B", "Grapefruit", { 251, 839 } },
-		{ "B", "Honeydew", { 427, 315 } },
-		{ "B", "Kiwi", { 869, 143 } },
+		{ "B", "Honeycrisp", { 427, 315 } },
+		{ "B", "Kumquat", { 869, 143 } },
 		{ "B", "Lime", { 542, 781 } },
 		{ "B", "Melon", { 384, 627 } },
 		{"B", "Nectarine", {974, 358}}} };
@@ -560,7 +579,7 @@ int main() {
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
 								ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-								rtListString = "Burst DPS: " + to_string(get<2>(result).second);
+								rtListString = "Burst DPS: " + to_string(get<2>(result).second) + "\nRank: " + to_string(getIndex(Arsenal, result));
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
@@ -621,6 +640,9 @@ int main() {
 
 							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
 							rtListString = "Burst DPS: " + to_string(get<2>(result).second);
+							if (isSorted) {
+								rtListString += "\nRank: " + to_string(getIndex(Arsenal, result));
+							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -742,7 +764,7 @@ int main() {
 							showList = true;
 
 							ltListString = "Class: " + get<0>(result) + "\nSustainable DPS: " + to_string(get<2>(result).first);
-							rtListString = "Burst DPS: " + to_string(get<2>(result).second);
+							rtListString = "Burst DPS: " + to_string(get<2>(result).second) + "\nRank: " + to_string(getIndex(Arsenal, result));
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -754,7 +776,6 @@ int main() {
 
 							showMethods = true;
 
-							//bestString = tempBest;
 							ltListString = tempLeft;
 							rtListString = tempRight;
 
