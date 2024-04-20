@@ -676,156 +676,158 @@ int main() {
 					ltListText.setPosition(listX + 40, listY + 40);
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
+					
+			// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
+				else if (showMethods) {
+					if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
 
-				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
-				else if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
+						isQuickSort = true;
 
-					isQuickSort = true;
+						bestString.clear();
+						bestText.setString(bestString);
+						ltListString.clear();
+						ltListText.setString(ltListString);
+						rtListString.clear();
+						rtListText.setString(rtListString);
 
-					bestString.clear();
-					bestText.setString(bestString);
-					ltListString.clear();
-					ltListText.setString(ltListString);
-					rtListString.clear();
-					rtListText.setString(rtListString);
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-					int n = Arsenal[catIndex].size();
-					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
-					bestText.setString(bestString);
-					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						for (int j = 2; j < 12; j++) {
+							if (j < 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else if (j == 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+							else if (j > 6 && j < 11) {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-						}
-						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
+
+						ltListText.setString(ltListString);
+						rtListText.setString(rtListString);
+						ltListText.setPosition(listX + 40, listY + 40);
+						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 
-					ltListText.setString(ltListString);
-					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
-				}
+					else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
 
-				else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
+						isQuickSort = false;
 
-					isQuickSort = false;
+						bestString.clear();
+						bestText.setString(bestString);
+						ltListString.clear();
+						ltListText.setString(ltListString);
+						rtListString.clear();
+						rtListText.setString(rtListString);
 
-					bestString.clear();
-					bestText.setString(bestString);
-					ltListString.clear();
-					ltListText.setString(ltListString);
-					rtListString.clear();
-					rtListText.setString(rtListString);
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-					int n = Arsenal[catIndex].size();
-					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
-					bestText.setString(bestString);
-					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						for (int j = 2; j < 12; j++) {
+							if (j < 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else if (j == 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+							else if (j > 6 && j < 11) {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-						}
-						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
+
+						ltListText.setString(ltListString);
+						rtListText.setString(rtListString);
+						ltListText.setPosition(listX + 40, listY + 40);
+						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
+					else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
 
-					ltListText.setString(ltListString);
-					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
-				}
-				else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
+						isFwd = true;
 
-					isFwd = true;
+						bestString.clear();
+						bestText.setString(bestString);
+						ltListString.clear();
+						ltListText.setString(ltListString);
+						rtListString.clear();
+						rtListText.setString(rtListString);
 
-					bestString.clear();
-					bestText.setString(bestString);
-					ltListString.clear();
-					ltListText.setString(ltListString);
-					rtListString.clear();
-					rtListText.setString(rtListString);
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-					int n = Arsenal[catIndex].size();
-					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
-					bestText.setString(bestString);
-					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						for (int j = 2; j < 12; j++) {
+							if (j < 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else if (j == 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+							else if (j > 6 && j < 11) {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-						}
-						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
+
+						ltListText.setString(ltListString);
+						rtListText.setString(rtListString);
+						ltListText.setPosition(listX + 40, listY + 40);
+						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
+					else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
 
-					ltListText.setString(ltListString);
-					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
-				}
-				else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
+						isFwd = false;
 
-					isFwd = false;
+						bestString.clear();
+						bestText.setString(bestString);
+						ltListString.clear();
+						ltListText.setString(ltListString);
+						rtListString.clear();
+						rtListText.setString(rtListString);
 
-					bestString.clear();
-					bestText.setString(bestString);
-					ltListString.clear();
-					ltListText.setString(ltListString);
-					rtListString.clear();
-					rtListText.setString(rtListString);
+						int n = Arsenal[catIndex].size();
+						isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
+						bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-					int n = Arsenal[catIndex].size();
-					isQuickSort ? quickSort(Arsenal[catIndex], 0, n - 1, isSust, isFwd) : shellSort(Arsenal[catIndex], isSust, isFwd);
-					bestString = (isFwd ? (isSust ? "Best sustainable DPS: " : "Best burst DPS: ") : (isSust ? "Worst sustainable DPS: " : "Worst burst DPS: ")) + get<1>(Arsenal[catIndex][0]);
-					bestText.setString(bestString);
-					setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-					for (int j = 2; j < 12; j++) {
-						if (j < 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+						for (int j = 2; j < 12; j++) {
+							if (j < 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else if (j == 6) {
+								ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
+							else if (j > 6 && j < 11) {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
+							}
+							else {
+								rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
+							}
 						}
-						else if (j == 6) {
-							ltListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
-						else if (j > 6 && j < 11) {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]) + '\n';
-						}
-						else {
-							rtListString += to_string(j) + ". " + get<1>(Arsenal[catIndex][j - 1]);
-						}
+
+						ltListText.setString(ltListString);
+						rtListText.setString(rtListString);
+						ltListText.setPosition(listX + 40, listY + 40);
+						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
-
-					ltListText.setString(ltListString);
-					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 
 				if (isSust || isBurst) {
@@ -869,7 +871,7 @@ int main() {
 			homeWindow.draw(fwdText);
 			homeWindow.draw(bwdText);
 		}
-		if (showList) {
+		if (showList && isValidSearch) {
 			homeWindow.draw(listRect);
 			homeWindow.draw(ltListText);
 			homeWindow.draw(rtListText);
@@ -906,4 +908,3 @@ int main() {
 
 	return 0;
 }*/
-
