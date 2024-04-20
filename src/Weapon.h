@@ -57,6 +57,7 @@ public:
     int getTotDamage();
     int getActive();
     string getName();
+    string getType();
 
     // Setters
     void setActive(int dps);
