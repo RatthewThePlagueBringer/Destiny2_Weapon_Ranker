@@ -531,7 +531,7 @@ int main() {
 								isNum = true;
 							}
 						}
-						
+
 						if (isNum && isSorted) {
 
 							tempBest = bestString;
