@@ -47,6 +47,7 @@ private:
 
 public:
     // Constructor
+    Weapon();
     Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize);
 
     // Methods
