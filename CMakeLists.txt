@@ -3,9 +3,7 @@ project(Destiny2_Weapon_Ranker)
 
 set(CMAKE_CXX_STANDARD 14)
 
-
-
-add_executable(Destiny2_Weapon_Ranker
+add_executable(Destiny2_Weapon_Ranker_Old
         src/main.cpp
         src/Arsenal.h
         src/Weapon.h
@@ -14,6 +12,22 @@ add_executable(Destiny2_Weapon_Ranker
         src/Sort.cpp
         )
 
+add_executable(Destiny2_Weapon_Ranker
+        src/Sort.cpp
+        src/Arsenal.h
+        src/Weapon.h
+        src/Arsenal.cpp
+        src/Weapon.cpp
+        src/Sort.cpp
+)
+
 add_executable(Data_Generator
         "src/Data Generator.cpp"
         )
+
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR C:/SFML/lib/cmake/SFML)
+find_package(SFML COMPONENTS system window graphics audio network REQUIRED)
+
+include_directories(c:/SFML/include/SFML)
+target_link_libraries(Destiny2_Weapon_Ranker sfml-system sfml-window sfml-graphics sfml-audio)
