@@ -16,6 +16,7 @@ private:
 public:
     // All Weapons
     vector<vector<vector<Weapon>>> allWeapons;
+
     // Weapon Families
     vector<vector<Weapon>> priWeapons;
     vector<vector<Weapon>> secWeapons;
@@ -46,7 +47,7 @@ public:
     vector<Weapon> heavyMachineGuns;
     vector<Weapon> linearFusions;
     vector<Weapon> pow_Uniques;
-    // Temporary subfamily
+    // Temporary Subfamily
     vector<Weapon> tempVec;
 
 public:
@@ -59,12 +60,12 @@ public:
     vector<Weapon> createAll(vector<vector<vector<Weapon>>> vec);
 
     // Getters
-    Weapon searchItem(vector<vector<vector<Weapon>>> vec, string itemName);
+    Weapon searchItem(vector<Weapon> vec, string itemName);
     Weapon searchIndex(vector<Weapon> vec, int index);
     vector<Weapon> searchSub(vector<vector<vector<Weapon>>> vec, string itemName);
     vector<vector<Weapon>> searchFam(vector<vector<vector<Weapon>>> vec, string itemName);
-    int getIndex(vector<vector<vector<Weapon>>> vec, Weapon item);
-    
+    int getIndex(vector<Weapon> vec, Weapon item);
+
     // Sorters for Subfamilies
     void swap(vector<Weapon>& subFam, int a, int b);
     int partition(vector<Weapon>& subFam, int low, int high, bool isSust, bool isFwd);

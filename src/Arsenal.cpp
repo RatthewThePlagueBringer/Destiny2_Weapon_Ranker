@@ -272,26 +272,33 @@ void Arsenal::shellSort(vector<Weapon>& vec, bool isSust, bool isFwd) {
     }
 }
 
-Weapon Arsenal::searchItem(vector<vector<vector<Weapon>>> vec, string itemName) {
+// Search and index methods
+Weapon Arsenal::searchItem(vector<Weapon> vec, string itemName) {
 
     Weapon ret;
+    int matchedChars = 0;
+
+    for (int i = 0; i < itemName.size(); i++) {
+        itemName[i] = tolower(itemName[i]);
+    }
+    cout << "Lowercase item name: " << itemName << endl;
 
     for (int i = 0; i < vec.size(); i++) {
-
-        for (int j = 0; j < vec[i].size(); j++) {
-
-            if (vec[i][j].size() == itemName.size()) {
-
-                for (int k = 0; k < itemName.size(); k++) {
-
-                    if (vec[i][j][k].getName() == itemName) {
-                        return vec[i][j][k];
-                    }
-                }
+        matchedChars = 0;
+        for (int j = 0; j < vec[i].getName().size(); j++) {
+            if (itemName.size() == vec[i].getName().size() && itemName[j] == tolower(vec[i].getName()[j])) {
+                matchedChars++;
             }
-        }
+		}
+
+        cout << "Lowercase weapon name: " << vec[i].getName() << endl;
+		if (matchedChars == itemName.size()) {
+            cout << vec[i].getName() << " matches " << itemName << endl;
+			return vec[i];
+		}
     }
 
+    cout << "No match found." << endl;
     return ret;
 }
 
@@ -393,20 +400,13 @@ vector<vector<Weapon>> Arsenal::searchFam(vector<vector<vector<Weapon>>> vec, st
     return ret;
 }
 
-int Arsenal::getIndex(vector<vector<vector<Weapon>>> vec, Weapon item) {
+int Arsenal::getIndex(vector<Weapon> vec, Weapon item) {
 
     int foundIndex = -1;
 
     for (int i = 0; i < vec.size(); i++) {
-
-        for (int j = 0; j < vec[i].size(); j++) {
-
-			for (int k = 0; k < vec[i][j].size(); k++) {
-
-				if (vec[i][j][k] == item) {
-					return foundIndex;
-				}
-			}
+        if (vec[i] == item) {
+			return i;
 		}
     }
 

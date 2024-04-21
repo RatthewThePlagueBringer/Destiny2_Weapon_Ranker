@@ -93,7 +93,7 @@ void Weapon::setActive(int dps) {
 }
 
 // Operator overloads
-bool Weapon::operator<(const Weapon &obj) const {
+/*bool Weapon::operator<(const Weapon& obj) const {
     return activeDPS < obj.activeDPS;
 }
 
@@ -103,6 +103,16 @@ bool Weapon::operator>(const Weapon &obj) const {
 
 bool Weapon::operator==(const Weapon &obj) const {
     return activeDPS == obj.activeDPS;
+}*/
+
+bool Weapon::operator==(const Weapon& obj) const {
+    // Compare based on the name
+    if (this->type == obj.type && this->name == obj.name) {
+        return  true;
+    }
+    else {
+        return false;
+    }
 }
 
 string Weapon::getName() {
@@ -112,3 +122,8 @@ string Weapon::getName() {
 string Weapon::getType() {
 	return type;
 }
+
+
+
+
+
