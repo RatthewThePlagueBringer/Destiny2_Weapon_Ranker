@@ -32,9 +32,10 @@ bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
 int main() {
 
+	// Initializes an arsenal object
 	Arsenal arsenal;
-	vector<vector<Weapon>>& currFam = arsenal.priWeapons;
 	vector<Weapon>& currSub = arsenal.autoRifles;
+	vector<Weapon>& prevSub = arsenal.autoRifles;
 
 	// Screen dimensions
 	float screenWidth = 1000.f, screenHeight = 1250.f;
@@ -295,6 +296,7 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
+						// If deleting the last character, reverts display to previous screen
 						if (searchString.getSize() == 0) {
 
 							if (showItem || !isValidSearch) {
@@ -333,6 +335,7 @@ int main() {
 						}
 					}
 
+					// If the search string is empty, resets the display
 					else {
 						bestString.clear();
 						bestText.setString(bestString);
@@ -353,6 +356,7 @@ int main() {
 				// When the enter key is pressed, search validates the search input and prompts the user appropriately
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 
+					cout << searchString.toAnsiString() << endl;
 					// If enter is pressed with no search input, returns default sort
 					if (searchString.getSize() == 0) {
 
@@ -361,6 +365,10 @@ int main() {
 						showBest = true;
 						showMethods = true;
 						showList = true;
+
+						prevSub = currSub;
+						currSub = arsenal.tempVec;
+						currSub = arsenal.createAll(arsenal.allWeapons);
 
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
@@ -474,66 +482,131 @@ int main() {
 							tempRight = rtListString;
 						}
 
-						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, searchString);
+						// Searches for family, subfamily, and weapon from user input
 
-						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, searchString);
-
-						Weapon result = arsenal.searchItem(arsenal.allWeapons, searchString);
-						
-						if (!newFam.empty()) {
-
-							currFam = newFam;
-							isSorted = false;
-							showBest = false;
-							showMethods = false;
-							showList = false;
-						}
-
-						else if (!newSub.empty()) {
-							currSub = newSub;
-
-							if (isSorted) {
-								int n = currSub.size();
-								isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
-								bestString = currSub[0].getName();
-								bestText.setString(bestString);
-								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-								int listMax = 11;
-								if (currSub.size() < 11) {
-									listMax = currSub.size();
+						for (int p = 0; p < arsenal.allWeapons.size(); p++) {
+							for (int q = 0; q < arsenal.allWeapons[p].size(); q++) {
+								for (int s = 0; s < arsenal.allWeapons[p][q].size(); s++) {
+									cout << arsenal.allWeapons[p][q][s].getName() << endl;
 								}
-
-								for (int j = 2; j < listMax + 1; j++) {
-									if (j < (listMax + 1) / 2) {
-										ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
-									}
-									else if (j == (listMax + 1) / 2) {
-										ltListString += to_string(j) + ". " + currSub[j - 1].getName();
-									}
-									else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-										rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
-									}
-									else {
-										rtListString += to_string(j) + ". " + currSub[j - 1].getName();
-									}
-								}
-
-								ltListText.setString(ltListString);
-								rtListText.setString(rtListString);
-								ltListText.setPosition(listX + 40, listY + 40);
-								rtListText.setPosition(screenWidth / 2, listY + 40);
-							 }
-
-							else {
-								isSorted = false;
-								showBest = false;
-								showMethods = false;
-								showList = false;
 							}
 						}
 
-						else if (result.getName() != "DNE") {
+						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, searchString.toAnsiString());
+
+						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, searchString.toAnsiString());
+
+						//Weapon result = arsenal.searchItem(arsenal.allWeapons, searchString.toAnsiString());
+						
+						// If family is found, sorts all the weapons in that family and displays the top 11
+						/*if (!newFam.empty()) {
+
+							cout << "Found fam!" << endl;
+
+							bestString.clear();
+							bestText.setString(bestString);
+							ltListString.clear();
+							ltListText.setString(ltListString);
+							rtListString.clear();
+							rtListText.setString(rtListString);
+
+							prevSub = currSub;
+							currSub = arsenal.tempVec;
+							currSub = arsenal.createFam(arsenal.allWeapons, searchString);
+
+							int n = currSub.size();
+							isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+							bestString = currSub[0].getName();
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+							int listMax = 11;
+							if (currSub.size() < 11) {
+								listMax = currSub.size();
+							}
+
+							for (int j = 2; j < listMax + 1; j++) {
+								if (j < (listMax + 1) / 2) {
+									ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								}
+								else if (j == (listMax + 1) / 2) {
+									ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								}
+								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+									rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								}
+								else {
+									rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								}
+							}
+
+							ltListText.setString(ltListString);
+							rtListText.setString(rtListString);
+							ltListText.setPosition(listX + 40, listY + 40);
+							rtListText.setPosition(screenWidth / 2, listY + 40);
+						}*/
+
+						// If subfamily is found, sorts all the weapons in that subfamily and displays the top 11
+						if (!newSub.empty()) {
+
+							cout << "Found subfam!" << endl;
+
+							isValidSearch = true;
+							isSorted = true;
+							showBest = true;
+							showMethods = true;
+							showList = true;
+
+							bestString.clear();
+							bestText.setString(bestString);
+							ltListString.clear();
+							ltListText.setString(ltListString);
+							rtListString.clear();
+							rtListText.setString(rtListString);
+
+							prevSub = currSub;
+
+							currSub = newSub;
+
+							int n = currSub.size();
+							isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+							bestString = currSub[0].getName();
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+							int listMax = 11;
+							if (currSub.size() < 11) {
+								listMax = currSub.size();
+							}
+
+							for (int j = 2; j < listMax + 1; j++) {
+								if (j < (listMax + 1) / 2) {
+									ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								}
+								else if (j == (listMax + 1) / 2) {
+									ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								}
+								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+									rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								}
+								else {
+									rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								}
+							}
+
+							cout << "Left: " << ltListString.toAnsiString() << endl;
+							cout << "Right: " << rtListString.toAnsiString() << endl;
+
+							ltListText.setString(ltListString);
+							rtListText.setString(rtListString);
+							ltListText.setPosition(listX + 40, listY + 40);
+							rtListText.setPosition(screenWidth / 2, listY + 40);
+						}
+
+						// If weapon is found, displays the weapon's stats
+						/*else if (result.getName() != "DNE") {
+
+							cout << "Found item!" << endl;
 
 							isValidSearch = true;
 							showBest = true;
@@ -558,8 +631,9 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 40, listY + 40);
 							rtListText.setPosition(screenWidth / 2, listY + 40);
-						}
+						}*/
 
+						// If no results are found, prompts the user to try again
 						else {
 
 							isValidSearch = false;
