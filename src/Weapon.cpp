@@ -1,6 +1,20 @@
 #include "Weapon.h"
 
-// Constructor
+// Constructors
+Weapon::Weapon() {
+    type = "N/A";
+	name = "DNE";
+	damage = 0;
+	rpm = 0;
+	reloadTime = 0;
+	magSize = 0;
+	totSize = 0;
+	totDamage = 0;
+	sustainedDPS = 0;
+	burstDPS = 0;
+	activeDPS = 0;
+}
+
 Weapon::Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize) {
 
     this->type = type;
