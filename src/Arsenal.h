@@ -53,6 +53,8 @@ public:
 
     // Methods
     void setDPS(bool burst);
+    vector<Weapon> createFam(vector<vector<vector<Weapon>>> vec, string itemName);
+    vector<Weapon> createAll(vector<vector<vector<Weapon>>> vec);
 
     // Getters
     Weapon searchItem(vector<vector<vector<Weapon>>> vec, string itemName);
