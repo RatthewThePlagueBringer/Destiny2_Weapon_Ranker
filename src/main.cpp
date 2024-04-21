@@ -1,5 +1,4 @@
 // Used SFML 2.5.1
-#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -19,19 +18,6 @@ void setText(sf::Text& text, float x, float y) {
 	text.setPosition(sf::Vector2f(x, y));
 }
 
-/*sf::Text makeText(string inText, sf::Font font, int fontSize, sf::Color color, bool isBold, float x, float y) {
-	sf::Text text;
-	text.setFont(font);
-	text.setString(inText);
-	text.setCharacterSize(fontSize);
-	text.setFillColor(color);
-	if (isBold) {
-		text.setStyle(sf::Text::Bold);
-	}
-	setText(text, x, y);
-	return text;
-}*/
-
 // Checks if mouse click is in circle using pythagorean distance
 bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
@@ -42,6 +28,106 @@ bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 	}
 
 	return false;
+}
+
+// If search string is too long, erases the first character in the first string
+void searchType(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+
+	sf::String newString = searchString;
+	sf::Text newText;
+	newText.setString(newString);
+	newText.setFont(font);
+	newText.setCharacterSize(32);
+	newText.setFillColor(sf::Color::White);
+	newText.setStyle(sf::Text::Bold);
+
+	while (newText.getGlobalBounds().width > sprite.getGlobalBounds().width - 30) {
+		newString.erase(0, 1);
+		searchStart += 1;
+		newText.setString(newString);
+	}
+
+	searchString = newString;
+}
+
+// Called after delete: if search string was shortened and now has space, adds to the front of the string
+void searchDelete(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+
+	sf::String newString = searchString;
+	sf::Text newText;
+	newText.setString(newString);
+	newText.setFont(font);
+	newText.setCharacterSize(32);
+	newText.setFillColor(sf::Color::White);
+	newText.setStyle(sf::Text::Bold);
+
+	if (searchStart != 0 || searchString.getSize() != search.size()) {
+		while (searchStart >= 1 && (searchString.getSize() < search.size() || newText.getGlobalBounds().width < sprite.getGlobalBounds().width - 30)) {
+			newString.insert(0, search.substr(searchStart - 1, 1));
+			searchStart -= 1;
+			newText.setString(newString);
+		}
+	}
+}
+
+// Split line of text at appropriate character into multiple lines to fit within a rectangle
+sf::String fitText(std::string bestStr, sf::RectangleShape rect, sf::Font font) {
+
+	sf::String retStr = bestStr;
+	sf::Text retText;
+	retText.setString(retStr);
+	retText.setFont(font);
+	retText.setCharacterSize(32);
+
+	sf::String subStr = "";
+	sf::Text subText;
+	subText.setString(subStr);
+	subText.setFont(font);
+	subText.setCharacterSize(32);
+
+	while (retText.getGlobalBounds().width > rect.getGlobalBounds().width - 120) {
+		// Used https://en.cppreference.com/w/c/types/size_t for size_t
+		size_t lastIndex = retStr.getSize();
+
+		for (size_t i = retStr.getSize() - 1; i != SIZE_MAX; --i) {
+
+			subStr = retStr.substring(0, i);
+			subText.setString(subStr);
+
+			if (subText.getGlobalBounds().width < rect.getGlobalBounds().width - 120) {
+				if (!isalpha(retStr[i])) {
+					lastIndex = i;
+					break;
+				}
+			}
+		}
+
+		if (lastIndex == retStr.getSize()) {
+
+			size_t splitIndex = retStr.getSize() - 1;
+
+			for (size_t i = retStr.getSize() - 1; i != SIZE_MAX; --i) {
+
+				subStr = retStr.substring(0, i);
+				subText.setString(subStr);
+
+				if (subText.getGlobalBounds().width < rect.getGlobalBounds().width - 120) {
+					splitIndex = i;
+					break;
+				}
+			}
+
+			retStr.insert(splitIndex + 1, "\n");
+		}
+
+		else {
+			retStr.insert(lastIndex + 1, "\n");
+		}
+
+		retText.setString(retStr);
+	}
+
+	return retStr;
 }
 
 // If length of string in list is too long, fits it to the list box with an ellipse to signify it has been shortened
@@ -74,67 +160,21 @@ sf::String fitList(string listLine, sf::RectangleShape rect, sf::Font font) {
 	return newString;
 }
 
-// If search string is too long, erases the first character in the first string
-void searchType(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+void sortNTime(sf::Text& timerText, Arsenal& arsenal, vector<Weapon>& currSub, bool isQuickSort, bool isSust, bool isFwd, sf::RenderWindow& homeScreen, sf::Font font) {
 
-	sf::String newString = searchString;
-	sf::Text newText;
-	newText.setString(newString);
-	newText.setFont(font);
-	newText.setCharacterSize(32);
-	newText.setFillColor(sf::Color::White);
-	newText.setStyle(sf::Text::Bold);
+		sf::Clock sortClock;
+		sortClock.restart();
+		cout << "Starting clock..." << endl;
 
-	while (newText.getGlobalBounds().width > sprite.getGlobalBounds().width - 30) {
-		newString.erase(0, 1);
-		searchStart += 1;
-		newText.setString(newString);
-	}
+		int n = currSub.size();
+		isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 
-	searchString = newString;
+		sf::Time elapsedTime = sortClock.getElapsedTime();
+		cout << "Time elapsed: " << elapsedTime.asMilliseconds() << " ms" << endl;
 
+		timerText.setString("" + std::to_string(elapsedTime.asMilliseconds()) + " ms");
+		setText(timerText, homeScreen.getSize().x / 2, homeScreen.getSize().y / 25);
 }
-
-// Called after delete: if search string was shortened and now has space, adds to the front of the string
-void searchDelete(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
-
-	sf::String newString = searchString;
-	sf::Text newText;
-	newText.setString(newString);
-	newText.setFont(font);
-	newText.setCharacterSize(32);
-	newText.setFillColor(sf::Color::White);
-	newText.setStyle(sf::Text::Bold);
-
-	if (searchStart != 0 || searchString.getSize() != search.size()) {
-		while (searchStart >= 1 && (searchString.getSize() < search.size() || newText.getGlobalBounds().width < sprite.getGlobalBounds().width - 30)) {
-			newString.insert(0, search.substr(searchStart - 1, 1));
-			searchStart -= 1;
-			newText.setString(newString);
-		}
-	}
-}
-
-// Shifts text in search bar in a specific direction when left/right keys are pressed
-/*sf::String shiftText(sf::String searchString, int& searchStart, string search, bool moveBwd) {
-	
-	sf::String newString = searchString;
-	sf::Text newText;
-	newText.setString(newString);
-
-	if (searchString.getSize() < search.size()) {
-		if (moveBwd && searchStart > 0) {
-			newString.insert(0, search.substr(searchStart - 1, 1));
-			searchStart -= 1;
-		}
-		else if (!moveBwd && searchStart < search.size()) {
-			newString.erase(0, 1);
-			searchStart += 1;
-		}
-	}
-
-	return newString;
-}*/
 
 int main() {
 
@@ -152,7 +192,12 @@ int main() {
 	float borderlessXY = borderDec / 2;
 
 	// Text font sizes
-	//int buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
+	//int timerPts = 16, buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
+
+	// Timer dimensions and coordinates
+	float timerWidth = 200.f, timerHeight = 32.f;
+	float timerX = screenWidth / 2 - timerWidth / 2;
+	float timerY = screenHeight / 25 - timerHeight / 2;
 
 	// Button dimensions and coordinates
 	float buttonRad = 140.f, buttonInc = 20.f, highlightInc = 30.f;
@@ -166,9 +211,9 @@ int main() {
 	float buttonY0 = buttonY + buttonRad;
 
 	// Best weapon/prompts text box
-	float bestWidth = screenWidth / 2;
+	float bestWidth = (4 * screenWidth) / 5;
 	float bestHeight = 128.f;
-	float bestX = screenWidth / 4;
+	float bestX = screenWidth / 10;
 	float bestY = screenHeight / 3 + 128;
 
 	// Methods buttons dimensions & coordinates
@@ -223,7 +268,17 @@ int main() {
 	borderlessScreen.setFillColor(Gray);
 	borderlessScreen.setPosition(borderlessXY, borderlessXY);
 
-	// Button creation & Formatting
+	// Timer creation & formatting
+	sf::Text timerText;
+	timerText.setFont(font);
+	timerText.setCharacterSize(16);
+	timerText.setFillColor(sf::Color::White);
+
+	sf::RectangleShape timerRect(sf::Vector2f(timerWidth, timerHeight));
+	timerRect.setFillColor(darkerGray);
+	timerRect.setPosition(timerX, timerY);
+
+	// Button creation & formatting
 	sf::CircleShape sustHighlight(highlightRad);
 	sustHighlight.setFillColor(lightYellow);
 	sustHighlight.setPosition(sustX0 - highlightRad, buttonY - highlightInc);
@@ -402,7 +457,7 @@ int main() {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
 
 					if (searchString.getSize() > 0) {
-
+						//cout << "Deleting..." << endl;
 						search.erase(search.size() - 1, 1);
 						searchString.erase(searchString.getSize() - 1, 1);
 						searchDelete(searchString, searchStart, search, searchBar, font);
@@ -411,9 +466,9 @@ int main() {
 
 						// If deleting the last character, reverts display to previous screen
 						if (searchString.getSize() == 0) {
-
+							//cout << "String is empty!" << endl;
 							if (showItem || !isValidSearch) {
-
+								//cout << "Exiting item screen..." << endl;
 								isValidSearch = true;
 								showItem = false;
 								showList = true;
@@ -423,6 +478,7 @@ int main() {
 								}
 
 								bestString = tempBest;
+								bestString = fitText(bestString, bestRect, font);
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -436,11 +492,12 @@ int main() {
 							}
 
 							else {
-
+								//cout << "Resetting screen..." << endl;
 								isNum = false;
 								//isSorted = false;
 
 								isValidSearch = true;
+								search.clear();
 								searchString.clear();
 								searchText.setString(searchString);
 								setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
@@ -470,65 +527,73 @@ int main() {
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 
 					// If enter is pressed with no search input, returns default sort
-					if (searchString.getSize() == 0) {
+					if (search.size() == 0) {
 
-						isSust = true;
-						isSorted = true;
-						showBest = true;
-						showMethods = true;
-						showList = true;
+						if (!showBest) {
 
-						prevSub = currSub;
-						currSub = arsenal.tempVec;
-						currSub = arsenal.createAll(arsenal.allWeapons);
+							isSust = true;
+							isSorted = true;
+							showBest = true;
+							showMethods = true;
+							showList = true;
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
-						bestString = currSub[0].getName();
-						bestText.setString(bestString);
-						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+							prevSub = currSub;
+							currSub = arsenal.tempVec;
+							currSub = arsenal.createAll(arsenal.allWeapons);
 
-						int listMax = 11;
-						if (currSub.size() < 11) {
-							listMax = currSub.size();
+							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+							bestString = currSub[0].getName();
+							bestString = fitText(bestString, bestRect, font);
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+							int listMax = 19;
+							if (currSub.size() < 19) {
+								listMax = currSub.size();
+							}
+
+							for (int j = 2; j < listMax + 1; j++) {
+								if (j < (listMax + 1) / 2) {
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font) + '\n';
+								}
+								else if (j == (listMax + 1) / 2) {
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font);
+								}
+								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font) + '\n';
+								}
+								else {
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font);
+								}
+							}
+
+							ltListText.setString(ltListString);
+							rtListText.setString(rtListString);
+							ltListText.setPosition(listX + 40, listY + 40);
+							rtListText.setPosition(screenWidth / 2, listY + 40);
 						}
-
-						for (int j = 2; j < listMax + 1; j++) {
-							if (j < (listMax + 1) / 2) {
-								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font) + '\n';
-							}
-							else if (j == (listMax + 1) / 2) {
-								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font);
-							}
-							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font) + '\n';
-							}
-							else {
-								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font);
-							}
-						}
-
-						ltListText.setString(ltListString);
-						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 
 					// If input is a number, returns item found at that index
-					else if (searchString.getSize() <= 6 && (searchString[0] > 47 && searchString[0] < 58)) {
+					else if (search.size() <= 6 && (search[0] > 47 && search[0] < 58)) {
 
-						int numChar = 1;
+						if (search.size() == 1) {
+							isNum = true;
+						}
+						else {
+							int numChar = 1;
 
-						for (int i = 1; i < searchString.getSize(); i++) {
-							if (searchString[i] > 47 && searchString[i] < 58) {
-								numChar++;
-							}
-							if (numChar == searchString.getSize()) {
-								isNum = true;
+							for (int i = 1; i < search.size(); i++) {
+								if (search[i] > 47 && search[i] < 58) {
+									numChar++;
+								}
+								if (numChar == search.size()) {
+									isNum = true;
+								}
 							}
 						}
 
@@ -538,9 +603,9 @@ int main() {
 							tempLeft = ltListString;
 							tempRight = rtListString;
 
-							if (stoi(searchString.toAnsiString()) > 0 && stoi(searchString.toAnsiString()) <= currSub.size()) {
+							if (stoi(search) > 0 && stoi(search) <= currSub.size()) {
 
-								int itemIndex = stoi(searchString.toAnsiString()) - 1;
+								int itemIndex = stoi(search) - 1;
 
 								Weapon result = arsenal.searchIndex(currSub, itemIndex);
 
@@ -550,6 +615,7 @@ int main() {
 								showList = true;
 
 								bestString = result.getName();
+								bestString = fitText(bestString, bestRect, font);
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -605,11 +671,11 @@ int main() {
 						}
 
 						// Searches for family, subfamily, and weapon from user input
-						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, searchString.toAnsiString());
+						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, search);
 
-						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, searchString.toAnsiString());
+						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, search);
 
-						Weapon result = arsenal.searchItem(currSub, searchString.toAnsiString());
+						Weapon result = arsenal.searchItem(currSub, search);
 						
 						// If family is found, sorts all the weapons in that family and displays the top 11
 						if (!newFam.empty()) {
@@ -623,16 +689,16 @@ int main() {
 
 							prevSub = currSub;
 							currSub = arsenal.tempVec;
-							currSub = arsenal.createFam(arsenal.allWeapons, searchString);
+							currSub = arsenal.createFam(arsenal.allWeapons, search);
 
-							int n = currSub.size();
-							isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
+							bestString = fitText(bestString, bestRect, font);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-							int listMax = 11;
-							if (currSub.size() < 11) {
+							int listMax = 19;
+							if (currSub.size() < 19) {
 								listMax = currSub.size();
 							}
 
@@ -684,11 +750,12 @@ int main() {
 							int n = currSub.size();
 							isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 							bestString = currSub[0].getName();
+							bestString = fitText(bestString, bestRect, font);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-							int listMax = 11;
-							if (currSub.size() < 11) {
+							int listMax = 19;
+							if (currSub.size() < 19) {
 								listMax = currSub.size();
 							}
 
@@ -727,6 +794,7 @@ int main() {
 							showList = true;
 
 							bestString = result.getName();
+							bestString = fitText(bestString, bestRect, font);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 						
@@ -781,11 +849,13 @@ int main() {
 						}
 
 						bestString = tempBest;
+						bestString = fitText(bestString, bestRect, font);
+						bestText.setString(bestString);
+						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
 						ltListString = tempLeft;
 						rtListString = tempRight;
 
-						bestText.setString(bestString);
-						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 40, listY + 40);
@@ -812,6 +882,7 @@ int main() {
 
 					// Resets search
 					isValidSearch = true;
+					search.clear();
 					searchString.clear();
 					searchText.setString(searchString);
 					setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
@@ -859,7 +930,7 @@ int main() {
 							showMethods = false;
 							showList = true;
 
-							ltListString = "Rank: " + to_string(1) +
+							ltListString = "Rank: " + to_string(arsenal.getIndex(currSub, result)) +
 								"\nType: " + result.getType() +
 								"\nTotal Damage: " + to_string(result.getTotDamage());
 							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
@@ -916,6 +987,7 @@ int main() {
 						isSorted = true;
 						showItem = false;
 						
+						search.clear();
 						searchString.clear();
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
@@ -923,12 +995,13 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
 
-					int listMax = 11;
-					if (currSub.size() < 11) {
+					int listMax = 19;
+					if (currSub.size() < 19) {
 						listMax = currSub.size();
 					}
 
@@ -987,6 +1060,7 @@ int main() {
 						isSorted = true;
 						showItem = false;
 						
+						search.clear();
 						searchString.clear();
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
@@ -994,12 +1068,13 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
 
-					int listMax = 11;
-					if (currSub.size() < 11) {
+					int listMax = 19;
+					if (currSub.size() < 19) {
 						listMax = currSub.size();
 					}
 
@@ -1028,7 +1103,7 @@ int main() {
 					rtListText.setPosition(screenWidth / 2, listY + 40);
 				}
 					
-			// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
+				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
 				else if (showMethods) {
 
 					if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
@@ -1046,11 +1121,12 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						int listMax = 11;
-						if (currSub.size() < 11) {
+						int listMax = 19;
+						if (currSub.size() < 19) {
 							listMax = currSub.size();
 						}
 
@@ -1094,11 +1170,12 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						int listMax = 11;
-						if (currSub.size() < 11) {
+						int listMax = 19;
+						if (currSub.size() < 19) {
 							listMax = currSub.size();
 						}
 
@@ -1142,11 +1219,12 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						int listMax = 11;
-						if (currSub.size() < 11) {
+						int listMax = 19;
+						if (currSub.size() < 19) {
 							listMax = currSub.size();
 						}
 
@@ -1190,11 +1268,12 @@ int main() {
 						int n = currSub.size();
 						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 						bestString = currSub[0].getName();
+						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-						int listMax = 11;
-						if (currSub.size() < 11) {
+						int listMax = 19;
+						if (currSub.size() < 19) {
 							listMax = currSub.size();
 						}
 
@@ -1223,9 +1302,7 @@ int main() {
 						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 				}
-
 				
-
 				if (isSust || isBurst) {
 					showBest = true;
 					showList = true;
@@ -1235,11 +1312,23 @@ int main() {
 
 		// Draws shapes and texts based on what bools
 		homeWindow.clear(darkerGray);
+		//cout << "Cleared window." << endl;
 		homeWindow.draw(borderlessScreen);
+		//cout << "Window interior drawn." << endl;
 
+		if (timerText.getGlobalBounds().width > 0) {
+			homeWindow.draw(timerRect);
+			homeWindow.draw(timerText);
+		}
+
+		//cout << "Showing best: " << showBest << endl;
+		//cout << "Text width : " << bestText.getGlobalBounds().width << endl;
 		if (showBest && bestText.getGlobalBounds().width > 0) {
+			//cout << "Showing best." << endl;
 			homeWindow.draw(bestRect);
+			//cout << "Best rect drawn." << endl;
 			homeWindow.draw(bestText);
+			//cout << "Best text drawn." << endl;
 		}
 		if (showMethods) {
 			if (isQuickSort) {
