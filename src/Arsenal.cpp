@@ -1,6 +1,5 @@
 #include "Arsenal.h"
 
-
 using namespace std;
 
 // Helper method for splitting input string into a vector of strings
@@ -97,7 +96,6 @@ Arsenal::Arsenal() {
         else if (row[1] == "TrRi") {
             traceRifles.push_back(gun);
         }
-
     }
 
     cout << "Data loaded." << endl;
@@ -141,59 +139,164 @@ Arsenal::Arsenal() {
     for (auto const& i : powWeapons) {
         cout << i.size() << endl;
     }
-
 }
 
-void Arsenal::setDPS(bool burst) {
-    if (burst) {
-        for (vector<Weapon> i : priWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getBurstDPS());
+// GETTERS
+// Searches for a weapon by name and returns a weapon object
+Weapon Arsenal::searchItem(vector<Weapon> vec, string itemName) {
+
+    Weapon ret;
+    int matchedChars = 0;
+
+    for (int i = 0; i < itemName.size(); i++) {
+        itemName[i] = tolower(itemName[i]);
+    }
+    cout << "Lowercase item name: " << itemName << endl;
+
+    for (int i = 0; i < vec.size(); i++) {
+        matchedChars = 0;
+        for (int j = 0; j < vec[i].getName().size(); j++) {
+            if (itemName.size() == vec[i].getName().size() && itemName[j] == tolower(vec[i].getName()[j])) {
+                matchedChars++;
             }
         }
-        for (vector<Weapon> i : secWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getBurstDPS());
-            }
-        }
-        for (vector<Weapon> i : powWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getBurstDPS());
-            }
+
+        cout << "Lowercase weapon name: " << vec[i].getName() << endl;
+        if (matchedChars == itemName.size()) {
+            cout << vec[i].getName() << " matches " << itemName << endl;
+            return vec[i];
         }
     }
-    else {
-        for (vector<Weapon> i : priWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getSusDPS());
-            }
-        }
-        for (vector<Weapon> i : secWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getSusDPS());
-            }
-        }
-        for (vector<Weapon> i : powWeapons) {
-            for (Weapon j : i) {
-                cout << j.getName() << endl;
-                j.setActive(j.getSusDPS());
-            }
-        }
-    }
+
+    cout << "No match found." << endl;
+    return ret;
 }
 
-// Used the COP3530 Module 8 Lecture & Discussion Slides
+// Searches for a weapon by index and returns a weapon object
+Weapon Arsenal::searchIndex(vector<Weapon> vec, int index) {
+
+    Weapon ret;
+
+    if (index >= 0 && index < vec.size()) {
+        return vec[index];
+    }
+
+    return ret;
+}
+
+// Searches for a subfamily by name and returns a subfamily of objects
+vector<Weapon> Arsenal::searchSub(vector<vector<vector<Weapon>>> vec, string itemName) {
+
+    vector<Weapon> ret;
+
+    for (int i = 0; i < itemName.size(); i++) {
+        itemName[i] = tolower(itemName[i]);
+    }
+
+    if (itemName == "autorifles") {
+        return autoRifles;
+    }
+    else if (itemName == "bows") {
+        return bows;
+    }
+    else if (itemName == "fusionrifles") {
+        return fusionRifles;
+    }
+    else if (itemName == "glaives") {
+        return glaives;
+    }
+    else if (itemName == "sec_grenades") {
+        return sec_grenades;
+    }
+    else if (itemName == "handcannons") {
+        return handCannons;
+    }
+    else if (itemName == "pow_grenades") {
+        return pow_grenades;
+    }
+    else if (itemName == "heavymachineguns") {
+        return heavyMachineGuns;
+    }
+    else if (itemName == "linearfusions") {
+        return linearFusions;
+    }
+    else if (itemName == "pulserifles") {
+        return pulseRifles;
+    }
+    else if (itemName == "rockets") {
+        return rockets;
+    }
+    else if (itemName == "scoutrifles") {
+        return scoutRifles;
+    }
+    else if (itemName == "sidearms") {
+        return sidearms;
+    }
+    else if (itemName == "shotguns") {
+        return shotguns;
+    }
+    else if (itemName == "sniperrifles") {
+        return sniperRifles;
+    }
+    else if (itemName == "submachineguns") {
+        return subMachineGuns;
+    }
+    else if (itemName == "swords") {
+        return swords;
+    }
+    else if (itemName == "tracerifles") {
+        return traceRifles;
+    }
+
+    return ret;
+}
+
+// Searches for a family by name and returns a family object
+vector<vector<Weapon>> Arsenal::searchFam(vector<vector<vector<Weapon>>> vec, string itemName) {
+
+    vector<vector<Weapon>> ret;
+
+    for (int i = 0; i < itemName.size(); i++) {
+        itemName[i] = tolower(itemName[i]);
+    }
+
+    if (itemName == "priweapons") {
+        return priWeapons;
+    }
+    else if (itemName == "secweapons") {
+        return secWeapons;
+    }
+    else if (itemName == "powweapons") {
+        return powWeapons;
+    }
+
+    return ret;
+}
+
+// Returns the index of a weapon in a vector
+int Arsenal::getIndex(vector<Weapon> vec, Weapon item) {
+
+    int foundIndex = -1;
+
+    for (int i = 0; i < vec.size(); i++) {
+        if (vec[i] == item) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+// SORTERS
+// Used the COP3530 Module 8 Lecture & Discussion Slides for sorting methods
+// Swaps two elements in a vector at indices a and b
 void Arsenal::swap(vector<Weapon>& v, int a, int b) {
     Weapon temp = v[a];
     v[a] = v[b];
     v[b] = temp;
 }
 
+// Sorts a vector with all weapons less than the pivot to the left and all weapons greater than the pivot to the right
 int Arsenal::partition(vector<Weapon>& vec, int low, int high, bool isSust, bool isFwd) {
 
     int pivot = (isSust ? vec[low].getSusDPS() : vec[low].getBurstDPS());
@@ -229,6 +332,7 @@ int Arsenal::partition(vector<Weapon>& vec, int low, int high, bool isSust, bool
     return down;
 }
 
+// Repetitively calls partition on left and right subvectors to sort the vector
 void Arsenal::quickSort(vector<Weapon>& vec, int low, int high, bool isSust, bool isFwd) {
 
     if (low < high) {
@@ -238,6 +342,7 @@ void Arsenal::quickSort(vector<Weapon>& vec, int low, int high, bool isSust, boo
     }
 }
 
+// Sorts elements from unsorted region into sorted region
 void Arsenal::insertionSort(vector<Weapon>& vec, int gap, int n, bool isSust, bool isFwd) {
 
     for (int i = gap; i < n; i++) {
@@ -253,6 +358,7 @@ void Arsenal::insertionSort(vector<Weapon>& vec, int gap, int n, bool isSust, bo
     }
 }
 
+// Calls insertionSort on subvectors of the vector
 void Arsenal::shellSort(vector<Weapon>& vec, bool isSust, bool isFwd) {
 
     int n = vec.size();
@@ -272,147 +378,8 @@ void Arsenal::shellSort(vector<Weapon>& vec, bool isSust, bool isFwd) {
     }
 }
 
-// Search and index methods
-Weapon Arsenal::searchItem(vector<Weapon> vec, string itemName) {
-
-    Weapon ret;
-    int matchedChars = 0;
-
-    for (int i = 0; i < itemName.size(); i++) {
-        itemName[i] = tolower(itemName[i]);
-    }
-    cout << "Lowercase item name: " << itemName << endl;
-
-    for (int i = 0; i < vec.size(); i++) {
-        matchedChars = 0;
-        for (int j = 0; j < vec[i].getName().size(); j++) {
-            if (itemName.size() == vec[i].getName().size() && itemName[j] == tolower(vec[i].getName()[j])) {
-                matchedChars++;
-            }
-		}
-
-        cout << "Lowercase weapon name: " << vec[i].getName() << endl;
-		if (matchedChars == itemName.size()) {
-            cout << vec[i].getName() << " matches " << itemName << endl;
-			return vec[i];
-		}
-    }
-
-    cout << "No match found." << endl;
-    return ret;
-}
-
-Weapon Arsenal::searchIndex(vector<Weapon> vec, int index) {
-
-	Weapon ret;
-
-    if (index >= 0 && index < vec.size()) {
-        return vec[index];
-    }
-
-    return ret;
-}
-
-vector<Weapon> Arsenal::searchSub(vector<vector<vector<Weapon>>> vec, string itemName) {
-
-    vector<Weapon> ret;
-
-    for (int i = 0; i < itemName.size(); i++) {
-        itemName[i] = tolower(itemName[i]);
-    }
-
-    if (itemName == "autorifles") {
-		return autoRifles;
-	}
-	else if (itemName == "bows") {
-		return bows;
-	}
-	else if (itemName == "fusionrifles") {
-		return fusionRifles;
-	}
-	else if (itemName == "glaives") {
-		return glaives;
-	}
-	else if (itemName == "sec_grenades") {
-		return sec_grenades;
-	}
-	else if (itemName == "handcannons") {
-		return handCannons;
-	}
-	else if (itemName == "pow_grenades") {
-		return pow_grenades;
-	}
-	else if (itemName == "heavymachineguns") {
-		return heavyMachineGuns;
-	}
-	else if (itemName == "linearfusions") {
-		return linearFusions;
-	}
-	else if (itemName == "pulserifles") {
-		return pulseRifles;
-	}
-	else if (itemName == "rockets") {
-		return rockets;
-	}
-	else if (itemName == "scoutrifles") {
-		return scoutRifles;
-	}
-	else if (itemName == "sidearms") {
-		return sidearms;
-	}
-	else if (itemName == "shotguns") {
-		return shotguns;
-	}
-	else if (itemName == "sniperrifles") {
-		return sniperRifles;
-	}
-	else if (itemName == "submachineguns") {
-		return subMachineGuns;
-	}
-	else if (itemName == "swords") {
-		return swords;
-	}
-	else if (itemName == "tracerifles") {
-		return traceRifles;
-	}
-
-    return ret;
-}
-
-vector<vector<Weapon>> Arsenal::searchFam(vector<vector<vector<Weapon>>> vec, string itemName) {
-
-    vector<vector<Weapon>> ret;
-
-    for (int i = 0; i < itemName.size(); i++) {
-        itemName[i] = tolower(itemName[i]);
-    }
-
-    if (itemName == "priweapons") {
-        return priWeapons;
-    }
-	else if (itemName == "secweapons") {
-		return secWeapons;
-	}
-	else if (itemName == "powweapons") {
-		return powWeapons;
-	}
-
-    return ret;
-}
-
-int Arsenal::getIndex(vector<Weapon> vec, Weapon item) {
-
-    int foundIndex = -1;
-
-    for (int i = 0; i < vec.size(); i++) {
-        if (vec[i] == item) {
-			return i;
-		}
-    }
-
-    return -1;
-}
-
+// METHODS
+// Creates a vector of all weapons in a specific family
 vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string itemName) {
 
 	vector<Weapon> ret;
@@ -449,6 +416,7 @@ vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string ite
 	return ret;
 }
 
+// Creates a vector of all weapons in the arsenal
 vector<Weapon> Arsenal::createAll(vector<vector<vector<Weapon>>> vec) {
 
     vector<Weapon> ret;

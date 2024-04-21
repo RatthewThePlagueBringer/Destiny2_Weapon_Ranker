@@ -54,11 +54,6 @@ public:
     // Default constructor
     Arsenal();
 
-    // Methods
-    void setDPS(bool burst);
-    vector<Weapon> createFam(vector<vector<vector<Weapon>>> vec, string itemName);
-    vector<Weapon> createAll(vector<vector<vector<Weapon>>> vec);
-
     // Getters
     Weapon searchItem(vector<Weapon> vec, string itemName);
     Weapon searchIndex(vector<Weapon> vec, int index);
@@ -72,6 +67,10 @@ public:
     void quickSort(vector<Weapon>& subFam, int low, int high, bool isSust, bool isFwd);
     void insertionSort(vector<Weapon>& subFam, int gap, int n, bool isSust, bool isFwd);
     void shellSort (vector<Weapon>& subFam, bool isSust, bool isFwd);
+    
+    // Methods
+    vector<Weapon> createFam(vector<vector<vector<Weapon>>> vec, string itemName);
+    vector<Weapon> createAll(vector<vector<vector<Weapon>>> vec);
 };
 
 

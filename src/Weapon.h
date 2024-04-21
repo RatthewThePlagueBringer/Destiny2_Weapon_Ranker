@@ -40,34 +40,20 @@ private:
     // Stores the theoretical "sustained" Damage Per Second
     int sustainedDPS;
 
-    // Stores the "active" value of which DPS method the user requests
-    int activeDPS = 0;
-
-
-
 public:
     // Constructors
     Weapon();
     Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize);
 
-    // Methods
-
     // Getters
     int getSusDPS();
     int getBurstDPS();
     int getTotDamage();
-    int getActive();
     string getName();
     string getType();
 
-    // Setters
-    void setActive(int dps);
-
     // Operator Overloads
-    bool operator<(Weapon const& obj) const;
-    bool operator>(Weapon const& obj) const;
     bool operator==(Weapon const& obj) const;
 };
-
 
 #endif //DESTINY2_WEAPON_DPS_WEAPON_H

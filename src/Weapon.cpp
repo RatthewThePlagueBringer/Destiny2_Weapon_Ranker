@@ -12,7 +12,6 @@ Weapon::Weapon() {
 	totDamage = 0;
 	sustainedDPS = 0;
 	burstDPS = 0;
-	activeDPS = 0;
 }
 
 Weapon::Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize) {
@@ -71,6 +70,14 @@ Weapon::Weapon(string type, string name, string damage, string rpm, string reloa
 }
 
 // Getters
+string Weapon::getName() {
+    return name;
+}
+
+string Weapon::getType() {
+    return type;
+}
+
 int Weapon::getSusDPS() {
     return sustainedDPS;
 }
@@ -83,28 +90,7 @@ int Weapon::getTotDamage() {
     return totDamage;
 }
 
-int Weapon::getActive() {
-    return activeDPS;
-}
-
-// Setters
-void Weapon::setActive(int dps) {
-    activeDPS = dps;
-}
-
-// Operator overloads
-/*bool Weapon::operator<(const Weapon& obj) const {
-    return activeDPS < obj.activeDPS;
-}
-
-bool Weapon::operator>(const Weapon &obj) const {
-    return activeDPS > obj.activeDPS;
-}
-
-bool Weapon::operator==(const Weapon &obj) const {
-    return activeDPS == obj.activeDPS;
-}*/
-
+// Overloaded Operators
 bool Weapon::operator==(const Weapon& obj) const {
     // Compare based on the name
     if (this->type == obj.type && this->name == obj.name) {
@@ -114,16 +100,3 @@ bool Weapon::operator==(const Weapon& obj) const {
         return false;
     }
 }
-
-string Weapon::getName() {
-    return name;
-}
-
-string Weapon::getType() {
-	return type;
-}
-
-
-
-
-
