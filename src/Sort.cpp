@@ -19,6 +19,7 @@ void setText(sf::Text& text, float x, float y) {
 	text.setPosition(sf::Vector2f(x, y));
 }
 
+// Checks if mouse click is in circle using pythagorean distance
 bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
 	float dist = sqrt(pow(static_cast<int>(mousePos.x) - w, 2.f) + pow(static_cast<int>(mousePos.y) - h, 2.f));
@@ -34,7 +35,8 @@ int main() {
 
 	// Initializes an arsenal object
 	Arsenal arsenal;
-	vector<Weapon>& currSub = arsenal.autoRifles;
+	vector<Weapon>& currSub = arsenal.tempVec;
+	currSub = arsenal.createAll(arsenal.allWeapons);
 	vector<Weapon>& prevSub = arsenal.autoRifles;
 
 	// Screen dimensions
@@ -325,7 +327,7 @@ int main() {
 							else {
 
 								isNum = false;
-								isSorted = false;
+								//isSorted = false;
 
 								isValidSearch = true;
 								searchString.clear();
@@ -356,7 +358,6 @@ int main() {
 				// When the enter key is pressed, search validates the search input and prompts the user appropriately
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {
 
-					cout << searchString.toAnsiString() << endl;
 					// If enter is pressed with no search input, returns default sort
 					if (searchString.getSize() == 0) {
 
@@ -402,16 +403,22 @@ int main() {
 						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 
-					else if (searchString.getSize() <= 2 && (searchString[0] > 47 && searchString[0] < 58)) {
+					// If input is a number, returns item found at that index
+					else if (searchString.getSize() <= 6 && (searchString[0] > 47 && searchString[0] < 58)) {
 
-						if (searchString.getSize() == 1) {
-							isNum = true;
-						}
-						else if (searchString.getSize() == 2 && (searchString[1] > 47 && searchString[1] < 58)) {
-							isNum = true;
+						int numChar = 1;
+
+						for (int i = 1; i < searchString.getSize(); i++) {
+							if (searchString[i] > 47 && searchString[i] < 58) {
+								numChar++;
+							}
+							if (numChar == searchString.getSize()) {
+								isNum = true;
+							}
 						}
 						
-						if (isNum && !showItem && isSorted) {
+						cout << "Is Num: " << isNum << ", Is Sorted: " << isSorted << endl;
+						if (isNum && isSorted) {
 
 							tempBest = bestString;
 							tempLeft = ltListString;
@@ -434,9 +441,9 @@ int main() {
 
 								ltListString = "Rank: " + to_string(itemIndex + 1) + 
 									"\nType: " + result.getType() + 
-									"\nSustainable DPS: " + to_string(result.getSusDPS());
-								rtListString = "Burst DPS: " + to_string(result.getBurstDPS()) + 
-									"\nRank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result));
+									"\nTotal Damage: " + to_string(result.getTotDamage());
+								rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
+									"\nBurst DPS: " + to_string(result.getBurstDPS());
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
@@ -476,6 +483,7 @@ int main() {
 
 					else {
 
+						// Saves previous screen info if not showing item
 						if (!showItem) {
 							tempBest = bestString;
 							tempLeft = ltListString;
@@ -483,25 +491,14 @@ int main() {
 						}
 
 						// Searches for family, subfamily, and weapon from user input
-
-						for (int p = 0; p < arsenal.allWeapons.size(); p++) {
-							for (int q = 0; q < arsenal.allWeapons[p].size(); q++) {
-								for (int s = 0; s < arsenal.allWeapons[p][q].size(); s++) {
-									cout << arsenal.allWeapons[p][q][s].getName() << endl;
-								}
-							}
-						}
-
 						vector<vector<Weapon>> newFam = arsenal.searchFam(arsenal.allWeapons, searchString.toAnsiString());
 
 						vector<Weapon> newSub = arsenal.searchSub(arsenal.allWeapons, searchString.toAnsiString());
 
-						//Weapon result = arsenal.searchItem(arsenal.allWeapons, searchString.toAnsiString());
+						Weapon result = arsenal.searchItem(currSub, searchString.toAnsiString());
 						
 						// If family is found, sorts all the weapons in that family and displays the top 11
-						/*if (!newFam.empty()) {
-
-							cout << "Found fam!" << endl;
+						if (!newFam.empty()) {
 
 							bestString.clear();
 							bestText.setString(bestString);
@@ -544,12 +541,10 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 40, listY + 40);
 							rtListText.setPosition(screenWidth / 2, listY + 40);
-						}*/
+						}
 
 						// If subfamily is found, sorts all the weapons in that subfamily and displays the top 11
 						if (!newSub.empty()) {
-
-							cout << "Found subfam!" << endl;
 
 							isValidSearch = true;
 							isSorted = true;
@@ -594,19 +589,14 @@ int main() {
 								}
 							}
 
-							cout << "Left: " << ltListString.toAnsiString() << endl;
-							cout << "Right: " << rtListString.toAnsiString() << endl;
-
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 40, listY + 40);
 							rtListText.setPosition(screenWidth / 2, listY + 40);
 						}
 
-						// If weapon is found, displays the weapon's stats
-						/*else if (result.getName() != "DNE") {
-
-							cout << "Found item!" << endl;
+						// If weapon is found, displays the weapon's stats of its first instance found
+						else if (result.getName() != "DNE") {
 
 							isValidSearch = true;
 							showBest = true;
@@ -618,8 +608,11 @@ int main() {
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
+							for (int p = 0; p < currSub.size(); p++) {
+								cout << currSub[p].getName() << endl;
+							}
 							if (isSorted) {
-								ltListString = "Rank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result)) + '\n';
+								ltListString = "Rank: " + to_string(arsenal.getIndex(currSub, result) + 1) + '\n';
 							}
 							else {
 								ltListString = "";
@@ -631,7 +624,7 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 40, listY + 40);
 							rtListText.setPosition(screenWidth / 2, listY + 40);
-						}*/
+						}
 
 						// If no results are found, prompts the user to try again
 						else {
@@ -658,6 +651,7 @@ int main() {
 						return 0;
 					}
 
+					// If on item screen, exits either to previous screen
 					else if (showItem) {
 
 						showItem = false;
@@ -679,6 +673,7 @@ int main() {
 						rtListText.setPosition(screenWidth / 2, listY + 40);
 					}
 
+					// If showing information but not showing item, clears screen
 					else if (showBest) {
 
 						bestString.clear();
@@ -696,6 +691,7 @@ int main() {
 						showList = false;
 					}
 
+					// Resets search
 					isValidSearch = true;
 					searchString.clear();
 					searchText.setString(searchString);
@@ -731,6 +727,7 @@ int main() {
 
 				if (isSorted) {
 
+					// Pressing the top weapon box reveals that weapons stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 
 						if (!showItem) {
@@ -740,18 +737,18 @@ int main() {
 
 						showItem = !showItem;
 
-						Weapon result = arsenal.searchItem(arsenal.allWeapons, bestString);
+						Weapon result = arsenal.searchItem(currSub, bestString.toAnsiString());
 
 						if (showItem) {
 
 							showMethods = false;
 							showList = true;
 
-							ltListString = "Rank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result)) +
+							ltListString = "Rank: " + to_string(1) +
 								"\nType: " + result.getType() +
-								"\nSustainable DPS: " + to_string(result.getSusDPS());
-							rtListString = "Burst DPS: " + to_string(result.getBurstDPS()) +
-								"\nRank: " + to_string(arsenal.getIndex(arsenal.allWeapons, result));
+								"\nTotal Damage: " + to_string(result.getTotDamage());
+							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
+								"\nBurst DPS: " + to_string(result.getBurstDPS());
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
