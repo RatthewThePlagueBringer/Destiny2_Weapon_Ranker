@@ -1,5 +1,5 @@
 // There are only around 300 unique weapon types in Destiny 2 which does not meet the requirement of 100,000 data points
-// Our solution is using the parameters of the real weapons, we will randomly generate an extra 999,700 weapon variants
+// Our solution is using the parameters of the real weapons, we will randomly generate an extra 99,990 weapon variants
 
 /*
 
