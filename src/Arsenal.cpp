@@ -412,3 +412,65 @@ int Arsenal::getIndex(vector<vector<vector<Weapon>>> vec, Weapon item) {
 
     return -1;
 }
+
+vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string itemName) {
+
+	vector<Weapon> ret;
+
+	for (int i = 0; i < itemName.size(); i++) {
+		itemName[i] = tolower(itemName[i]);
+	}
+
+	if (itemName == "priweapons") {
+        ret.insert(ret.end(), autoRifles.begin(), autoRifles.end());
+        ret.insert(ret.end(), pulseRifles.begin(), pulseRifles.end());
+        ret.insert(ret.end(), scoutRifles.begin(), scoutRifles.end());
+        ret.insert(ret.end(), handCannons.begin(), handCannons.end());
+        ret.insert(ret.end(), subMachineGuns.begin(), subMachineGuns.end());
+        ret.insert(ret.end(), bows.begin(), bows.end());
+        ret.insert(ret.end(), sidearms.begin(), sidearms.end());
+    }
+    else if (itemName == "secweapons") {
+        ret.insert(ret.end(), shotguns.begin(), shotguns.end());
+		ret.insert(ret.end(), sniperRifles.begin(), sniperRifles.end());
+		ret.insert(ret.end(), fusionRifles.begin(), fusionRifles.end());
+		ret.insert(ret.end(), glaives.begin(), glaives.end());
+		ret.insert(ret.end(), traceRifles.begin(), traceRifles.end());
+		ret.insert(ret.end(), sec_grenades.begin(), sec_grenades.end());
+	}
+	else if (itemName == "powweapons") {
+		ret.insert(ret.end(), rockets.begin(), rockets.end());
+		ret.insert(ret.end(), pow_grenades.begin(), pow_grenades.end());
+		ret.insert(ret.end(), swords.begin(), swords.end());
+		ret.insert(ret.end(), linearFusions.begin(), linearFusions.end());
+		ret.insert(ret.end(), heavyMachineGuns.begin(), heavyMachineGuns.end());
+	}
+
+	return ret;
+}
+
+vector<Weapon> Arsenal::createAll(vector<vector<vector<Weapon>>> vec) {
+
+    vector<Weapon> ret;
+
+    ret.insert(ret.end(), autoRifles.begin(), autoRifles.end());
+    ret.insert(ret.end(), pulseRifles.begin(), pulseRifles.end());
+    ret.insert(ret.end(), scoutRifles.begin(), scoutRifles.end());
+    ret.insert(ret.end(), handCannons.begin(), handCannons.end());
+    ret.insert(ret.end(), subMachineGuns.begin(), subMachineGuns.end());
+    ret.insert(ret.end(), bows.begin(), bows.end());
+    ret.insert(ret.end(), sidearms.begin(), sidearms.end());
+    ret.insert(ret.end(), shotguns.begin(), shotguns.end());
+    ret.insert(ret.end(), sniperRifles.begin(), sniperRifles.end());
+    ret.insert(ret.end(), fusionRifles.begin(), fusionRifles.end());
+    ret.insert(ret.end(), glaives.begin(), glaives.end());
+    ret.insert(ret.end(), traceRifles.begin(), traceRifles.end());
+    ret.insert(ret.end(), sec_grenades.begin(), sec_grenades.end());
+    ret.insert(ret.end(), rockets.begin(), rockets.end());
+    ret.insert(ret.end(), pow_grenades.begin(), pow_grenades.end());
+    ret.insert(ret.end(), swords.begin(), swords.end());
+    ret.insert(ret.end(), linearFusions.begin(), linearFusions.end());
+    ret.insert(ret.end(), heavyMachineGuns.begin(), heavyMachineGuns.end());
+
+    return ret;
+}
