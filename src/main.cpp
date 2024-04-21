@@ -19,6 +19,19 @@ void setText(sf::Text& text, float x, float y) {
 	text.setPosition(sf::Vector2f(x, y));
 }
 
+/*sf::Text makeText(string inText, sf::Font font, int fontSize, sf::Color color, bool isBold, float x, float y) {
+	sf::Text text;
+	text.setFont(font);
+	text.setString(inText);
+	text.setCharacterSize(fontSize);
+	text.setFillColor(color);
+	if (isBold) {
+		text.setStyle(sf::Text::Bold);
+	}
+	setText(text, x, y);
+	return text;
+}*/
+
 // Checks if mouse click is in circle using pythagorean distance
 bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
@@ -30,6 +43,98 @@ bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 
 	return false;
 }
+
+// If length of string in list is too long, fits it to the list box with an ellipse to signify it has been shortened
+sf::String fitList(string listLine, sf::RectangleShape rect, sf::Font font) {
+	
+	sf::String ellipsesS = "...";
+	sf::Text ellipsesT;
+	ellipsesT.setString(ellipsesS);
+	ellipsesT.setFont(font);
+	ellipsesT.setCharacterSize(24);
+	ellipsesT.setFillColor(sf::Color::Black);
+
+	sf::String newString = listLine;
+	sf::Text newText;
+	newText.setString(newString);
+	newText.setFont(font);
+	newText.setCharacterSize(24);
+	newText.setFillColor(sf::Color::Black);
+
+	if (newText.getGlobalBounds().width <=  (rect.getGlobalBounds().width / 2) - 120) {
+		return newString;
+	}
+
+	while (newText.getGlobalBounds().width > (rect.getGlobalBounds().width / 2) - ellipsesT.getGlobalBounds().width - 120) {
+		newString.erase(newString.getSize() - 1, 1);
+		newText.setString(newString);
+	}
+
+	newString += ellipsesS;
+	return newString;
+}
+
+// If search string is too long, erases the first character in the first string
+void searchType(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+
+	sf::String newString = searchString;
+	sf::Text newText;
+	newText.setString(newString);
+	newText.setFont(font);
+	newText.setCharacterSize(32);
+	newText.setFillColor(sf::Color::White);
+	newText.setStyle(sf::Text::Bold);
+
+	while (newText.getGlobalBounds().width > sprite.getGlobalBounds().width - 30) {
+		newString.erase(0, 1);
+		searchStart += 1;
+		newText.setString(newString);
+	}
+
+	searchString = newString;
+
+}
+
+// Called after delete: if search string was shortened and now has space, adds to the front of the string
+void searchDelete(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+
+	sf::String newString = searchString;
+	sf::Text newText;
+	newText.setString(newString);
+	newText.setFont(font);
+	newText.setCharacterSize(32);
+	newText.setFillColor(sf::Color::White);
+	newText.setStyle(sf::Text::Bold);
+
+	if (searchStart != 0 || searchString.getSize() != search.size()) {
+		while (searchStart >= 1 && (searchString.getSize() < search.size() || newText.getGlobalBounds().width < sprite.getGlobalBounds().width - 30)) {
+			newString.insert(0, search.substr(searchStart - 1, 1));
+			searchStart -= 1;
+			newText.setString(newString);
+		}
+	}
+}
+
+// Shifts text in search bar in a specific direction when left/right keys are pressed
+/*sf::String shiftText(sf::String searchString, int& searchStart, string search, bool moveBwd) {
+	
+	sf::String newString = searchString;
+	sf::Text newText;
+	newText.setString(newString);
+
+	if (searchString.getSize() < search.size()) {
+		if (moveBwd && searchStart > 0) {
+			newString.insert(0, search.substr(searchStart - 1, 1));
+			searchStart -= 1;
+		}
+		else if (!moveBwd && searchStart < search.size()) {
+			newString.erase(0, 1);
+			searchStart += 1;
+		}
+	}
+
+	return newString;
+}*/
 
 int main() {
 
@@ -45,6 +150,9 @@ int main() {
 	float borderlessWidth = screenWidth - borderDec;
 	float borderlessHeight = screenHeight - borderDec;
 	float borderlessXY = borderDec / 2;
+
+	// Text font sizes
+	//int buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
 
 	// Button dimensions and coordinates
 	float buttonRad = 140.f, buttonInc = 20.f, highlightInc = 30.f;
@@ -85,7 +193,8 @@ int main() {
 	float listY = screenHeight - listHeight - screenHeight / 18;
 
 	// Variables
-	string search;
+	string search = "", tempStr = "";
+	int searchStart = 0;
 	bool showCursor = true, isValidSearch = true, isQuickSort = true, isFwd = true;
 	bool isNum = false, isSust = false, isBurst = false, isSorted = false;
 	bool showBest = false, showMethods = false, showList = false, showItem = false;
@@ -294,7 +403,9 @@ int main() {
 
 					if (searchString.getSize() > 0) {
 
+						search.erase(search.size() - 1, 1);
 						searchString.erase(searchString.getSize() - 1, 1);
+						searchDelete(searchString, searchStart, search, searchBar, font);
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
@@ -384,16 +495,20 @@ int main() {
 
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font);
 							}
 						}
 
@@ -417,7 +532,6 @@ int main() {
 							}
 						}
 						
-						cout << "Is Num: " << isNum << ", Is Sorted: " << isSorted << endl;
 						if (isNum && isSorted) {
 
 							tempBest = bestString;
@@ -524,16 +638,20 @@ int main() {
 
 							for (int j = 2; j < listMax + 1; j++) {
 								if (j < (listMax + 1) / 2) {
-									ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font) + '\n';
 								}
 								else if (j == (listMax + 1) / 2) {
-									ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font);
 								}
 								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-									rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font) + '\n';
 								}
 								else {
-									rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font);
 								}
 							}
 
@@ -576,16 +694,20 @@ int main() {
 
 							for (int j = 2; j < listMax + 1; j++) {
 								if (j < (listMax + 1) / 2) {
-									ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font) + '\n';
 								}
 								else if (j == (listMax + 1) / 2) {
-									ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									ltListString += fitList(tempStr, listRect, font);
 								}
 								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-									rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font) + '\n';
 								}
 								else {
-									rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+									rtListString += fitList(tempStr, listRect, font);
 								}
 							}
 
@@ -607,10 +729,7 @@ int main() {
 							bestString = result.getName();
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
-							for (int p = 0; p < currSub.size(); p++) {
-								cout << currSub[p].getName() << endl;
-							}
+						
 							if (isSorted) {
 								ltListString = "Rank: " + to_string(arsenal.getIndex(currSub, result) + 1) + '\n';
 							}
@@ -704,15 +823,11 @@ int main() {
 				// Update search string with newest character entered
 				if (event.text.unicode >= 32 && event.text.unicode <= 126) {
 
-					sf::String charString = static_cast<char>(event.text.unicode);
-					sf::Text charText;
-					charText.setString(charString);
-
-					if (searchText.getGlobalBounds().width + charText.getGlobalBounds().width < searchBar.getGlobalBounds().width - 20) {
-						searchString += charString;
-						searchText.setString(searchString);
-						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
-					}
+					search += static_cast<char>(event.text.unicode);
+					searchString += static_cast<char>(event.text.unicode);
+					searchType(searchString, searchStart, search, searchBar, font);
+					searchText.setString(searchString);
+					setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 				}
 
 				// Ignores backspace and enter keys
@@ -819,16 +934,20 @@ int main() {
 
 					for (int j = 2; j < listMax + 1; j++) {
 						if (j < (listMax + 1) / 2) {
-							ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							ltListString += fitList(tempStr, listRect, font) + '\n';
 						}
 						else if (j == (listMax + 1) / 2) {
-							ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							ltListString += fitList(tempStr, listRect, font);
 						}
 						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-							rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							rtListString += fitList(tempStr, listRect, font) + '\n';
 						}
 						else {
-							rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							rtListString += fitList(tempStr, listRect, font);
 						}
 					}
 
@@ -886,16 +1005,20 @@ int main() {
 
 					for (int j = 2; j < listMax + 1; j++) {
 						if (j < (listMax + 1) / 2) {
-							ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							ltListString += fitList(tempStr, listRect, font) + '\n';
 						}
 						else if (j == (listMax + 1) / 2) {
-							ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							ltListString += fitList(tempStr, listRect, font);
 						}
 						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-							rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							rtListString += fitList(tempStr, listRect, font) + '\n';
 						}
 						else {
-							rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+							rtListString += fitList(tempStr, listRect, font);
 						}
 					}
 
@@ -933,16 +1056,20 @@ int main() {
 
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font);
 							}
 						}
 
@@ -977,16 +1104,20 @@ int main() {
 
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font);
 							}
 						}
 
@@ -1021,16 +1152,20 @@ int main() {
 
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font);
 							}
 						}
 
@@ -1065,16 +1200,20 @@ int main() {
 
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
-								ltListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								ltListString += fitList(tempStr, listRect, font);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName() + '\n';
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font) + '\n';
 							}
 							else {
-								rtListString += to_string(j) + ". " + currSub[j - 1].getName();
+								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
+								rtListString += fitList(tempStr, listRect, font);
 							}
 						}
 
