@@ -7,6 +7,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 
+#include <iomanip>
+
 #include "Arsenal.h"
 
 using namespace std;
@@ -170,9 +172,13 @@ void sortNTime(sf::Text& timerText, Arsenal& arsenal, vector<Weapon>& currSub, b
 		isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
 
 		sf::Time elapsedTime = sortClock.getElapsedTime();
-		cout << "Time elapsed: " << elapsedTime.asMilliseconds() << " ms" << endl;
 
-		timerText.setString("" + std::to_string(elapsedTime.asMilliseconds()) + " ms");
+		double milliSecs = elapsedTime.asMicroseconds() / 1000.0;
+		string milliString = to_string(milliSecs);
+		milliString = milliString.substr(0, milliString.find('.') + 4);
+		cout << "Time elapsed: " << milliString << " milliseconds" << endl;
+		timerText.setString(milliString+ " ms");
+
 		setText(timerText, homeScreen.getSize().x / 2, homeScreen.getSize().y / 25);
 }
 
@@ -182,7 +188,7 @@ int main() {
 	Arsenal arsenal;
 	vector<Weapon>& currSub = arsenal.tempVec;
 	currSub = arsenal.createAll(arsenal.allWeapons);
-	vector<Weapon>& prevSub = arsenal.autoRifles;
+	cout << "Size of arsenal: " << currSub.size() << endl;
 
 	// Screen dimensions
 	float screenWidth = 1000.f, screenHeight = 1250.f;
@@ -192,10 +198,10 @@ int main() {
 	float borderlessXY = borderDec / 2;
 
 	// Text font sizes
-	//int timerPts = 16, buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
+	//int timerPts = 32, buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
 
 	// Timer dimensions and coordinates
-	float timerWidth = 200.f, timerHeight = 32.f;
+	float timerWidth = 250.f, timerHeight = 64.f;
 	float timerX = screenWidth / 2 - timerWidth / 2;
 	float timerY = screenHeight / 25 - timerHeight / 2;
 
@@ -239,7 +245,7 @@ int main() {
 
 	// Variables
 	string search = "", tempStr = "";
-	int searchStart = 0;
+	int searchStart = 0, microS = 0;
 	bool showCursor = true, isValidSearch = true, isQuickSort = true, isFwd = true;
 	bool isNum = false, isSust = false, isBurst = false, isSorted = false;
 	bool showBest = false, showMethods = false, showList = false, showItem = false;
@@ -271,7 +277,7 @@ int main() {
 	// Timer creation & formatting
 	sf::Text timerText;
 	timerText.setFont(font);
-	timerText.setCharacterSize(16);
+	timerText.setCharacterSize(32);
 	timerText.setFillColor(sf::Color::White);
 
 	sf::RectangleShape timerRect(sf::Vector2f(timerWidth, timerHeight));
@@ -426,6 +432,7 @@ int main() {
 	rtListText.setFillColor(sf::Color::White);
 	rtListText.setStyle(sf::Text::Bold);
 
+	sf::String tempTime;
 	sf::String tempBest;
 	sf::String tempLeft;
 	sf::String tempRight;
@@ -457,7 +464,6 @@ int main() {
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace)) {
 
 					if (searchString.getSize() > 0) {
-						//cout << "Deleting..." << endl;
 						search.erase(search.size() - 1, 1);
 						searchString.erase(searchString.getSize() - 1, 1);
 						searchDelete(searchString, searchStart, search, searchBar, font);
@@ -466,9 +472,7 @@ int main() {
 
 						// If deleting the last character, reverts display to previous screen
 						if (searchString.getSize() == 0) {
-							//cout << "String is empty!" << endl;
 							if (showItem || !isValidSearch) {
-								//cout << "Exiting item screen..." << endl;
 								isValidSearch = true;
 								showItem = false;
 								showList = true;
@@ -476,6 +480,8 @@ int main() {
 								if (isSust || isBurst) {
 									showMethods = true;
 								}
+
+								timerText.setString(tempTime);
 
 								bestString = tempBest;
 								bestString = fitText(bestString, bestRect, font);
@@ -492,9 +498,7 @@ int main() {
 							}
 
 							else {
-								//cout << "Resetting screen..." << endl;
 								isNum = false;
-								//isSorted = false;
 
 								isValidSearch = true;
 								search.clear();
@@ -507,6 +511,8 @@ int main() {
 
 					// If the search string is empty, resets the display
 					else {
+
+						timerText.setString("");
 						bestString.clear();
 						bestText.setString(bestString);
 						ltListString.clear();
@@ -537,9 +543,10 @@ int main() {
 							showMethods = true;
 							showList = true;
 
-							prevSub = currSub;
+							//prevSub = currSub;
 							currSub = arsenal.tempVec;
 							currSub = arsenal.createAll(arsenal.allWeapons);
+							cout << "Size of arsenal: " << currSub.size() << endl;
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
@@ -599,6 +606,8 @@ int main() {
 
 						if (isNum && isSorted) {
 
+							tempTime = timerText.getString();
+							timerText.setString("");
 							tempBest = bestString;
 							tempLeft = ltListString;
 							tempRight = rtListString;
@@ -646,6 +655,8 @@ int main() {
 						else {
 
 							if (!showItem) {
+								tempTime = timerText.getString();
+								timerText.setString("");
 								tempBest = bestString;
 								tempLeft = ltListString;
 								tempRight = rtListString;
@@ -665,6 +676,8 @@ int main() {
 
 						// Saves previous screen info if not showing item
 						if (!showItem) {
+							tempTime = timerText.getString();
+							timerText.setString("");
 							tempBest = bestString;
 							tempLeft = ltListString;
 							tempRight = rtListString;
@@ -687,9 +700,10 @@ int main() {
 							rtListString.clear();
 							rtListText.setString(rtListString);
 
-							prevSub = currSub;
+							//prevSub = currSub;
 							currSub = arsenal.tempVec;
 							currSub = arsenal.createFam(arsenal.allWeapons, search);
+							cout << "Size of Family \"" << search << "\": " << currSub.size() << endl;
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
@@ -743,12 +757,12 @@ int main() {
 							rtListString.clear();
 							rtListText.setString(rtListString);
 
-							prevSub = currSub;
+							arsenal.tempVec.clear();
 
 							currSub = newSub;
+							cout << "Size of Subfamily \"" << search << "\": " << currSub.size() << endl;
 
-							int n = currSub.size();
-							isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
 							bestString = fitText(bestString, bestRect, font);
 							bestText.setString(bestString);
@@ -848,6 +862,8 @@ int main() {
 							showMethods = true;
 						}
 
+						timerText.setString(tempTime);
+
 						bestString = tempBest;
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -865,6 +881,7 @@ int main() {
 					// If showing information but not showing item, clears screen
 					else if (showBest) {
 
+						timerText.setString("");
 						bestString.clear();
 						bestText.setString(bestString);
 						ltListString.clear();
@@ -917,6 +934,9 @@ int main() {
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 
 						if (!showItem) {
+							tempTime = timerText.getString();
+							timerText.setString("");
+							tempBest = bestString;
 							tempLeft = ltListString;
 							tempRight = rtListString;
 						}
@@ -930,7 +950,7 @@ int main() {
 							showMethods = false;
 							showList = true;
 
-							ltListString = "Rank: " + to_string(arsenal.getIndex(currSub, result)) +
+							ltListString = "Rank: " + to_string(1) +
 								"\nType: " + result.getType() +
 								"\nTotal Damage: " + to_string(result.getTotDamage());
 							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
@@ -943,6 +963,13 @@ int main() {
 						}
 
 						else {
+
+							timerText.setString(tempTime);
+
+							bestString = tempBest;
+							bestString = fitText(bestString, bestRect, font);
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
 							showMethods = true;
 
@@ -972,7 +999,7 @@ int main() {
 					isSust = !isSust;
 
 					if (!isSust) {
-
+						timerText.setString("");
 						isSorted = false;
 						showBest = false;
 						showMethods = false;
@@ -992,8 +1019,7 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1045,7 +1071,7 @@ int main() {
 					isBurst = !isBurst;
 
 					if (!isBurst) {
-
+						timerText.setString("");
 						isSorted = true;
 						showBest = false;
 						showMethods = false;
@@ -1065,8 +1091,7 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1118,8 +1143,7 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1167,8 +1191,7 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1216,8 +1239,7 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1265,8 +1287,7 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
-						int n = currSub.size();
-						isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
+						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 						bestString = currSub[0].getName();
 						bestString = fitText(bestString, bestRect, font);
 						bestText.setString(bestString);
@@ -1310,25 +1331,17 @@ int main() {
 			}
 		}
 
-		// Draws shapes and texts based on what bools
 		homeWindow.clear(darkerGray);
-		//cout << "Cleared window." << endl;
 		homeWindow.draw(borderlessScreen);
-		//cout << "Window interior drawn." << endl;
 
 		if (timerText.getGlobalBounds().width > 0) {
 			homeWindow.draw(timerRect);
 			homeWindow.draw(timerText);
 		}
 
-		//cout << "Showing best: " << showBest << endl;
-		//cout << "Text width : " << bestText.getGlobalBounds().width << endl;
 		if (showBest && bestText.getGlobalBounds().width > 0) {
-			//cout << "Showing best." << endl;
 			homeWindow.draw(bestRect);
-			//cout << "Best rect drawn." << endl;
 			homeWindow.draw(bestText);
-			//cout << "Best text drawn." << endl;
 		}
 		if (showMethods) {
 			if (isQuickSort) {
