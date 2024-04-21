@@ -46,6 +46,8 @@ public:
     vector<Weapon> heavyMachineGuns;
     vector<Weapon> linearFusions;
     vector<Weapon> pow_Uniques;
+    // Temporary subfamily
+    vector<Weapon> tempVec;
 
 public:
     // Default constructor
