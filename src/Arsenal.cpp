@@ -388,7 +388,7 @@ vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string ite
 		itemName[i] = tolower(itemName[i]);
 	}
 
-	if (itemName == "priweapons") {
+	if (itemName == "priweapons" || itemName == "primary weapons") {
         ret.insert(ret.end(), autoRifles.begin(), autoRifles.end());
         ret.insert(ret.end(), pulseRifles.begin(), pulseRifles.end());
         ret.insert(ret.end(), scoutRifles.begin(), scoutRifles.end());
@@ -397,7 +397,7 @@ vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string ite
         ret.insert(ret.end(), bows.begin(), bows.end());
         ret.insert(ret.end(), sidearms.begin(), sidearms.end());
     }
-    else if (itemName == "secweapons") {
+    else if (itemName == "secweapons" || itemName == "special weapons") {
         ret.insert(ret.end(), shotguns.begin(), shotguns.end());
 		ret.insert(ret.end(), sniperRifles.begin(), sniperRifles.end());
 		ret.insert(ret.end(), fusionRifles.begin(), fusionRifles.end());
@@ -405,7 +405,7 @@ vector<Weapon> Arsenal::createFam(vector<vector<vector<Weapon>>> vec, string ite
 		ret.insert(ret.end(), traceRifles.begin(), traceRifles.end());
 		ret.insert(ret.end(), sec_grenades.begin(), sec_grenades.end());
 	}
-	else if (itemName == "powweapons") {
+	else if (itemName == "powweapons" || itemName == "power weapons") {
 		ret.insert(ret.end(), rockets.begin(), rockets.end());
 		ret.insert(ret.end(), pow_grenades.begin(), pow_grenades.end());
 		ret.insert(ret.end(), swords.begin(), swords.end());
