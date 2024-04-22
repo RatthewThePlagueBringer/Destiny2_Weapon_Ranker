@@ -8,8 +8,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 
-#include <iomanip>
-
 #include "Arsenal.h"
 
 using namespace std;
@@ -187,11 +185,12 @@ sf::String fitList(string listLine, sf::RectangleShape rect, sf::Font font, int 
 	return newString;
 }
 
+// Sorts the weapons by parameters and displays the time it took to sort
 void sortNTime(sf::Text& timerText, Arsenal& arsenal, vector<Weapon>& currSub, bool isQuickSort, bool isSust, bool isFwd, sf::RenderWindow& homeScreen, sf::Font font) {
 
 		sf::Clock sortClock;
 		sortClock.restart();
-		cout << "Starting clock..." << endl;
+		cout << "Starting Clock and " << (isQuickSort ? "Quick" : "Shell") << " Sorting by " << (isSust ? "Sustained" : "Burst") << " DPS from " << (isFwd ? "Best-to-Worst..." : "Worst-to-Best...") << endl;
 
 		int n = currSub.size();
 		isQuickSort ? arsenal.quickSort(currSub, 0, n - 1, isSust, isFwd) : arsenal.shellSort(currSub, isSust, isFwd);
@@ -209,11 +208,10 @@ void sortNTime(sf::Text& timerText, Arsenal& arsenal, vector<Weapon>& currSub, b
 
 int main() {
 
-	// Initializes an arsenal object
+	// Initializes an arsenal object and 2 vectors to store weapons
 	Arsenal arsenal;
 	vector<Weapon>& currSub = arsenal.tempVec;
-	currSub = arsenal.createAll(arsenal.allWeapons);
-	cout << "Size of arsenal: " << currSub.size() << endl;
+	vector<Weapon> unsortedSub;
 
 	// Screen dimensions
 	float screenWidth = 1000.f, screenHeight = 1250.f;
@@ -269,10 +267,11 @@ int main() {
 	float listY = screenHeight - listHeight - screenHeight / 18;
 
 	// Variables
-	string search = "", tempStr = "";
+	string search = "", bestStr = "", tempStr = "";
 	int searchStart = 0, microS = 0;
 	bool showCursor = true, isValidSearch = true, isQuickSort = true, isFwd = true;
 	bool isNum = false, isSust = false, isBurst = false, isSorted = false;
+	bool inSub = false, inFam = false;
 	bool showBest = false, showMethods = false, showList = false, showItem = false;
 
 	// Colors
@@ -468,13 +467,13 @@ int main() {
 	
 	while (homeWindow.isOpen()) {
 
-		sf::Event event;
-
-		// Hides and shows the cursor ever 0.5 seconds
+		// Hides and shows the cursor every 0.5 seconds
 		if (clock.getElapsedTime() >= sf::milliseconds(500)) {
 			clock.restart();
 			showCursor = !showCursor;
 		}
+
+		sf::Event event;
 
 		while (homeWindow.pollEvent(event)) {
 
@@ -498,8 +497,11 @@ int main() {
 
 						// If deleting the last character, reverts display to previous screen
 						if (searchString.getSize() == 0) {
+
 							if (showItem || !isValidSearch) {
 								isValidSearch = true;
+								inSub = false;
+								inFam = false;
 								showItem = false;
 								showList = true;
 
@@ -524,9 +526,10 @@ int main() {
 							}
 
 							else {
-								isNum = false;
 
+								isNum = false;
 								isValidSearch = true;
+
 								search.clear();
 								searchString.clear();
 								searchText.setString(searchString);
@@ -546,9 +549,14 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
+						currSub = arsenal.tempVec;
+						arsenal.tempVec.clear();
+
 						isSust = false;
 						isBurst = false;
 						isSorted = false;
+						inSub = false;
+						inFam = false;
 						showBest = false;
 						showMethods = false;
 						showList = false;
@@ -569,14 +577,14 @@ int main() {
 							showMethods = true;
 							showList = true;
 
-							//prevSub = currSub;
 							currSub = arsenal.tempVec;
 							currSub = arsenal.createAll(arsenal.allWeapons);
 							cout << "Size of arsenal: " << currSub.size() << endl;
+							unsortedSub = currSub;
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font, bestPts);
+							bestStr = currSub[0].getName();
+							bestString = fitText(bestStr, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -614,6 +622,14 @@ int main() {
 					// If input is a number, returns item found at that index
 					else if (search.size() <= 6 && (search[0] > 47 && search[0] < 58)) {
 
+						if (!showItem && isValidSearch) {
+							tempTime = timerText.getString();
+							timerText.setString("");
+							tempBest = bestString;
+							tempLeft = ltListString;
+							tempRight = rtListString;
+						}
+
 						if (search.size() == 1) {
 							isNum = true;
 						}
@@ -631,14 +647,6 @@ int main() {
 						}
 
 						if (isNum && isSorted) {
-							
-							if (!showItem && isValidSearch) {
-								tempTime = timerText.getString();
-								timerText.setString("");
-								tempBest = bestString;
-								tempLeft = ltListString;
-								tempRight = rtListString;
-							}
 
 							if (stoi(search) > 0 && stoi(search) <= currSub.size()) {
 
@@ -651,15 +659,15 @@ int main() {
 								showMethods = false;
 								showList = true;
 
-								bestString = result.getName();
-								bestString = fitText(bestString, bestRect, font, bestPts);
+								bestStr= result.getName();
+								bestString = fitText(bestStr, bestRect, font, bestPts);
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
 								ltListString = "Rank: " + to_string(itemIndex + 1) + 
 									"\nType: " + result.getType() + 
 									"\nTotal Damage: " + to_string(result.getTotDamage());
-								rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
+								rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 									"\nBurst DPS: " + to_string(result.getBurstDPS());
 
 								ltListText.setString(ltListString);
@@ -670,6 +678,7 @@ int main() {
 
 							else {
 
+								bestStr = "";
 								bestString = "Index out of range.\nPress \'esc' to try again.";
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
@@ -682,14 +691,7 @@ int main() {
 
 						else {
 
-							if (!showItem) {
-								tempTime = timerText.getString();
-								timerText.setString("");
-								tempBest = bestString;
-								tempLeft = ltListString;
-								tempRight = rtListString;
-							}
-
+							bestStr = "";
 							bestString = "Items not sorted.\nPlease sort first.";
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
@@ -719,7 +721,16 @@ int main() {
 						Weapon result = arsenal.searchItem(currSub, search);
 						
 						// If family is found, sorts all the weapons in that family and displays the top 11
+
 						if (!newFam.empty()) {
+
+							isValidSearch = true;
+							isSorted = true;
+							inSub = false;
+							inFam = true;
+							showBest = true;
+							showMethods = true;
+							showList = true;
 
 							bestString.clear();
 							bestText.setString(bestString);
@@ -728,14 +739,14 @@ int main() {
 							rtListString.clear();
 							rtListText.setString(rtListString);
 
-							//prevSub = currSub;
 							currSub = arsenal.tempVec;
 							currSub = arsenal.createFam(arsenal.allWeapons, search);
 							cout << "Size of Family \"" << search << "\": " << currSub.size() << endl;
+							unsortedSub = currSub;
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font, bestPts);
+							bestStr = currSub[0].getName();
+							bestString = fitText(bestStr, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -770,9 +781,11 @@ int main() {
 						}
 
 						// If subfamily is found, sorts all the weapons in that subfamily and displays the top 11
-						if (!newSub.empty()) {
+						else if (!newSub.empty()) {
 
 							isValidSearch = true;
+							inSub = true;
+							inFam = false;
 							isSorted = true;
 							showBest = true;
 							showMethods = true;
@@ -789,10 +802,11 @@ int main() {
 
 							currSub = newSub;
 							cout << "Size of Subfamily \"" << search << "\": " << currSub.size() << endl;
+							unsortedSub = currSub;
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font, bestPts);
+							bestStr = currSub[0].getName();
+							bestString = fitText(bestStr, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -835,8 +849,8 @@ int main() {
 							showMethods = false;
 							showList = true;
 
-							bestString = result.getName();
-							bestString = fitText(bestString, bestRect, font, bestPts);
+							bestStr = result.getName();
+							bestString = fitText(bestStr, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 						
@@ -847,7 +861,7 @@ int main() {
 								ltListString = "";
 							}
 							ltListString += "Type: " + result.getType() + "\nTotal Damage: " + to_string(result.getTotDamage());
-							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) + "\nBurst DPS : " + to_string(result.getBurstDPS());
+							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) + "\nBurst DPS : " + to_string(result.getBurstDPS());
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -859,8 +873,8 @@ int main() {
 						else {
 
 							isValidSearch = false;
-							//isSorted = false;
 
+							bestStr = "";
 							bestString = "Invalid input!\nPress \'esc' to try again.";
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
@@ -868,6 +882,7 @@ int main() {
 							showBest = true;
 							showItem = false;
 							showMethods = false;
+							showList = false;
 						}
 					}
 				}
@@ -875,16 +890,66 @@ int main() {
 				// Escape allows the user exit their selection and the program in its entirety
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
 
+					// If search is empty, exits the program
 					if (searchString.getSize() == 0 && !showBest) {
 						homeWindow.close();
 						return 0;
 					}
 
 					else if (searchString.getSize() > 0) {
-						// Empty statement
+							
+						    // If in family or subfamily, resets search and family/subfamily
+							if (inSub || inFam) {
+
+								timerText.setString("");
+								bestString.clear();
+								bestText.setString(bestString);
+								ltListString.clear();
+								ltListText.setString(ltListString);
+								rtListString.clear();
+								rtListText.setString(rtListString);
+
+								currSub = arsenal.tempVec;
+								arsenal.tempVec.clear();
+
+								isSust = false;
+								isBurst = false;
+								isSorted = false;
+								inSub = false;
+								inFam = false;
+								showBest = false;
+								showMethods = false;
+								showList = false;
+							}
+
+							// If an invalid search or item screen, resets to previous screen
+							else if (!isValidSearch || showItem || showBest) {
+
+							showItem = false;
+							showList = true;
+
+							if (isSust || isBurst) {
+								showMethods = true;
+							}
+
+							timerText.setString(tempTime);
+
+							bestString = tempBest;
+							bestString = fitText(bestString, bestRect, font, bestPts);
+							bestText.setString(bestString);
+							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+							ltListString = tempLeft;
+							rtListString = tempRight;
+
+							ltListText.setString(ltListString);
+							rtListText.setString(rtListString);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+						}
 					}
 
-					// If on item screen, exits either to previous screen
+					// If on item screen, exits to previous screen
 					else if (showItem) {
 
 						showItem = false;
@@ -960,6 +1025,14 @@ int main() {
 
 				sf::Vector2i mousePos = sf::Mouse::getPosition(homeWindow);
 
+				// If current subfamily is empty, sets it to all weapons
+				if (currSub.empty()) {
+					currSub = arsenal.tempVec;
+					currSub = arsenal.createAll(arsenal.allWeapons);
+					cout << "Size of arsenal: " << currSub.size() << endl;
+					unsortedSub = currSub;
+				}
+
 				if (isSorted && isValidSearch) {
 
 					// Pressing the top weapon box reveals that weapons stats
@@ -974,7 +1047,7 @@ int main() {
 
 						showItem = !showItem;
 
-						Weapon result = arsenal.searchItem(currSub, bestString.toAnsiString());
+						Weapon result = arsenal.searchItem(currSub, bestStr);
 
 						if (showItem) {
 
@@ -984,7 +1057,7 @@ int main() {
 							ltListString = "Rank: " + to_string(1) +
 								"\nType: " + result.getType() +
 								"\nTotal Damage: " + to_string(result.getTotDamage());
-							rtListString = "Sustainable DPS : " + to_string(result.getSusDPS()) +
+							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 								"\nBurst DPS: " + to_string(result.getBurstDPS());
 
 							ltListText.setString(ltListString);
@@ -1015,8 +1088,11 @@ int main() {
 					}
 				}
 
-				// Checks if sustainable DPS button was pressed, calls sorting by sustainable DPS values and displays top 11 results
+				// Checks if sustained DPS button was pressed, calls sorting by sustained DPS values and displays top results
 				if (inCircle(borderRad, sustX0, buttonY0, mousePos)) {
+
+					cout << "Current vector size: " << currSub.size() << endl;
+
 					showMethods = true;
 
 					bestString.clear();
@@ -1034,6 +1110,7 @@ int main() {
 						showBest = false;
 						showMethods = false;
 						showList = false;
+						currSub = unsortedSub;
 					}
 
 					else {
@@ -1049,9 +1126,11 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
@@ -1086,8 +1165,10 @@ int main() {
 					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 				}
 
-				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top 11 results
+				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top results
 				else if (inCircle(borderRad, burstX0, buttonY0, mousePos)) {
+
+					cout << "Current vector size: " << currSub.size() << endl;
 
 					showMethods = true;
 
@@ -1106,6 +1187,7 @@ int main() {
 						showBest = false;
 						showMethods = false;
 						showList = false;
+						currSub = unsortedSub;
 					}
 
 					else {
@@ -1121,9 +1203,11 @@ int main() {
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 					}
@@ -1172,9 +1256,11 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -1220,9 +1306,11 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -1269,9 +1357,11 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -1317,9 +1407,11 @@ int main() {
 						rtListString.clear();
 						rtListText.setString(rtListString);
 
+						currSub = unsortedSub;
+
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font, bestPts);
+						bestStr = currSub[0].getName();
+						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -1362,18 +1454,23 @@ int main() {
 			}
 		}
 
+		// Clears window and sets color and borderless screen
 		homeWindow.clear(darkerGray);
 		homeWindow.draw(borderlessScreen);
 
+		// Displays timer text box if text exists
 		if (timerText.getGlobalBounds().width > 0) {
 			homeWindow.draw(timerRect);
 			homeWindow.draw(timerText);
 		}
 
+		// Displays best text box if showBest is true and text exists
 		if (showBest && bestText.getGlobalBounds().width > 0) {
 			homeWindow.draw(bestRect);
 			homeWindow.draw(bestText);
 		}
+
+		// Displays methods buttons if showMethods is true, with appropriate highlights to show current selection
 		if (showMethods) {
 			if (isQuickSort) {
 				homeWindow.draw(quickHighlight);
@@ -1400,23 +1497,26 @@ int main() {
 			homeWindow.draw(fwdText);
 			homeWindow.draw(bwdText);
 		}
+
+		// Displays list text box if showList is true and text exists
 		if (showList && isValidSearch && ltListText.getGlobalBounds().width > 0) {
 			homeWindow.draw(listRect);
 			homeWindow.draw(ltListText);
 			homeWindow.draw(rtListText);
 		}
 
+		// Displays DPS button highlights to show current selection
 		if (isSust) {
 			isSust = true;
 			homeWindow.draw(sustHighlight);
 			
 		}
-
 		else if (isBurst) {
 			isBurst = true;
 			homeWindow.draw(burstHighlight);
 		}
 
+		// Displays DPS buttons
 		homeWindow.draw(sustBorder);
 		homeWindow.draw(burstBorder);
 		homeWindow.draw(sustButton);
@@ -1424,14 +1524,17 @@ int main() {
 		homeWindow.draw(sustText);
 		homeWindow.draw(burstText);
 
+		// Displays search bar and text
 		homeWindow.draw(searchBar);
 		homeWindow.draw(searchText);
 
+		// Displays cursor if showCursor is true
 		if (showCursor) {
 			setText(cursorText, screenWidth / 2 + searchText.getGlobalBounds().width / 2 + 4, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 			homeWindow.draw(cursorText);
 		}
 		
+		// Actually displays the window
 		homeWindow.display();
 	}
 

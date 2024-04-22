@@ -151,24 +151,22 @@ Weapon Arsenal::searchItem(vector<Weapon> vec, string itemName) {
     for (int i = 0; i < itemName.size(); i++) {
         itemName[i] = tolower(itemName[i]);
     }
-    cout << "Lowercase item name: " << itemName << endl;
 
     for (int i = 0; i < vec.size(); i++) {
         matchedChars = 0;
-        for (int j = 0; j < vec[i].getName().size(); j++) {
-            if (itemName.size() == vec[i].getName().size() && itemName[j] == tolower(vec[i].getName()[j])) {
-                matchedChars++;
+        if (itemName.size() == vec[i].getName().size()) {
+            for (int j = 0; j < vec[i].getName().size(); j++) {
+                if (itemName[j] == tolower(vec[i].getName()[j])) {
+                    matchedChars++;
+                }
             }
         }
 
-        cout << "Lowercase weapon name: " << vec[i].getName() << endl;
         if (matchedChars == itemName.size()) {
-            cout << vec[i].getName() << " matches " << itemName << endl;
             return vec[i];
         }
     }
 
-    cout << "No match found." << endl;
     return ret;
 }
 
