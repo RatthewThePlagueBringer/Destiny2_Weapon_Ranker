@@ -292,7 +292,7 @@ int main() {
 	}
 
 	// Renders window
-	sf::RenderWindow homeWindow(sf::VideoMode(static_cast<int>(screenWidth), static_cast<int>(screenHeight)), "Home Screen", sf::Style::Close);
+	sf::RenderWindow homeWindow(sf::VideoMode(static_cast<int>(screenWidth), static_cast<int>(screenHeight)), "Destiny 2 Weapons Ranker by DPS", sf::Style::Close);
 
 	// Borderless background creation and formatting
 	sf::RectangleShape borderlessScreen(sf::Vector2f(borderlessWidth, borderlessHeight));
