@@ -885,7 +885,7 @@ int main() {
 							else {
 								ltListString = "";
 							}
-							ltListString += "\nFamily: " + result.getFam() +
+							ltListString += "Family: " + result.getFam() +
 								"\nSubfamily: " + result.getSubFam();
 							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 								"\nBurst DPS: " + to_string(result.getBurstDPS());
@@ -1065,8 +1065,8 @@ int main() {
 				}
 
 				if (isSorted && isValidSearch) {
-					cout << "Is item currently being show? " << showItem << endl;
-					// Pressing the top weapon box reveals that weapons stats
+
+					// Pressing the top weapon box reveals that weapon's stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 
 						if (!showItem) {
@@ -1079,7 +1079,7 @@ int main() {
 
 						showItem = !showItem;
 
-						Weapon result = arsenal.searchItem(currSub, bestStr);
+						Weapon result = currSub[0];
 
 						if (showItem) {
 
