@@ -915,7 +915,6 @@ int main() {
 							showList = false;
 						}
 					}
-					cout << "Will item be shown on next screen? " << showItem << endl;
 				}
 
 				// Escape allows the user exit their selection and the program in its entirety
