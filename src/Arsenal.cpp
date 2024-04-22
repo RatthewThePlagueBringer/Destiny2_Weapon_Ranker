@@ -40,7 +40,7 @@ Arsenal::Arsenal() {
             temp = row[8];
         }
 
-        Weapon gun(row[1], row[2], temp, row[5], row[6], row[3], row[4]);
+        Weapon gun(row[0], row[1], row[2], temp, row[5], row[6], row[3], row[4]);
 
         if (row[1] == "AuRi") {
             autoRifles.push_back(gun);
@@ -191,40 +191,40 @@ vector<Weapon> Arsenal::searchSub(vector<vector<vector<Weapon>>> vec, string ite
         itemName[i] = tolower(itemName[i]);
     }
 
-    if (itemName == "autorifles") {
+    if (itemName == "autorifles" || itemName == "auto rifles") {
         return autoRifles;
     }
     else if (itemName == "bows") {
         return bows;
     }
-    else if (itemName == "fusionrifles") {
+    else if (itemName == "fusionrifles" || itemName == "fusion rifles") {
         return fusionRifles;
     }
     else if (itemName == "glaives") {
         return glaives;
     }
-    else if (itemName == "sec_grenades") {
+    else if (itemName == "sec_grenades" || itemName == "single shot grenade launchers") {
         return sec_grenades;
     }
-    else if (itemName == "handcannons") {
+    else if (itemName == "handcannons" || itemName == "hand cannons") {
         return handCannons;
     }
-    else if (itemName == "pow_grenades") {
+    else if (itemName == "pow_grenades" || itemName == "drun-loaded grenade launcher") {
         return pow_grenades;
     }
-    else if (itemName == "heavymachineguns") {
+    else if (itemName == "heavymachineguns" || itemName == "heavy machine guns") {
         return heavyMachineGuns;
     }
-    else if (itemName == "linearfusions") {
+    else if (itemName == "linearfusions" || itemName == "linear fusion rifles") {
         return linearFusions;
     }
-    else if (itemName == "pulserifles") {
+    else if (itemName == "pulserifles" || itemName == "pulse rifles") {
         return pulseRifles;
     }
-    else if (itemName == "rockets") {
+    else if (itemName == "rockets" || itemName == "rocket launchers") {
         return rockets;
     }
-    else if (itemName == "scoutrifles") {
+    else if (itemName == "scoutrifles" || itemName == "scout rifles") {
         return scoutRifles;
     }
     else if (itemName == "sidearms") {
@@ -233,16 +233,16 @@ vector<Weapon> Arsenal::searchSub(vector<vector<vector<Weapon>>> vec, string ite
     else if (itemName == "shotguns") {
         return shotguns;
     }
-    else if (itemName == "sniperrifles") {
+    else if (itemName == "sniperrifles" || itemName == "sniper rifles") {
         return sniperRifles;
     }
-    else if (itemName == "submachineguns") {
+    else if (itemName == "submachineguns" || itemName == "submachine guns") {
         return subMachineGuns;
     }
     else if (itemName == "swords") {
         return swords;
     }
-    else if (itemName == "tracerifles") {
+    else if (itemName == "tracerifles" || itemName == "trace rifles") {
         return traceRifles;
     }
 
@@ -258,13 +258,13 @@ vector<vector<Weapon>> Arsenal::searchFam(vector<vector<vector<Weapon>>> vec, st
         itemName[i] = tolower(itemName[i]);
     }
 
-    if (itemName == "priweapons") {
+    if (itemName == "priweapons" || itemName == "primary weapons") {
         return priWeapons;
     }
-    else if (itemName == "secweapons") {
+    else if (itemName == "secweapons" || itemName == "special weapons") {
         return secWeapons;
     }
-    else if (itemName == "powweapons") {
+    else if (itemName == "powweapons" || itemName == "power weapons") {
         return powWeapons;
     }
 

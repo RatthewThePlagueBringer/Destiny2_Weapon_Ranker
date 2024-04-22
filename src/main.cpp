@@ -206,6 +206,10 @@ void sortNTime(sf::Text& timerText, Arsenal& arsenal, vector<Weapon>& currSub, b
 		setText(timerText, homeScreen.getSize().x / 2, homeScreen.getSize().y / 25);
 }
 
+bool isPri(Weapon w) {
+	return w.getFam() == "Primary Weapons";
+}
+
 int main() {
 
 	// Initializes an arsenal object and 2 vectors to store weapons
@@ -616,6 +620,11 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 20, listY + 20);
 							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+							tempTime = timerText.getString();
+							tempBest = bestString;
+							tempLeft = ltListString;
+							tempRight = rtListString;
 						}
 					}
 
@@ -664,11 +673,14 @@ int main() {
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
-								ltListString = "Rank: " + to_string(itemIndex + 1) + 
-									"\nType: " + result.getType() + 
-									"\nTotal Damage: " + to_string(result.getTotDamage());
+								ltListString = "Rank: " + to_string(itemIndex + 1) +
+									"\nFamily: " + result.getFam() +
+									"\nSubfamily: " + result.getSubFam();
 								rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 									"\nBurst DPS: " + to_string(result.getBurstDPS());
+								if (!isPri(result)) {
+									rtListString += "\nTotal Damage: " + to_string(result.getTotDamage());
+								}
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
@@ -686,6 +698,7 @@ int main() {
 								isValidSearch = false;
 								showBest = true;
 								showMethods = false;
+								showItem = false;
 							}	
 						}
 
@@ -699,6 +712,7 @@ int main() {
 							isValidSearch = false;
 							showBest = true;
 							showMethods = false;
+							showItem = false;
 						}
 					}
 
@@ -721,8 +735,13 @@ int main() {
 						Weapon result = arsenal.searchItem(currSub, search);
 						
 						// If family is found, sorts all the weapons in that family and displays the top 11
-
 						if (!newFam.empty()) {
+
+							/*tempTime.clear();
+							timerText.setString(tempTime);
+							tempBest.clear();
+							tempLeft.clear();
+							tempRight.clear();*/
 
 							isValidSearch = true;
 							isSorted = true;
@@ -731,6 +750,7 @@ int main() {
 							showBest = true;
 							showMethods = true;
 							showList = true;
+							showItem = false;
 
 							bestString.clear();
 							bestText.setString(bestString);
@@ -778,6 +798,11 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 20, listY + 20);
 							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+							tempTime = timerText.getString();
+							tempBest = bestString;
+							tempLeft = ltListString;
+							tempRight = rtListString;
 						}
 
 						// If subfamily is found, sorts all the weapons in that subfamily and displays the top 11
@@ -790,6 +815,13 @@ int main() {
 							showBest = true;
 							showMethods = true;
 							showList = true;
+							showItem = false;
+
+							/*tempTime.clear();
+							timerText.setString(tempTime);
+							tempBest.clear();
+							tempLeft.clear();
+							tempRight.clear();*/
 
 							bestString.clear();
 							bestText.setString(bestString);
@@ -838,6 +870,11 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 20, listY + 20);
 							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+							tempTime = timerText.getString();
+							tempBest = bestString;
+							tempLeft = ltListString;
+							tempRight = rtListString;
 						}
 
 						// If weapon is found, displays the weapon's stats of its first instance found
@@ -860,8 +897,13 @@ int main() {
 							else {
 								ltListString = "";
 							}
-							ltListString += "Type: " + result.getType() + "\nTotal Damage: " + to_string(result.getTotDamage());
-							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) + "\nBurst DPS : " + to_string(result.getBurstDPS());
+							ltListString += "\nFamily: " + result.getFam() +
+								"\nSubfamily: " + result.getSubFam();
+							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
+								"\nBurst DPS: " + to_string(result.getBurstDPS());
+							if (!isPri(result)) {
+								rtListString += "\nTotal Damage: " + to_string(result.getTotDamage());
+							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -885,6 +927,7 @@ int main() {
 							showList = false;
 						}
 					}
+					cout << "Will item be shown on next screen? " << showItem << endl;
 				}
 
 				// Escape allows the user exit their selection and the program in its entirety
@@ -898,8 +941,8 @@ int main() {
 
 					else if (searchString.getSize() > 0) {
 							
-						    // If in family or subfamily, resets search and family/subfamily
-							if (inSub || inFam) {
+						    // If in a sorted family or subfamily list screen, resets screen and family/subfamily
+							if ((inSub || inFam) && !showItem && isValidSearch) {
 
 								timerText.setString("");
 								bestString.clear();
@@ -1034,9 +1077,10 @@ int main() {
 				}
 
 				if (isSorted && isValidSearch) {
-
+					cout << "Is item currently being show? " << showItem << endl;
 					// Pressing the top weapon box reveals that weapons stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+
 						if (!showItem) {
 							tempTime = timerText.getString();
 							timerText.setString("");
@@ -1054,11 +1098,14 @@ int main() {
 							showMethods = false;
 							showList = true;
 
-							ltListString = "Rank: " + to_string(1) +
-								"\nType: " + result.getType() +
-								"\nTotal Damage: " + to_string(result.getTotDamage());
+							ltListString = "Rank: " + to_string(arsenal.getIndex(currSub, result) + 1) +
+								"\nFamily: " + result.getFam() +
+								"\nSubfamily: " + result.getSubFam();
 							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 								"\nBurst DPS: " + to_string(result.getBurstDPS());
+							if (!isPri(result)) {
+								rtListString += "\nTotal Damage: " + to_string(result.getTotDamage());
+							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
@@ -1133,6 +1180,9 @@ int main() {
 						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+
+						tempTime = timerText.getString();
+						tempBest = bestString;
 					}
 
 					int listMax = 19;
@@ -1163,6 +1213,11 @@ int main() {
 					rtListText.setString(rtListString);
 					ltListText.setPosition(listX + 20, listY + 20);
 					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+					
+					if (isSust) {
+						tempLeft = ltListString;
+						tempRight = rtListString;
+					}
 				}
 
 				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top results
@@ -1240,12 +1295,18 @@ int main() {
 					rtListText.setString(rtListString);
 					ltListText.setPosition(listX + 20, listY + 20);
 					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+					if (isBurst) {
+						tempLeft = ltListString;
+						tempRight = rtListString;
+					}
 				}
 					
 				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
 				else if (showMethods) {
 
 					if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
+
 						isQuickSort = true;
 						isSorted = true;
 
@@ -1292,6 +1353,11 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+						tempTime = timerText.getString();
+						tempBest = bestString;
+						tempLeft = ltListString;
+						tempRight = rtListString;
 					}
 
 					else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
@@ -1343,6 +1409,11 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+						tempTime = timerText.getString();
+						tempBest = bestString;
+						tempLeft = ltListString;
+						tempRight = rtListString;
 					}
 
 					else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
@@ -1393,6 +1464,11 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+						tempTime = timerText.getString();
+						tempBest = bestString;
+						tempLeft = ltListString;
+						tempRight = rtListString;
 					}
 
 					else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
@@ -1414,7 +1490,6 @@ int main() {
 						bestString = fitText(bestStr, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1444,6 +1519,11 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+
+						tempTime = timerText.getString();
+						tempBest = bestString;
+						tempLeft = ltListString;
+						tempRight = rtListString;
 					}
 				}
 				

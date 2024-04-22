@@ -10,8 +10,11 @@ using namespace std;
 
 class Weapon {
 private:
-    // Stores weapon type
-    string type;
+    // Stores weapon family
+    string fam;
+    
+    // Stores weapon subfamily
+    string subFam;
 
     // Stores weapon name
     string name;
@@ -43,14 +46,15 @@ private:
 public:
     // Constructors
     Weapon();
-    Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize);
+    Weapon(string fam, string subFam, string name, string damage, string rpm, string reloadTime, string magSize, string totSize);
 
     // Getters
     int getSusDPS();
     int getBurstDPS();
     int getTotDamage();
     string getName();
-    string getType();
+    string getFam();
+    string getSubFam();
 
     // Operator Overloads
     bool operator==(Weapon const& obj) const;

@@ -2,7 +2,8 @@
 
 // Constructors
 Weapon::Weapon() {
-    type = "N/A";
+    fam = "N/A";
+    subFam = "N/A";
 	name = "DNE";
 	damage = 0;
 	rpm = 0;
@@ -14,9 +15,10 @@ Weapon::Weapon() {
 	burstDPS = 0;
 }
 
-Weapon::Weapon(string type, string name, string damage, string rpm, string reloadTime, string magSize, string totSize) {
+Weapon::Weapon(string fam, string subFam, string name, string damage, string rpm, string reloadTime, string magSize, string totSize) {
 
-    this->type = type;
+    this->fam = fam;
+    this->subFam = subFam;
     this->name = name;
     this->damage = stoi(damage);
 
@@ -74,8 +76,75 @@ string Weapon::getName() {
     return name;
 }
 
-string Weapon::getType() {
-    return type;
+string Weapon::getFam() {
+    if (fam == "P") {
+        return "Primary Weapons";
+    }
+    else if (fam == "S") {
+		return "Special Weapons";
+	}
+    else if (fam == "H") {
+		return "Power Weapons";
+	}
+	return "N/A";
+}
+
+string Weapon::getSubFam() {
+    if (subFam == "AuRi") {
+        return "Auto Rifles";
+    }
+    else if (subFam == "Bows") {
+        return "Bows";
+    }
+    else if (subFam == "FuRi") {
+        return "Fusion Rifles";
+    }
+    else if (subFam == "Glai") {
+        return "Glaives";
+    }
+    else if (subFam == "GrLa") {
+        return "Single Shot Grenade Launchers";
+    }
+    else if (subFam == "HaCa") {
+        return "Hand Cannons";
+    }
+    else if (subFam == "HeGL") {
+        return "Drun-Loaded Grenade Launchers";
+    }
+    else if (subFam == "HeMG") {
+        return "Heavy Machine Guns";
+    }
+    else if (subFam == "LFRi") {
+        return "Linear Fusion Rifles";
+    }
+    else if (subFam == "PuRi") {
+        return "Pulse Rifles";
+    }
+    else if (subFam == "RocL") {
+        return "Rocket Launchers";
+    }
+    else if (subFam == "ScRi") {
+        return "Scout Rifles";
+    }
+    else if (subFam == "Sdrm") {
+        return "Sidearms";
+    }
+    else if (subFam == "Shgu") {
+        return "Shotguns";
+    }
+    else if (subFam == "SnRi") {
+        return "Sniper Rifles";
+    }
+    else if (subFam == "SuMG") {
+        return "Submachine Guns";
+    }
+    else if (subFam == "Swrd") {
+        return "Swords";
+    }
+    else if (subFam == "TrRi") {
+        return "Trace Rifles";
+    }
+    return "N/A";
 }
 
 int Weapon::getSusDPS() {
@@ -93,7 +162,7 @@ int Weapon::getTotDamage() {
 // Overloaded Operators
 bool Weapon::operator==(const Weapon& obj) const {
     // Compare based on the name
-    if (this->type == obj.type && this->name == obj.name) {
+    if (this->subFam == obj.subFam && this->name == obj.name) {
         return  true;
     }
     else {
