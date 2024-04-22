@@ -3,6 +3,7 @@ This is a program that was designed for COP 3530 at the University of Florida wi
 
 ## SFML INSTRUCTIONS
 **THIS PROGRAM REQUIRES SFML TO RUN**
+
 Install instructions can be found at [https://www.sfml-dev.org/tutorials/2.6/](https://www.sfml-dev.org/tutorials/2.6/).
   
 Select the correct "Getting Started" link for your system.
