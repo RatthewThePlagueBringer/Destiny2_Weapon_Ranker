@@ -20,7 +20,7 @@ Arsenal::Arsenal() {
     cout << "Opening file stream" << endl;
 
     fstream file;
-    file.open("weapons.csv", ios::in);
+    file.open("files/weapons.csv", ios::in);
 
     vector<string> row;
     string line;
