@@ -39,3 +39,9 @@ Run DataGenerator.cpp on weapons.csv before running main.cpp.
 Since DataGenerator.cpp has a main function, we suggest:
 - Generating data in a separate folder from main.cpp and moving weapons.csv into the folder with main after finishing the data generation.
 - Commenting out main.cpp and running DataGenerator.cpp, then commenting out DataGenerator.cpp and uncommenting main.cpp.
+
+## CREDITS
+Weapon Statistics: [https://bungie-net.github.io/](https://bungie-net.github.io/)
+Weapon Damage & Reload Speed: [https://www.reddit.com/r/DestinyTheGame/comments/12yswaf/destiny_2_quantum_damageics_new_dps_spreadsheet/](https://www.reddit.com/r/DestinyTheGame/comments/12yswaf/destiny_2_quantum_damageics_new_dps_spreadsheet/)
+Font: [https://www.1001fonts.com/roboto-condensed-font.html](https://www.1001fonts.com/roboto-condensed-font.html)(Roboto Condensed Light)
+Search Bar: [https://www.vecteezy.com/png/11888174-shadow-rectangle-neumorphic-rectangle](https://www.vecteezy.com/png/11888174-shadow-rectangle-neumorphic-rectangle)
