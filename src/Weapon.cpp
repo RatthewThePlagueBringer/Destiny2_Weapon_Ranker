@@ -55,20 +55,9 @@ Weapon::Weapon(string fam, string subFam, string name, string damage, string rpm
 
     // Calculating Burst DPS
     burstDPS = (this->damage * (this->rpm / 4) - this->damage * (this->rpm / 60) * this->reloadTime) / 15;
-
-
+    
     // Calculating Sustained DPS
-    float timeToEmpty;
-    if (this->totSize == -1) {
-        // Over time, damage will converge to this value given infinite ammunition
-        sustainedDPS = (this->damage * this->rpm) / 60;
-    }
-    else {
-        // Exact sustained DPS can be more accurately calculated when total amount of ammunition is known
-        timeToEmpty = this->totSize / (this->rpm * 0.02) + this->reloadTime * floor(this->totSize / this->magSize);
-        sustainedDPS = (this->damage * this->totSize) / timeToEmpty;
-    }
-
+    sustainedDPS = (this->damage * this->rpm) / 60;
 }
 
 // Getters
