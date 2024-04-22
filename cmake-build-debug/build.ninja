@@ -41,61 +41,6 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/cmake-build-debug/
 # =============================================================================
-# Object build statements for EXECUTABLE target Destiny2_Weapon_Ranker_Old
-
-
-#############################################
-# Order-only phony target for Destiny2_Weapon_Ranker_Old
-
-build cmake_object_order_depends_target_Destiny2_Weapon_Ranker_Old: phony || CMakeFiles/Destiny2_Weapon_Ranker_Old.dir
-
-build CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/main.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_Old_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/main.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker_Old
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src\main.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -Ic:/SFML/include/SFML
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src
-
-build CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Arsenal.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_Old_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Arsenal.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker_Old
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src\Arsenal.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -Ic:/SFML/include/SFML
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src
-
-build CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Weapon.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_Old_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Weapon.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker_Old
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src\Weapon.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -Ic:/SFML/include/SFML
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src
-
-build CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_Old_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Sort.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker_Old
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src\Sort.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -Ic:/SFML/include/SFML
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir
-  OBJECT_FILE_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir\src
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target Destiny2_Weapon_Ranker_Old
-
-
-#############################################
-# Link the executable Destiny2_Weapon_Ranker_Old.exe
-
-build Destiny2_Weapon_Ranker_Old.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ranker_Old_Debug CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Weapon.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker_Old.dir/src/Sort.cpp.obj
-  FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker_Old.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = Destiny2_Weapon_Ranker_Old.exe
-  TARGET_IMPLIB = libDestiny2_Weapon_Ranker_Old.dll.a
-  TARGET_PDB = Destiny2_Weapon_Ranker_Old.exe.dbg
-
-# =============================================================================
 # Object build statements for EXECUTABLE target Destiny2_Weapon_Ranker
 
 
@@ -104,9 +49,9 @@ build Destiny2_Weapon_Ranker_Old.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ran
 
 build cmake_object_order_depends_target_Destiny2_Weapon_Ranker: phony || CMakeFiles/Destiny2_Weapon_Ranker.dir
 
-build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Sort.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
+build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj: CXX_COMPILER__Destiny2_Weapon_Ranker_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/main.cpp || cmake_object_order_depends_target_Destiny2_Weapon_Ranker
   DEFINES = -DSFML_STATIC
-  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\Sort.cpp.obj.d
+  DEP_FILE = CMakeFiles\Destiny2_Weapon_Ranker.dir\src\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -Ic:/SFML/include/SFML -isystem C:/SFML/include
   OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
@@ -136,7 +81,7 @@ build CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj: CXX_COMPILER__De
 #############################################
 # Link the executable Destiny2_Weapon_Ranker.exe
 
-build Destiny2_Weapon_Ranker.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ranker_Debug CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj | C$:/SFML/lib/libsfml-system-s-d.a C$:/SFML/lib/libsfml-window-s-d.a C$:/SFML/lib/libsfml-graphics-s-d.a C$:/SFML/lib/libsfml-audio-s-d.a C$:/SFML/lib/libsfml-window-s-d.a C$:/SFML/lib/libfreetype.a C$:/SFML/lib/libsfml-system-s-d.a C$:/SFML/lib/libopenal32.a C$:/SFML/lib/libvorbisfile.a C$:/SFML/lib/libvorbisenc.a C$:/SFML/lib/libvorbis.a C$:/SFML/lib/libogg.a C$:/SFML/lib/libFLAC.a
+build Destiny2_Weapon_Ranker.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ranker_Debug CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj | C$:/SFML/lib/libsfml-system-s-d.a C$:/SFML/lib/libsfml-window-s-d.a C$:/SFML/lib/libsfml-graphics-s-d.a C$:/SFML/lib/libsfml-audio-s-d.a C$:/SFML/lib/libsfml-window-s-d.a C$:/SFML/lib/libfreetype.a C$:/SFML/lib/libsfml-system-s-d.a C$:/SFML/lib/libopenal32.a C$:/SFML/lib/libvorbisfile.a C$:/SFML/lib/libvorbisenc.a C$:/SFML/lib/libvorbis.a C$:/SFML/lib/libogg.a C$:/SFML/lib/libFLAC.a
   FLAGS = -g
   LINK_LIBRARIES = C:/SFML/lib/libsfml-system-s-d.a  C:/SFML/lib/libsfml-window-s-d.a  C:/SFML/lib/libsfml-graphics-s-d.a  C:/SFML/lib/libsfml-audio-s-d.a  C:/SFML/lib/libsfml-window-s-d.a  -lgdi32  -lOpenGL32  C:/SFML/lib/libfreetype.a  C:/SFML/lib/libsfml-system-s-d.a  -lwinmm  C:/SFML/lib/libopenal32.a  C:/SFML/lib/libvorbisfile.a  C:/SFML/lib/libvorbisenc.a  C:/SFML/lib/libvorbis.a  C:/SFML/lib/libogg.a  C:/SFML/lib/libFLAC.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Destiny2_Weapon_Ranker.dir
@@ -145,40 +90,6 @@ build Destiny2_Weapon_Ranker.exe: CXX_EXECUTABLE_LINKER__Destiny2_Weapon_Ranker_
   TARGET_FILE = Destiny2_Weapon_Ranker.exe
   TARGET_IMPLIB = libDestiny2_Weapon_Ranker.dll.a
   TARGET_PDB = Destiny2_Weapon_Ranker.exe.dbg
-
-# =============================================================================
-# Object build statements for EXECUTABLE target Data_Generator
-
-
-#############################################
-# Order-only phony target for Data_Generator
-
-build cmake_object_order_depends_target_Data_Generator: phony || CMakeFiles/Data_Generator.dir
-
-build CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj: CXX_COMPILER__Data_Generator_unscanned_Debug C$:/Users/matth/Desktop/Github$ Projects/Destiny2_Weapon_DPS/src/Data$ Generator.cpp || cmake_object_order_depends_target_Data_Generator
-  DEP_FILE = CMakeFiles\Data_Generator.dir\src\Data_Generator.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -Ic:/SFML/include/SFML
-  OBJECT_DIR = CMakeFiles\Data_Generator.dir
-  OBJECT_FILE_DIR = CMakeFiles\Data_Generator.dir\src
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target Data_Generator
-
-
-#############################################
-# Link the executable Data_Generator.exe
-
-build Data_Generator.exe: CXX_EXECUTABLE_LINKER__Data_Generator_Debug CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj
-  FLAGS = -g
-  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\Data_Generator.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_FILE = Data_Generator.exe
-  TARGET_IMPLIB = libData_Generator.dll.a
-  TARGET_PDB = Data_Generator.exe.dbg
 
 
 #############################################
@@ -206,11 +117,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build Data_Generator: phony Data_Generator.exe
-
 build Destiny2_Weapon_Ranker: phony Destiny2_Weapon_Ranker.exe
-
-build Destiny2_Weapon_Ranker_Old: phony Destiny2_Weapon_Ranker_Old.exe
 
 # =============================================================================
 # Folder targets.
@@ -220,7 +127,7 @@ build Destiny2_Weapon_Ranker_Old: phony Destiny2_Weapon_Ranker_Old.exe
 #############################################
 # Folder: C:/Users/matth/Desktop/Github Projects/Destiny2_Weapon_DPS/cmake-build-debug
 
-build all: phony Destiny2_Weapon_Ranker_Old.exe Destiny2_Weapon_Ranker.exe Data_Generator.exe
+build all: phony Destiny2_Weapon_Ranker.exe
 
 # =============================================================================
 # Built-in targets

@@ -1,11 +1,8 @@
 # ninja log v5
-2	213	7352886369450574	CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj	ec636a5b0d90d6b8
-1	320	7352905511605976	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj	e631a869866e4313
-321	396	7352905512345968	Destiny2_Weapon_Ranker.exe	af871aeea43be360
-214	266	7352886369950559	Data_Generator.exe	170f983d006f5d28
-7	41	7352608634574518	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Sort.cpp.obj	d31f7baff05c348a
-2	229	7353735905923172	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj	81c4cfcd1e370b12
+1	342	7355262860222991	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj	5e9d3a2d23096ed7
+342	805	7355262864812985	Destiny2_Weapon_Ranker.exe	ddc91b2d8e51f478
+3	518	7355202686058937	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/main.cpp.obj	bc594daa9346b363
+1	166	7355267771733750	CMakeFiles/Data_Generator.dir/src/Data_Generator.cpp.obj	8b47bbfbd44ba262
+166	214	7355267772178748	Data_Generator.exe	f14362e91dac9c69
+3	157	7355262858382987	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj	51196734a162b07c
 317	393	7351810357744658	Destiny2_Weapon_DPS.exe	1c1dc8681c0eda85
-2	157	7353746333357635	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj	51196734a162b07c
-2	167	7353751602155878	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Weapon.cpp.obj	51196734a162b07c
-5	365	7353751604115882	CMakeFiles/Destiny2_Weapon_Ranker.dir/src/Arsenal.cpp.obj	5e9d3a2d23096ed7

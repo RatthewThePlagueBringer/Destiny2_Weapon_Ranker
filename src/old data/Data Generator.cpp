@@ -19,11 +19,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "P" << "," // Ammo type
              << "AuRi," // Weapon type
-             << "AutoRifle_" << i << "," // Weapon name
+             << "Auto_" << i << "," // Weapon name
              << rand() % 34 + 26 << "," // Mag size
              << "inf," // Total size
              << rand() % 360 + 360 << "," // Fire rate (rpm)
-             << (rand() % 9 + 12)/10 << "," // Reload speed (s)
+             << "0.9," // Reload speed (s)
              << rand() % 346 + 278 << "," // Body damage
              << rand() % 518 + 479 // Precision damage
              << "\n";
@@ -36,7 +36,7 @@ int main() {
              << "1," // Mag size
              << "inf," // Total size
              << rand() % 50 + 10 << "," // Fire rate (rpm)
-             << (rand() % 6 + 8)/10 << "," // Reload speed (s)
+             << "0.6," // Reload speed (s)
              << rand() % 3075 + 300 << "," // Body damage
              << rand() % 4913 + 200 // Precision damage
              << "\n";
@@ -45,11 +45,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "S" << "," // Ammo type
              << "FuRi," // Weapon type
-             << "FusionRifle_" << i << "," // Weapon name
+             << "Fusion_" << i << "," // Weapon name
              << rand() % 6 + 3 << "," // Mag size
              << rand() % 19 + 7 << "," // Total size
              << rand() % 40 + 13 << "," // Fire rate (rpm)
-             << (rand() % 106 + 26)/100 << "," // Reload speed (s)
+             << "1.2," // Reload speed (s)
              << rand() % 15183 + 7532 << "," // Body damage
              << "N/A," // Precision damage
              << "\n";
@@ -71,7 +71,7 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "S" << "," // Ammo type
              << "GrLa," // Weapon type
-             << "SpecialGrenade_" << i << "," // Weapon name
+             << "SpecGrenade_" << i << "," // Weapon name
              << "1," // Mag size
              << "23," // Total size
              << rand() % 72 + 18 << "," // Fire rate (rpm)
@@ -88,7 +88,7 @@ int main() {
              << rand() % 6 + 6 << "," // Mag size
              << "inf," // Total size
              << rand() % 120 + 60 << "," // Fire rate (rpm)
-             << (rand() % 14 + 6)/10 << "," // Reload speed (s)
+             << "1.7," // Reload speed (s)
              << rand() % 1238 + 1694 << "," // Body damage
              << rand() % 1857 + 1411 // Precision damage
              << "\n";
@@ -97,11 +97,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "H" << "," // Ammo type
              << "HeGL," // Weapon type
-             << "HeavyGrenade_" << i << "," // Weapon name
+             << "HevGrenade_" << i << "," // Weapon name
              << rand() % 6 + 2 << "," // Mag size
              << rand() % 27 + 8 << "," // Total size
              << rand() % 120 + 30 << "," // Fire rate (rpm)
-             << (rand() % 192 + 24)/100 << "," // Reload speed (s)
+             << "2.0," // Reload speed (s)
              << rand() % 16042 + 4118 << "," // Body damage
              << "N/A," // Precision damage
              << "\n";
@@ -114,7 +114,7 @@ int main() {
              << rand() % 60 + 30 << "," // Mag size
              << rand() % 438 + 180 << "," // Total size
              << rand() % 360 + 540 << "," // Fire rate (rpm)
-             << (rand() % 286 + 71)/100 << "," // Reload speed (s)
+             << "3.3," << "," // Reload speed (s)
              << rand() % 968 + 822 << "," // Body damage
              << rand() % 1262 + 1248 << "," // Precision damage
              << "\n";
@@ -123,11 +123,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "H" << "," // Ammo type
              << "LFRi," // Weapon type
-             << "LinearFusionRifle_" << i << "," // Weapon name
+             << "LinFusion_" << i << "," // Weapon name
              << rand() % 5 + 2 << "," // Mag size
              << rand() % 17 + 5 << "," // Total size
              << rand() % 42 + 14 << "," // Fire rate (rpm)
-             << (rand() % 122 + 20)/100 << "," // Reload speed (s)
+             << "1.3," << "," // Reload speed (s)
              << rand() % 6319 + 2681 << "," // Body damage
              << rand() % 21742 + 9223 << "," // Precision damage
              << "\n";
@@ -136,11 +136,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "P" << "," // Ammo type
              << "PuRi," // Weapon type
-             << "PulseRifle_" << i << "," // Weapon name
+             << "Pulse_" << i << "," // Weapon name
              << rand() % 46 + 16 << "," // Mag size
              << "inf," // Total size
              << rand() % 340 + 200 << "," // Fire rate (rpm)
-             << (rand() % 9 + 12)/10 << "," // Reload speed (s)
+             << "1.1," // Reload speed (s)
              << rand() % 325 + 171 << "," // Body damage
              << rand() % 539 + 249 // Precision damage
              << "\n";
@@ -149,24 +149,24 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "H" << "," // Ammo type
              << "RocL," // Weapon type
-             << "RocketLauncher_" << i << "," // Weapon name
+             << "Rocket_" << i << "," // Weapon name
              << "1," // Mag size
              << rand() % 7 + 10 << "," // Total size
              << rand() % 62 + 68 << "," // Fire rate (rpm)
-             << (rand() % 210 + 40)/100 << "," // Reload speed (s)
+             << "2.2," // Reload speed (s)
              << rand() % 38567 + 6090 << "," // Body damage
-             << "N/A," // Precision damage
+             << "N/A" // Precision damage
              << "\n";
     }
     // Scout Rifles
     for (int i = 0; i < 5555; i++) {
         file << "P" << "," // Ammo type
              << "ScRi," // Weapon type
-             << "PulseRifle_" << i << "," // Weapon name
+             << "Pulse_" << i << "," // Weapon name
              << rand() % 12 + 6 << "," // Mag size
              << "inf," // Total size
              << rand() % 120 + 140 << "," // Fire rate (rpm)
-             << (rand() % 4 + 13)/10 << "," // Reload speed (s)
+             << "0.8," // Reload speed (s)
              << rand() % 816 + 757 << "," // Body damage
              << rand() % 1383 + 945 // Precision damage
              << "\n";
@@ -179,7 +179,7 @@ int main() {
              << rand() % 18 + 22 << "," // Mag size
              << "inf," // Total size
              << rand() % 260 + 231 << "," // Fire rate (rpm)
-             << (rand() % 82 + 21)/100 << "," // Reload speed (s)
+             << "0.9," // Reload speed (s)
              << rand() % 695 + 694 << "," // Body damage
              << rand() % 1110 + 838 // Precision damage
              << "\n";
@@ -192,7 +192,7 @@ int main() {
              << rand() % 5 + 3 << "," // Mag size
              << rand() % 17 + 4 << "," // Total size
              << rand() % 55 + 25 << "," // Fire rate (rpm)
-             << (rand() % 5 + 5)/10 << "," // Reload speed (s)
+             << "1.6," // Reload speed (s)
              << rand() % 14112 + 3024 << "," // Body damage
              << rand() % 15635 + 3344 << "," // Precision damage
              << "\n";
@@ -201,11 +201,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "S" << "," // Ammo type
              << "SnRi," // Weapon type
-             << "SniperRifle_" << i << "," // Weapon name
+             << "Sniper_" << i << "," // Weapon name
              << rand() % 4 + 3 << "," // Mag size
              << rand() % 22 + 13 << "," // Total size
              << rand() % 72 + 68 << "," // Fire rate (rpm)
-             << (rand() % 158 + 40)/10 << "," // Reload speed (s)
+             << "1.7," // Reload speed (s)
              << rand() % 2895 + 1702 << "," // Body damage
              << rand() % 9960 + 6129 << "," // Precision damage
              << "\n";
@@ -214,11 +214,11 @@ int main() {
     for (int i = 0; i < 5555; i++) {
         file << "P" << "," // Ammo type
              << "SuMG," // Weapon type
-             << "SubMachineGun_" << i << "," // Weapon name
+             << "SMG_" << i << "," // Weapon name
              << rand() % 27 + 10 << "," // Mag size
              << "inf," // Total size
              << rand() % 600 + 300 << "," // Fire rate (rpm)
-             << (rand() % 119 + 21)/100 << "," // Reload speed (s)
+             << "1.0," // Reload speed (s)
              << rand() % 373 + 210 << "," // Body damage
              << rand() % 579 + 239 // Precision damage
              << "\n";
@@ -231,20 +231,20 @@ int main() {
              << "N/A," // Mag size
              << rand() % 44 + 26 << "," // Total size
              << rand() % 50 + 78 << "," // Fire rate (rpm)
-             << (rand() % 166 + 86)/10 << "," // Reload speed (s)
-             << rand() % 9254 + 4626 << "," // Body damage
-             << rand() % 27760 + 13880 << "," // Heavy damage
+             << "N/A," // Reload speed (s)
+             << rand() % 9254 + 5626 << "," // Body damage
+             << "N/A" // Heavy damage
              << "\n";
     }
     // Trace Rifles
     for (int i = 0; i < 5555; i++) {
         file << "S" << "," // Ammo type
              << "TrRi," // Weapon type
-             << "TraceRifle" << i << "," // Weapon name
+             << "Trace_" << i << "," // Weapon name
              << rand() % 104 + 20 << "," // Mag size
              << rand() % 586 + 100 << "," // Total size
              << "900," // Fire rate (rpm)
-             << (rand() % 144 + 40)/10 << "," // Reload speed (s)
+             << "1.5," // Reload speed (s)
              << rand() % 505 + 122 << "," // Body damage
              << rand() % 678 + 326 << "," // Precision damage
              << "\n";
