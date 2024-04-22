@@ -32,3 +32,10 @@ for Release:
       winmm.lib
       gdi32.lib
       winmm.lib
+
+## DATA GENERATOR INSTRUCTIONS
+Due to the smaller sample size of our weapons.csv, we included a data generator to test the program's capabilities with larger datasets.
+Run DataGenerator.cpp on weapons.csv before running main.cpp.
+Since DataGenerator.cpp has main function, we suggest:
+- Generating data in a separate folder from main.cpp and moving weapons.csv into the folder with main after finishing the data generation.
+- Commenting out main.cpp and running DataGenerator.cpp, then commenting out DataGenerator.cpp and uncommenting main.cpp.
