@@ -880,6 +880,10 @@ int main() {
 						return 0;
 					}
 
+					else if (searchString.getSize() > 0) {
+						// Empty statement
+					}
+
 					// If on item screen, exits either to previous screen
 					else if (showItem) {
 
