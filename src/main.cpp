@@ -737,12 +737,6 @@ int main() {
 						// If family is found, sorts all the weapons in that family and displays the top 11
 						if (!newFam.empty()) {
 
-							/*tempTime.clear();
-							timerText.setString(tempTime);
-							tempBest.clear();
-							tempLeft.clear();
-							tempRight.clear();*/
-
 							isValidSearch = true;
 							isSorted = true;
 							inSub = false;
@@ -816,12 +810,6 @@ int main() {
 							showMethods = true;
 							showList = true;
 							showItem = false;
-
-							/*tempTime.clear();
-							timerText.setString(tempTime);
-							tempBest.clear();
-							tempLeft.clear();
-							tempRight.clear();*/
 
 							bestString.clear();
 							bestText.setString(bestString);
