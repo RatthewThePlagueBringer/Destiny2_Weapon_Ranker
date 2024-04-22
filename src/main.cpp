@@ -291,15 +291,10 @@ int main() {
 	sf::Color mauve(67, 52, 82);			// Icon background
 
 	// Font reader
+	// Source for font: https://www.1001fonts.com/roboto-condensed-font.html
 	sf::Font font;
 	if (!font.loadFromFile("files/font.ttf")) {
 		cout << "Invalid font!" << endl;
-		return -1;
-	}
-
-	sf::Font boldFont;
-	if (!font.loadFromFile("files/font-bold.ttf")) {
-		cout << "Invalid bold font!" << endl;
 		return -1;
 	}
 
