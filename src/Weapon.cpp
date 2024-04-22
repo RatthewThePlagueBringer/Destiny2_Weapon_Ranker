@@ -55,7 +55,7 @@ Weapon::Weapon(string fam, string subFam, string name, string damage, string rpm
 
     // Calculating Burst DPS
     burstDPS = (this->damage * (this->rpm / 4) - this->damage * (this->rpm / 60) * this->reloadTime) / 15;
-    
+
     // Calculating Sustained DPS
     sustainedDPS = (this->damage * this->rpm) / 60;
 }
