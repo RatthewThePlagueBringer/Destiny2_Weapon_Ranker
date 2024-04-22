@@ -737,12 +737,6 @@ int main() {
 						// If family is found, sorts all the weapons in that family and displays the top 11
 						if (!newFam.empty()) {
 
-							/*tempTime.clear();
-							timerText.setString(tempTime);
-							tempBest.clear();
-							tempLeft.clear();
-							tempRight.clear();*/
-
 							isValidSearch = true;
 							isSorted = true;
 							inSub = false;
@@ -816,12 +810,6 @@ int main() {
 							showMethods = true;
 							showList = true;
 							showItem = false;
-
-							/*tempTime.clear();
-							timerText.setString(tempTime);
-							tempBest.clear();
-							tempLeft.clear();
-							tempRight.clear();*/
 
 							bestString.clear();
 							bestText.setString(bestString);
@@ -897,7 +885,7 @@ int main() {
 							else {
 								ltListString = "";
 							}
-							ltListString += "\nFamily: " + result.getFam() +
+							ltListString += "Family: " + result.getFam() +
 								"\nSubfamily: " + result.getSubFam();
 							rtListString = "Sustained DPS : " + to_string(result.getSusDPS()) +
 								"\nBurst DPS: " + to_string(result.getBurstDPS());
@@ -1077,8 +1065,8 @@ int main() {
 				}
 
 				if (isSorted && isValidSearch) {
-					cout << "Is item currently being show? " << showItem << endl;
-					// Pressing the top weapon box reveals that weapons stats
+
+					// Pressing the top weapon box reveals that weapon's stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
 
 						if (!showItem) {
@@ -1091,7 +1079,7 @@ int main() {
 
 						showItem = !showItem;
 
-						Weapon result = arsenal.searchItem(currSub, bestStr);
+						Weapon result = currSub[0];
 
 						if (showItem) {
 
