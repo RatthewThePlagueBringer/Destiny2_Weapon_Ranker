@@ -284,7 +284,7 @@ int main() {
 	sf::Color mauve(67, 52, 82);			// Icon background
 
 	// Font reader
-	// Source for font: https://www.1001fonts.com/roboto-condensed-font.html
+	// Source for font: https://www.1001fonts.com/roboto-condensed-font.html (Roboto Condensed Light)
 	sf::Font font;
 	if (!font.loadFromFile("files/font.ttf")) {
 		cout << "Invalid font!" << endl;
