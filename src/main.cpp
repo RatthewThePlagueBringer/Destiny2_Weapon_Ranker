@@ -119,31 +119,25 @@ sf::String fitText(string bestStr, sf::RectangleShape rect, sf::Font font, int f
 		return retStr;
 	}
 
-	cout << "Initial width: " << retText.getGlobalBounds().width << ", rect width: " << rect.getGlobalBounds().width << endl;
-
 	string tempStr = "";
 		
 	int splitIndex = getLastIndex(retStr, rect, font, fontSize);
 
 	for (int i = splitIndex; i >= 0; i--) {
 
-		if (!isalpha(retStr[i])) {
-			cout << "Found last non-alphabetical character! at " << i << "!" << endl;
+		if (!isalnum(retStr[i])) {
 			splitIndex = i;
 			break;
 		}
-		cout << "No non-alphabetical character found!" << endl;
 		splitIndex = -1;
 	}
 
 	if (splitIndex != -1) {
 		retStr.insert(splitIndex + 1, "\n");
-		cout << "Split string with \"\"!" << endl;
 	}
 
 	else {
 		retStr.insert(getLastIndex(retStr, rect, font, fontSize) - 1, "\n");
-		cout << "Split string at break!" << endl;
 	}
 
 	sf::String subStr = retStr;
@@ -707,7 +701,7 @@ int main() {
 					}
 
 					else {
-						cout << "Show item: " << showItem << ", Valid search: " << isValidSearch << endl;
+
 						// Saves previous screen info if not showing item
 						if (!showItem && isValidSearch) {
 							tempTime = timerText.getString();
@@ -966,7 +960,6 @@ int main() {
 
 					// Pressing the top weapon box reveals that weapons stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-						cout << "Clicked best weapon!" << endl;
 						if (!showItem) {
 							tempTime = timerText.getString();
 							timerText.setString("");
@@ -994,7 +987,6 @@ int main() {
 							rtListText.setString(rtListString);
 							ltListText.setPosition(listX + 20, listY + 20);
 							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-							cout << "Updated list!" << endl;
 						}
 
 						else {
@@ -1021,7 +1013,6 @@ int main() {
 
 				// Checks if sustainable DPS button was pressed, calls sorting by sustainable DPS values and displays top 11 results
 				if (inCircle(borderRad, sustX0, buttonY0, mousePos)) {
-					cout << "Clicked sustainable DPS!" << endl;
 					showMethods = true;
 
 					bestString.clear();
@@ -1055,18 +1046,10 @@ int main() {
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
 					}
 
 					int listMax = 19;
@@ -1097,12 +1080,11 @@ int main() {
 					rtListText.setString(rtListString);
 					ltListText.setPosition(listX + 20, listY + 20);
 					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-					cout << "Updated list!" << endl;
 				}
 
 				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top 11 results
 				else if (inCircle(borderRad, burstX0, buttonY0, mousePos)) {
-					cout << "Clicked burst DPS!" << endl;
+
 					showMethods = true;
 
 					bestString.clear();
@@ -1136,18 +1118,10 @@ int main() {
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
 					}
 
 					int listMax = 19;
@@ -1178,14 +1152,12 @@ int main() {
 					rtListText.setString(rtListString);
 					ltListText.setPosition(listX + 20, listY + 20);
 					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-					cout << "Updated list!" << endl;
 				}
 					
 				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
 				else if (showMethods) {
 
 					if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
-						cout << "Clicked quicksort!" << endl;
 						isQuickSort = true;
 						isSorted = true;
 
@@ -1197,18 +1169,10 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1238,11 +1202,10 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-						cout << "Updated list!" << endl;
 					}
 
 					else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
-						cout << "Clicked shellsort!" << endl;
+
 						isQuickSort = false;
 						isSorted = true;
 
@@ -1254,18 +1217,11 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
+
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1295,11 +1251,10 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-						cout << "Updated list!" << endl;
 					}
 
 					else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
-						cout << "Clicked forward!" << endl;
+
 						isFwd = true;
 						isSorted = true;
 
@@ -1311,18 +1266,10 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1352,11 +1299,10 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-						cout << "Updated list!" << endl;
 					}
 
 					else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
-						cout << "Clicked backward!" << endl;
+
 						isFwd = false;
 						isSorted = true;
 
@@ -1368,18 +1314,11 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
-						cout << "Finished sorting!" << endl;
-						cout << "Current subfamily size: " << currSub.size() << endl;
-						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						cout << "Updated best string!" << endl;
 						bestString = fitText(bestString, bestRect, font, bestPts);
-						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
-						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
-						cout << "Set text position!" << endl;
-						cout << "Finished updating best weapon!" << endl;
+
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1409,7 +1348,6 @@ int main() {
 						rtListText.setString(rtListString);
 						ltListText.setPosition(listX + 20, listY + 20);
 						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
-						cout << "Updated list!" << endl;
 					}
 				}
 				
