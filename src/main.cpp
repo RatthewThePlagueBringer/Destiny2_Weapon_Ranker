@@ -962,7 +962,7 @@ int main() {
 
 				sf::Vector2i mousePos = sf::Mouse::getPosition(homeWindow);
 
-				if (isSorted) {
+				if (isSorted && isValidSearch) {
 
 					// Pressing the top weapon box reveals that weapons stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
