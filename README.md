@@ -35,12 +35,8 @@ for Release:
       gdi32.lib
       winmm.lib
 
-## DATA GENERATOR INSTRUCTIONS
-Due to the smaller sample size of our weapons.csv, we included a data generator to test the program's capabilities with larger datasets. It is not necessary to generate data for the program to run. DataGenerator.cpp only increases the size of the dataset.
-Run DataGenerator.cpp on weapons.csv before running main.cpp.
-Since DataGenerator.cpp has a main function, we suggest:
-- Generating data in a separate folder from main.cpp and moving weapons.csv into the folder with main after finishing the data generation.
-- Commenting out main.cpp and running DataGenerator.cpp, then commenting out DataGenerator.cpp and uncommenting main.cpp.
+## DATA GENERATOR
+Due to the smaller sample size of our weapons.csv, we included a data generator to test the program's capabilities with larger datasets. The current weapons.csv in files has already been filled with the generated data, so their is no need to run it again. It is included in the old data folder, along with the original weapons.csv, to convey the entire process of the project.
 
 ## CREDITS
 Weapon Statistics: [https://bungie-net.github.io/](https://bungie-net.github.io/)
