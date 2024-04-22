@@ -1,5 +1,5 @@
 // Used SFML 2.5.1
-#include <iostream>
+//#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -637,7 +637,8 @@ int main() {
 						}
 
 						if (isNum && isSorted) {
-							if (!showItem) {
+							
+							if (!showItem && isValidSearch) {
 								tempTime = timerText.getString();
 								timerText.setString("");
 								tempBest = bestString;
@@ -706,9 +707,9 @@ int main() {
 					}
 
 					else {
-
+						cout << "Show item: " << showItem << ", Valid search: " << isValidSearch << endl;
 						// Saves previous screen info if not showing item
-						if (!showItem) {
+						if (!showItem && isValidSearch) {
 							tempTime = timerText.getString();
 							timerText.setString("");
 							tempBest = bestString;
@@ -864,7 +865,7 @@ int main() {
 						else {
 
 							isValidSearch = false;
-							isSorted = false;
+							//isSorted = false;
 
 							bestString = "Invalid input!\nPress \'esc' to try again.";
 							bestText.setString(bestString);
