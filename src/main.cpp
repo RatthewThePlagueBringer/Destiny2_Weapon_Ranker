@@ -1,4 +1,5 @@
 // Used SFML 2.5.1
+#include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -33,13 +34,13 @@ bool inCircle(float rad, float w, float h, sf::Vector2i mousePos) {
 }
 
 // If search string is too long, erases the first character in the first string
-void searchType(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+void searchType(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font, int fontSize) {
 
 	sf::String newString = searchString;
 	sf::Text newText;
 	newText.setString(newString);
 	newText.setFont(font);
-	newText.setCharacterSize(32);
+	newText.setCharacterSize(fontSize);
 	newText.setFillColor(sf::Color::White);
 	newText.setStyle(sf::Text::Bold);
 
@@ -53,13 +54,13 @@ void searchType(sf::String& searchString, int& searchStart, string search, sf::S
 }
 
 // Called after delete: if search string was shortened and now has space, adds to the front of the string
-void searchDelete(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font) {
+void searchDelete(sf::String& searchString, int& searchStart, string search, sf::Sprite sprite, sf::Font font, int fontSize) {
 
 	sf::String newString = searchString;
 	sf::Text newText;
 	newText.setString(newString);
 	newText.setFont(font);
-	newText.setCharacterSize(32);
+	newText.setCharacterSize(fontSize);
 	newText.setFillColor(sf::Color::White);
 	newText.setStyle(sf::Text::Bold);
 
@@ -72,81 +73,111 @@ void searchDelete(sf::String& searchString, int& searchStart, string search, sf:
 	}
 }
 
-// Split line of text at appropriate character into multiple lines to fit within a rectangle
-sf::String fitText(std::string bestStr, sf::RectangleShape rect, sf::Font font) {
-
-	sf::String retStr = bestStr;
-	sf::Text retText;
-	retText.setString(retStr);
-	retText.setFont(font);
-	retText.setCharacterSize(32);
+// Returns the index of the last character that fits within the rectangle
+int getLastIndex(string bestStr, sf::RectangleShape rect, sf::Font font, int fontSize) {
+	
+	sf::String myStr = bestStr;
+	sf::Text myText;
+	myText.setString(myStr);
+	myText.setFont(font);
+	myText.setCharacterSize(fontSize);
 
 	sf::String subStr = "";
 	sf::Text subText;
 	subText.setString(subStr);
 	subText.setFont(font);
-	subText.setCharacterSize(32);
+	subText.setCharacterSize(fontSize);
 
-	while (retText.getGlobalBounds().width > rect.getGlobalBounds().width - 120) {
-		// Used https://en.cppreference.com/w/c/types/size_t for size_t
-		size_t lastIndex = retStr.getSize();
+	if (myText.getGlobalBounds().width <= rect.getGlobalBounds().width - 80) {
+		return myStr.getSize();
+	}
 
-		for (size_t i = retStr.getSize() - 1; i != SIZE_MAX; --i) {
-
-			subStr = retStr.substring(0, i);
+	while (subText.getGlobalBounds().width < rect.getGlobalBounds().width - 80) {
+		for (int i = 0; i < myStr.getSize(); i++) {
+			subStr.insert(i, myStr[i]);
 			subText.setString(subStr);
 
-			if (subText.getGlobalBounds().width < rect.getGlobalBounds().width - 120) {
-				if (!isalpha(retStr[i])) {
-					lastIndex = i;
-					break;
-				}
+			if (subText.getGlobalBounds().width > rect.getGlobalBounds().width - 80) {
+				return i - 1;
 			}
 		}
+	}
 
-		if (lastIndex == retStr.getSize()) {
+	return -1;
+}
 
-			size_t splitIndex = retStr.getSize() - 1;
+// Splits string into multiple lines to fit within a rectangle
+sf::String fitText(string bestStr, sf::RectangleShape rect, sf::Font font, int fontSize) {
 
-			for (size_t i = retStr.getSize() - 1; i != SIZE_MAX; --i) {
+	sf::String retStr = bestStr;
+	sf::Text retText;
+	retText.setString(retStr);
+	retText.setFont(font);
+	retText.setCharacterSize(fontSize);
 
-				subStr = retStr.substring(0, i);
-				subText.setString(subStr);
+	if (retText.getGlobalBounds().width <= rect.getGlobalBounds().width - 80) {
+		return retStr;
+	}
 
-				if (subText.getGlobalBounds().width < rect.getGlobalBounds().width - 120) {
-					splitIndex = i;
-					break;
-				}
-			}
+	cout << "Initial width: " << retText.getGlobalBounds().width << ", rect width: " << rect.getGlobalBounds().width << endl;
 
-			retStr.insert(splitIndex + 1, "\n");
+	string tempStr = "";
+		
+	int splitIndex = getLastIndex(retStr, rect, font, fontSize);
+
+	for (int i = splitIndex; i >= 0; i--) {
+
+		if (!isalpha(retStr[i])) {
+			cout << "Found last non-alphabetical character! at " << i << "!" << endl;
+			splitIndex = i;
+			break;
 		}
+		cout << "No non-alphabetical character found!" << endl;
+		splitIndex = -1;
+	}
 
-		else {
-			retStr.insert(lastIndex + 1, "\n");
-		}
+	if (splitIndex != -1) {
+		retStr.insert(splitIndex + 1, "\n");
+		cout << "Split string with \"\"!" << endl;
+	}
 
-		retText.setString(retStr);
+	else {
+		retStr.insert(getLastIndex(retStr, rect, font, fontSize) - 1, "\n");
+		cout << "Split string at break!" << endl;
+	}
+
+	sf::String subStr = retStr;
+	sf::Text subText;
+	subText.setString(subStr);
+	subText.setFont(font);
+	subText.setCharacterSize(fontSize);
+
+	subStr = subStr.substring(splitIndex + 1, subStr.getSize() - splitIndex);
+	subText.setString(subStr);
+
+	if (subText.getGlobalBounds().width > rect.getGlobalBounds().width - 80) {
+		retStr.erase(splitIndex + 1, retStr.getSize() - splitIndex);
+		retStr += fitText(subStr, rect, font, fontSize);
 	}
 
 	return retStr;
 }
 
 // If length of string in list is too long, fits it to the list box with an ellipse to signify it has been shortened
-sf::String fitList(string listLine, sf::RectangleShape rect, sf::Font font) {
+sf::String fitList(string listLine, sf::RectangleShape rect, sf::Font font, int fontSize) {
 	
 	sf::String ellipsesS = "...";
 	sf::Text ellipsesT;
 	ellipsesT.setString(ellipsesS);
 	ellipsesT.setFont(font);
-	ellipsesT.setCharacterSize(24);
+	ellipsesT.setCharacterSize(fontSize);
 	ellipsesT.setFillColor(sf::Color::Black);
 
 	sf::String newString = listLine;
 	sf::Text newText;
 	newText.setString(newString);
 	newText.setFont(font);
-	newText.setCharacterSize(24);
+	newText.setCharacterSize(fontSize);
 	newText.setFillColor(sf::Color::Black);
 
 	if (newText.getGlobalBounds().width <=  (rect.getGlobalBounds().width / 2) - 120) {
@@ -198,7 +229,7 @@ int main() {
 	float borderlessXY = borderDec / 2;
 
 	// Text font sizes
-	//int timerPts = 32, buttonPts = 48, bestPts = 32, methodPts = 18, listPts = 24;
+	int timerPts = 32, buttonPts = 56, searchPts = 32, bestPts = 32, sortPts = 26, fwdPts = 22, listPts = 24;
 
 	// Timer dimensions and coordinates
 	float timerWidth = 250.f, timerHeight = 64.f;
@@ -261,8 +292,14 @@ int main() {
 
 	// Font reader
 	sf::Font font;
-	if (!font.loadFromFile("font.ttf")) {
+	if (!font.loadFromFile("files/font.ttf")) {
 		cout << "Invalid font!" << endl;
+		return -1;
+	}
+
+	sf::Font boldFont;
+	if (!font.loadFromFile("files/font-bold.ttf")) {
+		cout << "Invalid bold font!" << endl;
 		return -1;
 	}
 
@@ -298,7 +335,7 @@ int main() {
 	sustButton.setPosition(sustX0 - buttonRad, buttonY);
 
 	sf::Text sustText("Sustained\nDPS", font);
-	sustText.setCharacterSize(48);
+	sustText.setCharacterSize(buttonPts);
 	sustText.setFillColor(sf::Color::Black);
 	sustText.setStyle(sf::Text::Bold);
 	setText(sustText, sustX0, buttonY0);
@@ -316,7 +353,7 @@ int main() {
 	burstButton.setPosition(burstX0 - buttonRad, buttonY);
 
 	sf::Text burstText("Burst\nDPS", font);
-	burstText.setCharacterSize(48);
+	burstText.setCharacterSize(buttonPts);
 	burstText.setFillColor(sf::Color::Black);
 	burstText.setStyle(sf::Text::Bold);
 	setText(burstText, burstX0, buttonY0);
@@ -325,7 +362,7 @@ int main() {
 	sf::Sprite searchBar;
 	sf::Texture searchBarT;
 	//source for search bar: https://www.vecteezy.com/png/11888174-shadow-rectangle-neumorphic-rectangle
-	if (!searchBarT.loadFromFile("searchBar.png")) {
+	if (!searchBarT.loadFromFile("files/searchBar.png")) {
 		cout << "Invalid texture!" << endl;
 		return -1;
 	}
@@ -335,12 +372,12 @@ int main() {
 	sf::String searchString;
 	sf::Text searchText;
 	searchText.setFont(font);
-	searchText.setCharacterSize(32);
+	searchText.setCharacterSize(searchPts);
 	searchText.setFillColor(sf::Color::White);
 	searchText.setStyle(sf::Text::Bold);
 
 	sf::Text cursorText("|", font);
-	cursorText.setCharacterSize(32);
+	cursorText.setCharacterSize(searchPts);
 	cursorText.setFillColor(sf::Color::White);
 	cursorText.setStyle(sf::Text::Bold);
 
@@ -352,7 +389,7 @@ int main() {
 	sf::String bestString;
 	sf::Text bestText;
 	bestText.setFont(font);
-	bestText.setCharacterSize(32);
+	bestText.setCharacterSize(bestPts);
 	bestText.setFillColor(sf::Color::Black);
 	bestText.setStyle(sf::Text::Bold);
 
@@ -366,7 +403,7 @@ int main() {
 	quickButton.setPosition(quickX0 - methodsRad, methodsY);
 
 	sf::Text quickText("Quick Sort", font);
-	quickText.setCharacterSize(18);
+	quickText.setCharacterSize(sortPts);
 	quickText.setFillColor(sf::Color::Black);
 	quickText.setStyle(sf::Text::Bold);
 	setText(quickText, quickX0, methodsY0);
@@ -380,7 +417,7 @@ int main() {
 	shellButton.setPosition(shellX0 - methodsRad, methodsY);
 
 	sf::Text shellText("Shell Sort", font);
-	shellText.setCharacterSize(18);
+	shellText.setCharacterSize(sortPts);
 	shellText.setFillColor(sf::Color::Black);
 	shellText.setStyle(sf::Text::Bold);
 	setText(shellText, shellX0, methodsY0);
@@ -394,7 +431,7 @@ int main() {
 	fwdButton.setPosition(fwdX0 - methodsRad, methodsY);
 
 	sf::Text fwdText("Best-to-Worst", font);
-	fwdText.setCharacterSize(16);
+	fwdText.setCharacterSize(fwdPts);
 	fwdText.setFillColor(sf::Color::Black);
 	fwdText.setStyle(sf::Text::Bold);
 	setText(fwdText, fwdX0, methodsY0);
@@ -408,7 +445,7 @@ int main() {
 	bwdButton.setPosition(bwdX0 - methodsRad, methodsY);
 
 	sf::Text bwdText("Worst-to-Best", font);
-	bwdText.setCharacterSize(16);
+	bwdText.setCharacterSize(fwdPts);
 	bwdText.setFillColor(sf::Color::Black);
 	bwdText.setStyle(sf::Text::Bold);
 	setText(bwdText, bwdX0, methodsY0);
@@ -421,14 +458,14 @@ int main() {
 	sf::String ltListString;
 	sf::Text ltListText;
 	ltListText.setFont(font);
-	ltListText.setCharacterSize(24);
+	ltListText.setCharacterSize(listPts);
 	ltListText.setFillColor(sf::Color::White);
 	ltListText.setStyle(sf::Text::Bold);
 
 	sf::String rtListString;
 	sf::Text rtListText;
 	rtListText.setFont(font);
-	rtListText.setCharacterSize(24);
+	rtListText.setCharacterSize(listPts);
 	rtListText.setFillColor(sf::Color::White);
 	rtListText.setStyle(sf::Text::Bold);
 
@@ -466,7 +503,7 @@ int main() {
 					if (searchString.getSize() > 0) {
 						search.erase(search.size() - 1, 1);
 						searchString.erase(searchString.getSize() - 1, 1);
-						searchDelete(searchString, searchStart, search, searchBar, font);
+						searchDelete(searchString, searchStart, search, searchBar, font, searchPts);
 						searchText.setString(searchString);
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
@@ -484,7 +521,7 @@ int main() {
 								timerText.setString(tempTime);
 
 								bestString = tempBest;
-								bestString = fitText(bestString, bestRect, font);
+								bestString = fitText(bestString, bestRect, font, bestPts);
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -493,8 +530,8 @@ int main() {
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
-								ltListText.setPosition(listX + 40, listY + 40);
-								rtListText.setPosition(screenWidth / 2, listY + 40);
+								ltListText.setPosition(listX + 20, listY + 20);
+								rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 							}
 
 							else {
@@ -550,7 +587,7 @@ int main() {
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font);
+							bestString = fitText(bestString, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -562,26 +599,26 @@ int main() {
 							for (int j = 2; j < listMax + 1; j++) {
 								if (j < (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font) + '\n';
+									ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else if (j == (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font);
+									ltListString += fitList(tempStr, listRect, font, listPts);
 								}
 								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font) + '\n';
+									rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font);
+									rtListString += fitList(tempStr, listRect, font, listPts);
 								}
 							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 						}
 					}
 
@@ -605,12 +642,13 @@ int main() {
 						}
 
 						if (isNum && isSorted) {
-
-							tempTime = timerText.getString();
-							timerText.setString("");
-							tempBest = bestString;
-							tempLeft = ltListString;
-							tempRight = rtListString;
+							if (!showItem) {
+								tempTime = timerText.getString();
+								timerText.setString("");
+								tempBest = bestString;
+								tempLeft = ltListString;
+								tempRight = rtListString;
+							}
 
 							if (stoi(search) > 0 && stoi(search) <= currSub.size()) {
 
@@ -624,7 +662,7 @@ int main() {
 								showList = true;
 
 								bestString = result.getName();
-								bestString = fitText(bestString, bestRect, font);
+								bestString = fitText(bestString, bestRect, font, bestPts);
 								bestText.setString(bestString);
 								setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -636,8 +674,8 @@ int main() {
 
 								ltListText.setString(ltListString);
 								rtListText.setString(rtListString);
-								ltListText.setPosition(listX + 40, listY + 40);
-								rtListText.setPosition(screenWidth / 2, listY + 40);
+								ltListText.setPosition(listX + 20, listY + 20);
+								rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 							}
 
 							else {
@@ -707,7 +745,7 @@ int main() {
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font);
+							bestString = fitText(bestString, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -719,26 +757,26 @@ int main() {
 							for (int j = 2; j < listMax + 1; j++) {
 								if (j < (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font) + '\n';
+									ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else if (j == (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font);
+									ltListString += fitList(tempStr, listRect, font, listPts);
 								}
 								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font) + '\n';
+									rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font);
+									rtListString += fitList(tempStr, listRect, font, listPts);
 								}
 							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 						}
 
 						// If subfamily is found, sorts all the weapons in that subfamily and displays the top 11
@@ -764,7 +802,7 @@ int main() {
 
 							sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
 							bestString = currSub[0].getName();
-							bestString = fitText(bestString, bestRect, font);
+							bestString = fitText(bestString, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -776,26 +814,26 @@ int main() {
 							for (int j = 2; j < listMax + 1; j++) {
 								if (j < (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font) + '\n';
+									ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else if (j == (listMax + 1) / 2) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									ltListString += fitList(tempStr, listRect, font);
+									ltListString += fitList(tempStr, listRect, font, listPts);
 								}
 								else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font) + '\n';
+									rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 								}
 								else {
 									tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-									rtListString += fitList(tempStr, listRect, font);
+									rtListString += fitList(tempStr, listRect, font, listPts);
 								}
 							}
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 						}
 
 						// If weapon is found, displays the weapon's stats of its first instance found
@@ -808,7 +846,7 @@ int main() {
 							showList = true;
 
 							bestString = result.getName();
-							bestString = fitText(bestString, bestRect, font);
+							bestString = fitText(bestString, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 						
@@ -823,8 +861,8 @@ int main() {
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 						}
 
 						// If no results are found, prompts the user to try again
@@ -865,7 +903,7 @@ int main() {
 						timerText.setString(tempTime);
 
 						bestString = tempBest;
-						bestString = fitText(bestString, bestRect, font);
+						bestString = fitText(bestString, bestRect, font, bestPts);
 						bestText.setString(bestString);
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -874,8 +912,8 @@ int main() {
 
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
+						ltListText.setPosition(listX + 20, listY + 20);
+						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 					}
 
 					// If showing information but not showing item, clears screen
@@ -913,7 +951,7 @@ int main() {
 
 					search += static_cast<char>(event.text.unicode);
 					searchString += static_cast<char>(event.text.unicode);
-					searchType(searchString, searchStart, search, searchBar, font);
+					searchType(searchString, searchStart, search, searchBar, font, searchPts);
 					searchText.setString(searchString);
 					setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 				}
@@ -932,7 +970,7 @@ int main() {
 
 					// Pressing the top weapon box reveals that weapons stats
 					if (bestRect.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-
+						cout << "Clicked best weapon!" << endl;
 						if (!showItem) {
 							tempTime = timerText.getString();
 							timerText.setString("");
@@ -958,8 +996,9 @@ int main() {
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+							cout << "Updated list!" << endl;
 						}
 
 						else {
@@ -967,7 +1006,7 @@ int main() {
 							timerText.setString(tempTime);
 
 							bestString = tempBest;
-							bestString = fitText(bestString, bestRect, font);
+							bestString = fitText(bestString, bestRect, font, bestPts);
 							bestText.setString(bestString);
 							setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
 
@@ -978,15 +1017,15 @@ int main() {
 
 							ltListText.setString(ltListString);
 							rtListText.setString(rtListString);
-							ltListText.setPosition(listX + 40, listY + 40);
-							rtListText.setPosition(screenWidth / 2, listY + 40);
+							ltListText.setPosition(listX + 20, listY + 20);
+							rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
 						}
 					}
 				}
 
 				// Checks if sustainable DPS button was pressed, calls sorting by sustainable DPS values and displays top 11 results
 				if (inCircle(borderRad, sustX0, buttonY0, mousePos)) {
-
+					cout << "Clicked sustainable DPS!" << endl;
 					showMethods = true;
 
 					bestString.clear();
@@ -1020,10 +1059,18 @@ int main() {
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 					}
 
 					int listMax = 19;
@@ -1034,31 +1081,32 @@ int main() {
 					for (int j = 2; j < listMax + 1; j++) {
 						if (j < (listMax + 1) / 2) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							ltListString += fitList(tempStr, listRect, font) + '\n';
+							ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 						}
 						else if (j == (listMax + 1) / 2) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							ltListString += fitList(tempStr, listRect, font);
+							ltListString += fitList(tempStr, listRect, font, listPts);
 						}
 						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							rtListString += fitList(tempStr, listRect, font) + '\n';
+							rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 						}
 						else {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							rtListString += fitList(tempStr, listRect, font);
+							rtListString += fitList(tempStr, listRect, font, listPts);
 						}
 					}
 
 					ltListText.setString(ltListString);
 					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
+					ltListText.setPosition(listX + 20, listY + 20);
+					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+					cout << "Updated list!" << endl;
 				}
 
 				// Checks if burst DPS button was pressed, calls sorting by burst DPS values and displays top 11 results
 				else if (inCircle(borderRad, burstX0, buttonY0, mousePos)) {
-
+					cout << "Clicked burst DPS!" << endl;
 					showMethods = true;
 
 					bestString.clear();
@@ -1092,10 +1140,18 @@ int main() {
 						setText(searchText, screenWidth / 2, screenHeight / 3 + searchBar.getGlobalBounds().height / 4);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 					}
 
 					int listMax = 19;
@@ -1106,33 +1162,34 @@ int main() {
 					for (int j = 2; j < listMax + 1; j++) {
 						if (j < (listMax + 1) / 2) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							ltListString += fitList(tempStr, listRect, font) + '\n';
+							ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 						}
 						else if (j == (listMax + 1) / 2) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							ltListString += fitList(tempStr, listRect, font);
+							ltListString += fitList(tempStr, listRect, font, listPts);
 						}
 						else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							rtListString += fitList(tempStr, listRect, font) + '\n';
+							rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 						}
 						else {
 							tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-							rtListString += fitList(tempStr, listRect, font);
+							rtListString += fitList(tempStr, listRect, font, listPts);
 						}
 					}
 
 					ltListText.setString(ltListString);
 					rtListText.setString(rtListString);
-					ltListText.setPosition(listX + 40, listY + 40);
-					rtListText.setPosition(screenWidth / 2, listY + 40);
+					ltListText.setPosition(listX + 20, listY + 20);
+					rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+					cout << "Updated list!" << endl;
 				}
 					
 				// Checks if methods buttons are pressed, applies appropriate changes, and adjusts sorting + display
 				else if (showMethods) {
 
 					if (isQuickSort == false && inCircle(methodsRad, quickX0, methodsY0, mousePos)) {
-
+						cout << "Clicked quicksort!" << endl;
 						isQuickSort = true;
 						isSorted = true;
 
@@ -1144,10 +1201,18 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1157,30 +1222,31 @@ int main() {
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font) + '\n';
+								ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font);
+								ltListString += fitList(tempStr, listRect, font, listPts);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font) + '\n';
+								rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font);
+								rtListString += fitList(tempStr, listRect, font, listPts);
 							}
 						}
 
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
+						ltListText.setPosition(listX + 20, listY + 20);
+						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+						cout << "Updated list!" << endl;
 					}
 
 					else if (isQuickSort == true && inCircle(methodsRad, shellX0, methodsY0, mousePos)) {
-
+						cout << "Clicked shellsort!" << endl;
 						isQuickSort = false;
 						isSorted = true;
 
@@ -1192,10 +1258,18 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1205,30 +1279,31 @@ int main() {
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font) + '\n';
+								ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font);
+								ltListString += fitList(tempStr, listRect, font, listPts);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font) + '\n';
+								rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font);
+								rtListString += fitList(tempStr, listRect, font, listPts);
 							}
 						}
 
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
+						ltListText.setPosition(listX + 20, listY + 20);
+						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+						cout << "Updated list!" << endl;
 					}
 
 					else if (isFwd == false && inCircle(methodsRad, fwdX0, methodsY0, mousePos)) {
-
+						cout << "Clicked forward!" << endl;
 						isFwd = true;
 						isSorted = true;
 
@@ -1240,10 +1315,18 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1253,30 +1336,31 @@ int main() {
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font) + '\n';
+								ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font);
+								ltListString += fitList(tempStr, listRect, font, listPts);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font) + '\n';
+								rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font);
+								rtListString += fitList(tempStr, listRect, font, listPts);
 							}
 						}
 
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
+						ltListText.setPosition(listX + 20, listY + 20);
+						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+						cout << "Updated list!" << endl;
 					}
 
 					else if (isFwd == true && inCircle(methodsRad, bwdX0, methodsY0, mousePos)) {
-
+						cout << "Clicked backward!" << endl;
 						isFwd = false;
 						isSorted = true;
 
@@ -1288,10 +1372,18 @@ int main() {
 						rtListText.setString(rtListString);
 
 						sortNTime(timerText, arsenal, currSub, isQuickSort, isSust, isFwd, homeWindow, font);
+						cout << "Finished sorting!" << endl;
+						cout << "Current subfamily size: " << currSub.size() << endl;
+						cout << "Best weapon: " << currSub[0].getName() << endl;
 						bestString = currSub[0].getName();
-						bestString = fitText(bestString, bestRect, font);
+						cout << "Updated best string!" << endl;
+						bestString = fitText(bestString, bestRect, font, bestPts);
+						cout << "Fit text!" << endl;
 						bestText.setString(bestString);
+						cout << "Updated text string!" << endl;
 						setText(bestText, screenWidth / 2, bestY + bestHeight / 2);
+						cout << "Set text position!" << endl;
+						cout << "Finished updating best weapon!" << endl;
 
 						int listMax = 19;
 						if (currSub.size() < 19) {
@@ -1301,26 +1393,27 @@ int main() {
 						for (int j = 2; j < listMax + 1; j++) {
 							if (j < (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font) + '\n';
+								ltListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else if (j == (listMax + 1) / 2) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								ltListString += fitList(tempStr, listRect, font);
+								ltListString += fitList(tempStr, listRect, font, listPts);
 							}
 							else if (j > (listMax + 1) / 2 && j < listMax + 1) {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font) + '\n';
+								rtListString += fitList(tempStr, listRect, font, listPts) + '\n';
 							}
 							else {
 								tempStr = to_string(j) + ". " + currSub[j - 1].getName();
-								rtListString += fitList(tempStr, listRect, font);
+								rtListString += fitList(tempStr, listRect, font, listPts);
 							}
 						}
 
 						ltListText.setString(ltListString);
 						rtListText.setString(rtListString);
-						ltListText.setPosition(listX + 40, listY + 40);
-						rtListText.setPosition(screenWidth / 2, listY + 40);
+						ltListText.setPosition(listX + 20, listY + 20);
+						rtListText.setPosition(screenWidth / 2 + 20, listY + 20);
+						cout << "Updated list!" << endl;
 					}
 				}
 				
